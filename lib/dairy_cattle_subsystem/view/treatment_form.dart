@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:integrazoo/base.dart';
+
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
@@ -36,11 +38,10 @@ class _TreatmentFormState extends State<TreatmentForm> {
                         );
                     }
 
-
                     final cows = snapshot.data!;
 
                     if (cows.isEmpty) {
-                        return const Center(child: Text('Nenhuma vaca encontrada no rebanho.'));
+                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhum animal encontrado no rebanho.')));
                     }
 
                     final cowSelector = DropdownMenu<Cow>(

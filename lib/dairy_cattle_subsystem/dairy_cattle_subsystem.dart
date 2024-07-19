@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/view/artificial_insemination_form.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/view/coverage_form.dart';
+
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/central_persistence.dart';
@@ -16,12 +15,14 @@ import 'package:integrazoo/dairy_cattle_subsystem/persistence/herd_production_pe
 
 import 'package:integrazoo/dairy_cattle_subsystem/view/cow_production_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/herd_production_form.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/artificial_insemination_form.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/coverage_form.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/dry_treatment_form.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/treatment_form.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/view/herd_view.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/analysis_view.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/health_calendar_view.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/view/treatment_view.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/view/reproduction_view.dart';
 
 
 class DairyCattleSubsystem {
@@ -89,12 +90,23 @@ class DairyCattleSubsystem {
                 }),
               ]
             ),
-            ListTile(title: const Text("Tratamentos"), onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => TreatmentView(controller: centralController))
-                );
-            }),
+            ExpansionTile(
+              title: const Text("Tratamentos"),
+              children: [
+                ListTile(title: const Text('Vacas Secas'), onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => DryTreatmentForm(controller: centralController))
+                  );
+                }),
+                ListTile(title: const Text('Demais Tratamentos'), onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => TreatmentForm(controller: centralController))
+                  );
+                }),
+              ]
+            ),
             ListTile(title: const Text("Calendário Sanitário"), onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
