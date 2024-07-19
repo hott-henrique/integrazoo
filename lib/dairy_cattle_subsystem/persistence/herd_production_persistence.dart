@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/main.dart';
@@ -21,8 +23,9 @@ class HerdProductionPersistence {
         """);
     }
 
-    Future<bool> recordHerdProduction(HerdMilkProduction p) async {
+    Future<bool> recordHerdMilkProduction(HerdMilkProduction p) async {
         Database db = DatabaseConnector.db!;
+        inspect(p);
         try {
             p.id = await db.insert(
                 'HerdProduction',
@@ -30,7 +33,7 @@ class HerdProductionPersistence {
                     'volume': p.volume,
                     'date': p.date.millisecondsSinceEpoch,
                     'day_period': p.period.index + 1,
-                    'discard': p.discarded,
+                    'discarded': p.discarded,
                     'observation': p.observation
                 }
             );
@@ -38,6 +41,7 @@ class HerdProductionPersistence {
             return true;
         } catch (e) {
             /* TODO: Log Error. */
+            print(e);
             return Future(() => false);
         }
     }
