@@ -130,7 +130,7 @@ class AnalysisView extends StatelessWidget {
                                     children: [
                                         Indicator(text: 'Secas', color: Colors.red, isSquare: false),
                                         Indicator(text: 'Reproduzindo', color: Colors.blue, isSquare: false),
-                                        Indicator(text: 'Produzindo Leite', color: Colors.green, isSquare: false),
+                                        Indicator(text: 'Em Lactação', color: Colors.green, isSquare: false),
                                     ]
                                 ))
                             ]
