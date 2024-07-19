@@ -1,16 +1,3 @@
-# integrazoo
+# INTEGRAZOO
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Integrazoo is an app associated with the INTEGRAZOO university extension program from Federal University of São João del-Rei. The objective is to make things easier to perform zootechnical bookkeeping for small producers. Initially working only with dairy producers, the project has great potential to bring benefits to the management of various animals.
