@@ -53,6 +53,9 @@ class _CowProductionFormState extends State<CowProductionForm> {
             lastDate: DateTime.now(),
             keyboardType: TextInputType.text,
             fieldLabelText: "Data",
+            onDateSubmitted: (value) {
+              production.date = value;
+            },
         );
 
         final periodSection = DropdownMenu<DayPeriodIZ>(
@@ -71,7 +74,6 @@ class _CowProductionFormState extends State<CowProductionForm> {
                         widget.controller.cowProductionController.recordCowMilkProduction(selectedCow, production).then(
                             (wasSuccessful) {
                                 if (wasSuccessful) {
-                                    print(production.id);
                                     SnackBar snackBar = const SnackBar(
                                         content: Text('PRODUÇÃO REGISTRADA.'),
                                         showCloseIcon: true
@@ -113,6 +115,8 @@ class _CowProductionFormState extends State<CowProductionForm> {
                       if (cows.isEmpty) {
                           return const Center(child: Text('Nenhuma vaca encontrada no rebanho.'));
                       }
+
+                      selectedCow = cows[0];
 
                       final cow = DropdownMenu<Cow>(
                           // initialSelection: cows[0],

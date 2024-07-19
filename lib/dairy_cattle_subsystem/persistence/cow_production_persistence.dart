@@ -5,8 +5,6 @@ import 'package:integrazoo/main.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow_milk_production.dart';
 
-import 'dart:developer';
-
 
 class CowProductionPersistence {
     CowProductionPersistence();
@@ -29,7 +27,7 @@ class CowProductionPersistence {
 
     Future<bool> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
         Database db = DatabaseConnector.db!;
-        inspect(c);
+
         try {
             m.id = await db.insert(
                 'CowProduction',
