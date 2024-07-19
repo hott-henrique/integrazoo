@@ -10,7 +10,7 @@ class CowProductionController {
     CowProductionController(this.persistence);
 
     Future<bool> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
-        return persistence.cowProductionPersistence.recordCowProduction(c, m);
+        return persistence.cowProductionPersistence.recordCowMilkProduction(c, m);
     }
 
 

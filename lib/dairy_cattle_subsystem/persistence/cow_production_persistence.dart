@@ -5,6 +5,8 @@ import 'package:integrazoo/main.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow_milk_production.dart';
 
+import 'dart:developer';
+
 
 class CowProductionPersistence {
     CowProductionPersistence();
@@ -25,8 +27,9 @@ class CowProductionPersistence {
         """);
     }
 
-    Future<bool> recordCowProduction(Cow c, CowMilkProduction m) async {
+    Future<bool> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
         Database db = DatabaseConnector.db!;
+        inspect(c);
         try {
             m.id = await db.insert(
                 'CowProduction',
@@ -35,7 +38,7 @@ class CowProductionPersistence {
                     'volume': m.volume,
                     'date': m.date.millisecondsSinceEpoch,
                     'day_period': m.period.index + 1,
-                    'discard': m.discard as int,
+                    'discard': m.discard ? 1 : 0,
                     'observation': m.observation
                 }
             );
@@ -43,6 +46,7 @@ class CowProductionPersistence {
             return true;
         } catch (e) {
             /* TODO: Log Error. */
+            print(e);
             return Future(() => false);
         }
     }

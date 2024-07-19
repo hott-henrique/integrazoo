@@ -24,9 +24,28 @@ class _CowProductionFormState extends State<CowProductionForm> {
 
     CowMilkProduction production = CowMilkProduction(0, 0, DateTime.now(), DayPeriodIZ.morning, false, "");
     Cow selectedCow = Cow(0, "UNKNOWN");
+    bool hasFailedOnce = false;
 
     @override
     Widget build(BuildContext context) {
+        if (hasFailedOnce) {
+            /* TODO: Log this fail. */
+            return AlertDialog(
+                title: const Text('Falha ao criar animal.'),
+                content: const SingleChildScrollView(
+                    child: ListBody(
+                        children: <Widget>[ Text('Algo falhou ao registrar produção do animal.'),
+                                            Text('Por favor, contate a equipe INTEGRAZOO.') ],
+                        ),
+                    ),
+                actions: <Widget>[
+                    TextButton(child: const Text('Fechar'),
+                               onPressed: () {
+                                   setState(() { hasFailedOnce = false; });
+                               }),
+                ],
+            );
+        }
 
         final dateSection = InputDatePickerFormField(
             initialDate: production.date,
@@ -52,6 +71,7 @@ class _CowProductionFormState extends State<CowProductionForm> {
                         widget.controller.cowProductionController.recordCowMilkProduction(selectedCow, production).then(
                             (wasSuccessful) {
                                 if (wasSuccessful) {
+                                    print(production.id);
                                     SnackBar snackBar = const SnackBar(
                                         content: Text('PRODUÇÃO REGISTRADA.'),
                                         showCloseIcon: true
@@ -60,7 +80,7 @@ class _CowProductionFormState extends State<CowProductionForm> {
                                                      .showSnackBar(snackBar);
                                     Navigator.of(context).pop();
                                 } else {
-                                    // setState(() { hasFailedOnce = true; });
+                                    setState(() { hasFailedOnce = true; });
                                 }
                             }
                         );
@@ -105,6 +125,7 @@ class _CowProductionFormState extends State<CowProductionForm> {
                           label: const Text('Vaca'),
                           expandedInsets: EdgeInsets.zero,
                           menuHeight: 300,
+                          initialSelection: cows[0],
                       );
 
                     return Container(
