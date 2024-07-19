@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/artificial_insemination_form.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/view/coverage_form.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/central_persistence.dart';
@@ -70,12 +72,23 @@ class DairyCattleSubsystem {
                 }),
               ]
             ),
-            ListTile(title: const Text("Reprodução"), onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ReproductionView(controller: centralController))
-                );
-            }),
+            ExpansionTile(
+              title: const Text("Reprodução"),
+              children: [
+                ListTile(title: const Text('Cobertura'), onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CoverageForm(controller: centralController))
+                  );
+                }),
+                ListTile(title: const Text('Insiminação Artificial'), onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ArtificialInseminationForm(controller: centralController))
+                  );
+                }),
+              ]
+            ),
             ListTile(title: const Text("Tratamentos"), onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(

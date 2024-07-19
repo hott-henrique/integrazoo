@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:integrazoo/base.dart';
+
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
+
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/bull.dart';
 
@@ -38,16 +41,15 @@ class _CoverageFormState extends State<CoverageForm> {
                         );
                     }
 
-
                     final cows = snapshot.data[0]!;
                     final bulls = snapshot.data[1]!;
 
                     if (cows.isEmpty) {
-                        return const Center(child: Text('Nenhuma vaca encontrada no rebanho.'));
+                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhuma vaca encontrada no rebanho.')));
                     }
 
                     if (bulls.isEmpty) {
-                        return const Center(child: Text('Nenhuma touro encontrado no rebanho.'));
+                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhum boi encontrado no rebanho.')));
                     }
 
                     final cowSelector = DropdownMenu<Cow>(
