@@ -24,6 +24,7 @@ class _CowProductionFormState extends State<CowProductionForm> {
 
     CowMilkProduction production = CowMilkProduction(0, 0, DateTime.now(), DayPeriodIZ.morning, false, "");
     Cow selectedCow = Cow(0, "UNKNOWN");
+
     bool hasFailedOnce = false;
 
     @override
@@ -56,6 +57,9 @@ class _CowProductionFormState extends State<CowProductionForm> {
             onDateSubmitted: (value) {
               production.date = value;
             },
+            onDateSaved: (value) {
+              production.date = value;
+            },
         );
 
         final periodSection = DropdownMenu<DayPeriodIZ>(
@@ -68,7 +72,6 @@ class _CowProductionFormState extends State<CowProductionForm> {
 
         final saveSection = Row(children: [
             Expanded(child: ElevatedButton(onPressed: () {
-                    // Navigator.of(context).pop();
                     if (_formKey.currentState!.validate()) {
                         _formKey.currentState?.save();
                         widget.controller.cowProductionController.recordCowMilkProduction(selectedCow, production).then(
