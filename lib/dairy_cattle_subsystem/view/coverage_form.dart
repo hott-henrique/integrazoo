@@ -26,7 +26,8 @@ class _CoverageFormState extends State<CoverageForm> {
 
     @override
     Widget build(BuildContext context) {
-        return FutureBuilder<dynamic>(
+        return IntegrazooBaseApp(body:
+        FutureBuilder<dynamic>(
             future: fetchAnimals(),
             builder: (context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
@@ -45,11 +46,11 @@ class _CoverageFormState extends State<CoverageForm> {
                     final bulls = snapshot.data[1]!;
 
                     if (cows.isEmpty) {
-                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhuma vaca encontrada no rebanho.')));
+                      return const Center(child: Text('Nenhuma vaca encontrada no rebanho.'));
                     }
 
                     if (bulls.isEmpty) {
-                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhum boi encontrado no rebanho.')));
+                      return const Center(child: Text('Nenhum boi encontrado no rebanho.'));
                     }
 
                     final cowSelector = DropdownMenu<Cow>(
@@ -119,7 +120,8 @@ class _CoverageFormState extends State<CoverageForm> {
                 } else {
                     return const CircularProgressIndicator();
                 }
-            });
+            })
+        );
     }
 
     Future<dynamic> fetchAnimals() async {

@@ -23,30 +23,20 @@ class _TreatmentFormState extends State<TreatmentForm> {
 
     @override
     Widget build(BuildContext context) {
-        return FutureBuilder<dynamic>(
-            future: widget.controller.bovineController.readCows(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                    if (snapshot.data == null) {
-                        /* TODO: Log event. */
-                        return Container(
-                            padding: const EdgeInsets.all(8),
-                            child: const Text(
-                                'Algo falhou, favor contatar a equipe do INTEGRAZOO.',
-                                textAlign: TextAlign.center,
-                            )
-                        );
-                    }
 
+        return IntegrazooBaseApp(body: FutureBuilder<List<Cow>?>(
+            future: widget.controller.bovineController.readCows(),
+            builder: (context, AsyncSnapshot<List<Cow>?> snapshot) {
+                if (snapshot.hasData) {
                     final cows = snapshot.data!;
 
                     if (cows.isEmpty) {
-                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhum animal encontrado no rebanho.')));
+                      return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
                     }
 
                     final cowSelector = DropdownMenu<Cow>(
                         initialSelection: cows[0],
-                        dropdownMenuEntries: (cows as List<Cow>).map((cow) {
+                        dropdownMenuEntries: cows.map((cow) {
                             return DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}');
                         }).toList(),
                         onSelected: (value) {
@@ -133,6 +123,7 @@ class _TreatmentFormState extends State<TreatmentForm> {
                 } else {
                     return const CircularProgressIndicator();
                 }
-            });
+            })
+        );
     }
 }

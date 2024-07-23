@@ -23,31 +23,57 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
 
     @override
     Widget build(BuildContext context) {
-        return FutureBuilder<dynamic>(
+        final medicineField = TextFormField(
+            keyboardType: TextInputType.text,
+            decoration: const InputDecoration(hintText: 'Exemplo: Rilexine 500',
+                                              border: OutlineInputBorder(),
+                                              label: Text("Nome do Medicamento"),
+                                              floatingLabelBehavior: FloatingLabelBehavior.always),
+            onSaved: (value) {
+
+            },
+        );
+
+        final restingField = TextFormField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(hintText: 'Exemplo: 10',
+                                              border: OutlineInputBorder(),
+                                              label: Text("Número de Dias de Descanso"),
+                                              floatingLabelBehavior: FloatingLabelBehavior.always),
+        );
+
+        final dateSelector = InputDatePickerFormField(
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime.now(),
+            keyboardType: TextInputType.text,
+            fieldLabelText: "Data da Secagem",
+        );
+
+        final saveButton = Row(children: [
+            Expanded(
+                child: ElevatedButton(
+                    onPressed: () {
+                        Navigator.of(context).pop();
+                    },
+                    child: const Text('INICIAR TRATAMENTO')
+                )
+            )
+        ]);
+
+        return IntegrazooBaseApp(body: FutureBuilder<List<Cow>?>(
             future: widget.controller.bovineController.readCows(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            builder: (context, AsyncSnapshot<List<Cow>?> snapshot) {
                 if (snapshot.hasData) {
-                    if (snapshot.data == null) {
-                        /* TODO: Log event. */
-                        return Container(
-                            padding: const EdgeInsets.all(8),
-                            child: const Text(
-                                'Algo falhou, favor contatar a equipe do INTEGRAZOO.',
-                                textAlign: TextAlign.center,
-                            )
-                        );
-                    }
-
-
                     final cows = snapshot.data!;
 
                     if (cows.isEmpty) {
-                      return const IntegrazooBaseApp(body: Center(child: Text('Nenhum animal encontrado no rebanho.')));
+                      return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
                     }
 
                     final cowSelector = DropdownMenu<Cow>(
                         initialSelection: cows[0],
-                        dropdownMenuEntries: (cows as List<Cow>).map((cow) {
+                        dropdownMenuEntries: cows.map((cow) {
                             return DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}');
                         }).toList(),
                         onSelected: (value) {
@@ -62,40 +88,6 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                         )
                     );
 
-                    final medicineName = TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(hintText: 'Exemplo: Rilexine 500',
-                                                          border: OutlineInputBorder(),
-                                                          label: Text("Nome do Medicamento"),
-                                                          floatingLabelBehavior: FloatingLabelBehavior.always),
-                    );
-
-                    final restingTime = TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(hintText: 'Exemplo: 10',
-                                                          border: OutlineInputBorder(),
-                                                          label: Text("Número de Dias de Descanso"),
-                                                          floatingLabelBehavior: FloatingLabelBehavior.always),
-                    );
-
-                    final dateSelector = InputDatePickerFormField(
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                        keyboardType: TextInputType.text,
-                        fieldLabelText: "Data da Secagem",
-                    );
-
-                    final saveButton = Row(children: [
-                        Expanded(
-                            child: ElevatedButton(
-                                onPressed: () {
-                                    Navigator.of(context).pop();
-                                },
-                            child: const Text('INICIAR TRATAMENTO'))
-                        )
-                    ]);
-
                     Divider divider = const Divider(height: 8, color: Colors.transparent);
 
                     return Container(
@@ -103,9 +95,9 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                         child: Column(children: [
                             cowSelector,
                             divider,
-                            medicineName,
+                            medicineField,
                             divider,
-                            restingTime,
+                            restingField,
                             divider,
                             dateSelector,
                             saveButton
@@ -114,6 +106,8 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                 } else {
                     return const CircularProgressIndicator();
                 }
-            });
+            })
+        );
+
     }
 }
