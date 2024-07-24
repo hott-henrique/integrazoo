@@ -10,7 +10,7 @@ Integrazoo is an app associated with the INTEGRAZOO university extension program
 
 ## Implementation Steps
 - [x] Control and persistence layers for: DryTreatment. (TODO: Look for a better name for this class, to my knowledge it is referent a period in which the cow is not milked to ensure good conditions during calving.)
-- [x] Control and persistence layers for: Treatment.
+- [ ] Control and persistence layers for: Treatment.
 - [ ] UI for: Listing the current treatments.
 - [ ] UI for: Managing reproduction attempt (It will include turning and attempt into a successful reproduction).
 - [ ] Control and persistence layers for: ReproductionAttempt.
