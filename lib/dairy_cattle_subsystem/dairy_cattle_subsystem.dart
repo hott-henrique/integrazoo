@@ -10,10 +10,12 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/bovine_controller.dart
 import 'package:integrazoo/dairy_cattle_subsystem/control/cow_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/herd_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/dry_treatment_controller.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/cow_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/herd_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/dry_treatment_persistence.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/persistence/treatment_persistence.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/view/cow_production_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/herd_production_form.dart';
@@ -36,13 +38,15 @@ class DairyCattleSubsystem {
           BovinePersistence(),
           CowProductionPersistence(),
           HerdProductionPersistence(),
-          DryTreatmentPersistence()
+          DryTreatmentPersistence(),
+          TreatmentPersistence(),
         );
         centralController = CentralController(
           BovineController(centralPersistence),
           CowProductionController(centralPersistence),
           HerdProductionController(centralPersistence),
-          DryTreatmentController(centralPersistence)
+          DryTreatmentController(centralPersistence),
+          TreatmentController(centralPersistence)
         );
     }
 

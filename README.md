@@ -4,8 +4,8 @@ Integrazoo is an app associated with the INTEGRAZOO university extension program
 
 ## Features
 - [x] Record milk production, per cow or herd.
-- [ ] Keep track of reproduction and related treatments.
-- [ ] Track medication use in individuals.
+- [x] Keep track of reproduction.
+- [x] Track medication use in individuals.
 - [ ] Inform future management decisions based on past data.
 
 ## Implementation Steps

@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 
 
 class Treatment {
-    int id;
-    String reason;
-    String medicine;
-    DateTimeRange period;
-    Duration waitTime;
+  int id;
+  String reason;
+  String medicine;
+  DateTimeRange period;
+  Duration restingTime;
 
-    Treatment(this.id, this.reason, this.medicine, this.period, this.waitTime);
+  Treatment(this.id, this.reason, this.medicine, this.period, this.restingTime);
 
-    DateTime waitTimeOverDate() {
-        // TODO: Implement this function = period.end + waitTime;
-        return DateTime.now();
-    }
+  DateTime waitTimeOverDate() {
+    return period.end.add(restingTime);
+  }
 
-    DateTime tankReleaseDate() {
-        return waitTimeOverDate(); // TODO: Add one day to this date;
-    }
+  DateTime tankReleaseDate() {
+    return waitTimeOverDate().add(const Duration(days: 1));
+  }
 }

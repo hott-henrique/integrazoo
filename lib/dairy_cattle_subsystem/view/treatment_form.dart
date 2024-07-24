@@ -5,125 +5,163 @@ import 'package:integrazoo/base.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 
 
 class TreatmentForm extends StatefulWidget {
-    final CentralController controller;
+  final CentralController controller;
 
-    const TreatmentForm({ super.key, required this.controller });
+  const TreatmentForm({ super.key, required this.controller });
 
-    @override
-    State<TreatmentForm> createState() => _TreatmentFormState();
-
+  @override
+  State<TreatmentForm> createState() => _TreatmentFormState();
 }
 
 class _TreatmentFormState extends State<TreatmentForm> {
-    final _formKey = GlobalKey<FormState>();
-    Cow selectedCow = Cow(0, "UNKNOWN");
+  final _formKey = GlobalKey<FormState>();
+  Cow selectedCow = Cow(0, "UNKNOWN");
+  Treatment treatment = Treatment(0, "UNKNOWN", "UNKNOWN", DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1))), Duration.zero);
 
-    @override
-    Widget build(BuildContext context) {
+  Exception? exception;
 
-        return IntegrazooBaseApp(body: FutureBuilder<List<Cow>?>(
-            future: widget.controller.bovineController.readCows(),
-            builder: (context, AsyncSnapshot<List<Cow>?> snapshot) {
-                if (snapshot.hasData) {
-                    final cows = snapshot.data!;
-
-                    if (cows.isEmpty) {
-                      return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
-                    }
-
-                    final cowSelector = DropdownMenu<Cow>(
-                        initialSelection: cows[0],
-                        dropdownMenuEntries: cows.map((cow) {
-                            return DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}');
-                        }).toList(),
-                        onSelected: (value) {
-                            selectedCow = value ?? selectedCow;
-                        },
-                        label: const Text('Vaca'),
-                        expandedInsets: EdgeInsets.zero,
-                        menuHeight: 300,
-                        inputDecorationTheme: const InputDecorationTheme(
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            border: OutlineInputBorder()
-                        )
-                    );
-
-                    final reason = TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(hintText: 'Exemplo: Picada de cascavél.',
-                                                          border: OutlineInputBorder(),
-                                                          label: Text("Razão do Tratmento"),
-                                                          floatingLabelBehavior: FloatingLabelBehavior.always),
-                    );
-
-                    final medicineName = TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(hintText: 'Exemplo: Flunixin Meglumine',
-                                                          border: OutlineInputBorder(),
-                                                          label: Text("Nome do Medicamento"),
-                                                          floatingLabelBehavior: FloatingLabelBehavior.always),
-                    );
-
-                    final restingTime = TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(hintText: 'Exemplo: 5',
-                                                          border: OutlineInputBorder(),
-                                                          label: Text("Número de Dias de Descanso"),
-                                                          floatingLabelBehavior: FloatingLabelBehavior.always),
-                    );
-
-                    final startingDateSection = InputDatePickerFormField(
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                        keyboardType: TextInputType.text,
-                        fieldLabelText: "Data Inicial do Tratamento",
-                    );
-
-                    final endingDateSection = InputDatePickerFormField(
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                        keyboardType: TextInputType.text,
-                        fieldLabelText: "Data Final do Tratamento",
-                    );
-
-                    final saveButton = Row(children: [
-                        Expanded(
-                            child: ElevatedButton(
-                                onPressed: () {
-                                    Navigator.of(context).pop();
-                                },
-                            child: const Text('INICIAR TRATAMENTO'))
-                        )
-                    ]);
-
-                    Divider divider = const Divider(height: 8, color: Colors.transparent);
-
-                    return Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(children: [
-                            cowSelector,
-                            divider,
-                            reason,
-                            divider,
-                            medicineName,
-                            divider,
-                            startingDateSection,
-                            divider,
-                            endingDateSection,
-                            divider,
-                            restingTime,
-                            saveButton
-                        ])
-                    );
-                } else {
-                    return const CircularProgressIndicator();
-                }
-            })
-        );
+  @override
+  Widget build(BuildContext context) {
+    if (exception != null) {
+      return AlertDialog(
+        title: const Text('Falha ao registrar tratamento.'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[ const Text('Algo falhou ao registrar tratamento.'),
+                                const Text('Por favor, contate a equipe INTEGRAZOO.'),
+                                Text(exception.toString()) ],
+          ),
+        ),
+        actions: <Widget>[ TextButton(child: const Text('Fechar'), onPressed: () => setState(() => exception = null)) ],
+      );
     }
+
+    final reasonField = TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(hintText: 'Exemplo: Picada de cascavél.',
+                                        border: OutlineInputBorder(),
+                                        label: Text("Razão do Tratmento"),
+                                        floatingLabelBehavior: FloatingLabelBehavior.always),
+      onSaved: (value) => treatment.reason = value ?? treatment.reason,
+    );
+
+    final medicineNameField = TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(hintText: 'Exemplo: Flunixin Meglumine',
+                                        border: OutlineInputBorder(),
+                                        label: Text("Nome do Medicamento"),
+                                        floatingLabelBehavior: FloatingLabelBehavior.always),
+      onSaved: (value) => treatment.medicine = value ?? treatment.medicine,
+    );
+
+    final startingDateField = InputDatePickerFormField(
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      keyboardType: TextInputType.text,
+      fieldLabelText: "Data Inicial do Tratamento",
+      onDateSaved: (value) => treatment.period = DateTimeRange(start: value, end: treatment.period.end),
+    );
+
+    final endingDateField = InputDatePickerFormField(
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(DateTime.now().year + 10),
+      keyboardType: TextInputType.text,
+      fieldLabelText: "Data Final do Tratamento",
+      onDateSaved: (value) => treatment.period = DateTimeRange(start: treatment.period.start, end: value),
+    );
+
+    final restingDurationField = TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(hintText: 'Exemplo: 5',
+                                        border: OutlineInputBorder(),
+                                        label: Text("Número de Dias de Descanso"),
+                                        floatingLabelBehavior: FloatingLabelBehavior.always),
+      onSaved: (value) => treatment.restingTime = Duration(days: int.tryParse(value ?? "0") ?? treatment.restingTime.inDays),
+    );
+
+    final saveButton = Row(children: [
+      Expanded(
+        child: ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+
+              widget.controller.treatmentController.initiateTreatment(selectedCow, treatment).then(
+                (_) {
+                  SnackBar snackBar = const SnackBar(content: Text('TRATAMENTO REGISTRADO.'), showCloseIcon: true);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.of(context).pop();
+                },
+                onError: (e) => setState(() => exception = e)
+              );
+            }
+          },
+          child: const Text('INICIAR TRATAMENTO')
+        )
+      )
+    ]);
+
+    return IntegrazooBaseApp(
+      body: FutureBuilder<List<Cow>>(
+        future: widget.controller.bovineController.readCows(),
+        builder:
+          (context, AsyncSnapshot<List<Cow>> snapshot) {
+            if (snapshot.hasData) {
+              final cows = snapshot.data!;
+
+              if (cows.isEmpty) {
+                return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
+              }
+
+              selectedCow = cows[0];
+
+              final cowSelector = DropdownMenu<Cow>(
+                  initialSelection: cows[0],
+                  dropdownMenuEntries: cows.map((cow) => DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}')).toList(),
+                  onSelected: (value) => selectedCow = value ?? selectedCow,
+                  label: const Text('Vaca'),
+                  expandedInsets: EdgeInsets.zero,
+                  menuHeight: 300,
+                  inputDecorationTheme: const InputDecorationTheme(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                     border: OutlineInputBorder()
+                  )
+              );
+
+              Divider divider = const Divider(height: 8, color: Colors.transparent);
+
+              return Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    autovalidateMode: AutovalidateMode.always,
+                    key: _formKey,
+                    child: Column(children: [
+                      cowSelector,
+                      divider,
+                      reasonField,
+                      divider,
+                      medicineNameField,
+                      divider,
+                      startingDateField,
+                      divider,
+                      endingDateField,
+                      divider,
+                      restingDurationField,
+                      saveButton
+                    ])
+                  )
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          }
+      )
+    );
+  }
 }
