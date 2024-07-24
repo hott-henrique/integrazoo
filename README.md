@@ -4,13 +4,13 @@ Integrazoo is an app associated with the INTEGRAZOO university extension program
 
 ## Features
 - [x] Record milk production, per cow or herd.
-- [x] Keep track of reproduction.
+- [ ] Keep track of reproduction.
 - [x] Track medication use in individuals.
 - [ ] Inform future management decisions based on past data.
 
 ## Implementation Steps
 - [x] Control and persistence layers for: DryTreatment. (TODO: Look for a better name for this class, to my knowledge it is referent a period in which the cow is not milked to ensure good conditions during calving.)
-- [ ] Control and persistence layers for: Treatment.
+- [x] Control and persistence layers for: Treatment.
 - [ ] UI for: Listing the current treatments.
 - [ ] UI for: Managing reproduction attempt (It will include turning and attempt into a successful reproduction).
 - [ ] Control and persistence layers for: ReproductionAttempt.
