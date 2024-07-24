@@ -9,7 +9,7 @@ class DryTreatmentController {
 
     DryTreatmentController(this.persistence);
 
-    Future<bool> initiateTreatment(Cow cow, DryTreatment treatment) {
+    Future<void> initiateTreatment(Cow cow, DryTreatment treatment) {
         return persistence.dryTreatmentPersistence.initiateTreatment(cow, treatment);
     }
 }

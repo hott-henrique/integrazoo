@@ -25,24 +25,24 @@ class _CowProductionFormState extends State<CowProductionForm> {
     CowMilkProduction production = CowMilkProduction(0, 0, DateTime.now(), DayPeriodIZ.morning, false, "");
     Cow selectedCow = Cow(0, "UNKNOWN");
 
-    bool hasFailedOnce = false;
+    Exception? exception;
 
     @override
     Widget build(BuildContext context) {
-        if (hasFailedOnce) {
-            /* TODO: Log this fail. */
+        if (exception != null) {
             return AlertDialog(
-                title: const Text('Falha ao criar animal.'),
-                content: const SingleChildScrollView(
+                title: const Text('Falha ao registrar produção.'),
+                content: SingleChildScrollView(
                     child: ListBody(
-                        children: <Widget>[ Text('Algo falhou ao registrar produção do animal.'),
-                                            Text('Por favor, contate a equipe INTEGRAZOO.') ],
+                        children: <Widget>[ const Text('Algo falhou ao registrar produção do animal.'),
+                                            const Text('Por favor, contate a equipe INTEGRAZOO.'),
+                                            Text(exception.toString()) ],
                         ),
                     ),
                 actions: <Widget>[
                     TextButton(child: const Text('Fechar'),
                                onPressed: () {
-                                   setState(() { hasFailedOnce = false; });
+                                   setState(() { exception = null; });
                                }),
                 ],
             );
@@ -75,18 +75,17 @@ class _CowProductionFormState extends State<CowProductionForm> {
                     if (_formKey.currentState!.validate()) {
                         _formKey.currentState?.save();
                         widget.controller.cowProductionController.recordCowMilkProduction(selectedCow, production).then(
-                            (wasSuccessful) {
-                                if (wasSuccessful) {
-                                    SnackBar snackBar = const SnackBar(
-                                        content: Text('PRODUÇÃO REGISTRADA.'),
-                                        showCloseIcon: true
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                                     .showSnackBar(snackBar);
-                                    Navigator.of(context).pop();
-                                } else {
-                                    setState(() { hasFailedOnce = true; });
-                                }
+                            (_) {
+                                SnackBar snackBar = const SnackBar(
+                                    content: Text('PRODUÇÃO REGISTRADA.'),
+                                    showCloseIcon: true
+                                );
+                                ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                Navigator.of(context).pop();
+                            },
+                            onError: (e) {
+                                setState(() => exception = e);
                             }
                         );
                     }
@@ -98,21 +97,10 @@ class _CowProductionFormState extends State<CowProductionForm> {
         Divider divider = const Divider(color: Colors.transparent);
 
         return IntegrazooBaseApp(body: 
-          FutureBuilder<List<Cow>?>(
+          FutureBuilder<List<Cow>>(
               future: widget.controller.bovineController.readCows(),
-              builder: (context, AsyncSnapshot<List<Cow>?> snapshot) {
+              builder: (context, AsyncSnapshot<List<Cow>> snapshot) {
                   if (snapshot.hasData) {
-                      if (snapshot.data == null) {
-                          /* TODO: Log event. */
-                          return Container(
-                              padding: const EdgeInsets.all(8),
-                              child: const Text(
-                                  'Algo falhou, favor contatar a equipe do INTEGRAZOO.',
-                                  textAlign: TextAlign.center,
-                              )
-                          );
-                      }
-
                       final cows = snapshot.data!;
 
                       if (cows.isEmpty) {

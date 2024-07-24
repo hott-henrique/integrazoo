@@ -20,7 +20,7 @@ class BovinePersistence {
         """);
     }
 
-    Future<List<Bovine>?> readHerd() async {
+    Future<List<Bovine>> readHerd() async {
         Database db = DatabaseConnector.db!;
         try {
             final data = await db.query( 'Bovine');
@@ -35,12 +35,11 @@ class BovinePersistence {
                 }
             ).toList();
         } catch (e) {
-            /* TODO: Log Error. */
-            return Future(() => null);
+            return Future.error(e);
         }
     }
 
-    Future<List<Cow>?> readCows() async {
+    Future<List<Cow>> readCows() async {
         Database db = DatabaseConnector.db!;
         try {
             final data = await db.query(
@@ -59,12 +58,11 @@ class BovinePersistence {
                 }
             ).toList();
         } catch (e) {
-            /* TODO: Log Error. */
-            return Future(() => null);
+            return Future.error(e);
         }
     }
 
-    Future<List<Bull>?> readBulls() async {
+    Future<List<Bull>> readBulls() async {
         Database db = DatabaseConnector.db!;
         try {
             final data = await db.query(
@@ -83,13 +81,12 @@ class BovinePersistence {
                 }
             ).toList();
         } catch (e) {
-            /* TODO: Log Error. */
-            return Future(() => null);
+            return Future.error(e);
         }
     }
 
 
-    Future<bool> createBovine(Bovine bovine) async {
+    Future<void> createBovine(Bovine bovine) async {
         Database db = DatabaseConnector.db!;
 
         try {
@@ -97,10 +94,8 @@ class BovinePersistence {
                 'Bovine',
                 { 'name': bovine.name, 'sex': bovine.sex.index },
             );
-            return true;
         } catch (e) {
-            /* TODO: Log Error. */
-            return false;
+            return Future.error(e);
         }
     }
 }

@@ -24,24 +24,24 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
     Cow selectedCow = Cow(0, "UNKNOWN");
     DryTreatment dryTreatment = DryTreatment(0, "UNKNOWN", DateTime.now(), Duration.zero);
 
-    bool hasFailedOnce = false;
+    Exception? exception;
 
     @override
     Widget build(BuildContext context) {
-        if (hasFailedOnce) {
-            /* TODO: Log this fail. */
+        if (exception != null) {
             return AlertDialog(
-                title: const Text('Falha ao criar animal.'),
-                content: const SingleChildScrollView(
+                title: const Text('Falha ao registrar tratamento.'),
+                content: SingleChildScrollView(
                     child: ListBody(
-                        children: <Widget>[ Text('Algo falhou ao registrar produção do animal.'),
-                                            Text('Por favor, contate a equipe INTEGRAZOO.') ],
+                        children: <Widget>[ const Text('Algo falhou ao registrar tratamento.'),
+                                            const Text('Por favor, contate a equipe INTEGRAZOO.'),
+                                            Text(exception.toString()) ],
                         ),
                     ),
                 actions: <Widget>[
                     TextButton(child: const Text('Fechar'),
                                onPressed: () {
-                                   setState(() { hasFailedOnce = false; });
+                                   setState(() { exception = null; });
                                }),
                 ],
             );
@@ -88,19 +88,18 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                             _formKey.currentState?.save();
 
                             widget.controller.dryTreatmentController.initiateTreatment(selectedCow, dryTreatment).then(
-                                (wasSuccessful) {
-                                    if (wasSuccessful) {
-                                        SnackBar snackBar = const SnackBar(
-                                            content: Text('TRATAMENTO REGISTRADA.'),
-                                            showCloseIcon: true
-                                        );
-                                        ScaffoldMessenger.of(context)
-                                                        .showSnackBar(snackBar);
-                                        Navigator.of(context).pop();
-                                    } else {
-                                        setState(() { hasFailedOnce = true; });
-                                    }
-                                }
+                                (_) {
+                                  SnackBar snackBar = const SnackBar(
+                                      content: Text('TRATAMENTO REGISTRADO.'),
+                                      showCloseIcon: true
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                  Navigator.of(context).pop();
+                                },
+                              onError: (e) {
+                                  setState(() => exception = e);
+                              }
                             );
                         }
                     },

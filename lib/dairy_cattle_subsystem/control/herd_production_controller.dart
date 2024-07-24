@@ -8,7 +8,7 @@ class HerdProductionController {
 
     HerdProductionController(this.persistence);
 
-    Future<bool> recordHerdMilkProduction(HerdMilkProduction p) async {
+    Future<void> recordHerdMilkProduction(HerdMilkProduction p) async {
       return persistence.herdProductionPersistence.recordHerdMilkProduction(p);
     }
 

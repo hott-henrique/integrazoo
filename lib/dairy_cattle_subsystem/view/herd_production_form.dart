@@ -25,24 +25,24 @@ class _HerdProductionFormState extends State<HerdProductionForm> {
 
     HerdMilkProduction production = HerdMilkProduction(0, 0.0, DateTime.now(), DayPeriodIZ.morning, 0.0, "");
 
-    bool hasFailedOnce = false;
+    Exception? exception;
 
     @override
     Widget build(BuildContext context) {
-        if (hasFailedOnce) {
-            /* TODO: Log this fail. */
+        if (exception != null) {
             return AlertDialog(
-                title: const Text('Falha ao criar animal.'),
-                content: const SingleChildScrollView(
+                title: const Text('Falha ao registrar produção.'),
+                content: SingleChildScrollView(
                     child: ListBody(
-                        children: <Widget>[ Text('Algo falhou ao registrar produção do rebanho.'),
-                                            Text('Por favor, contate a equipe INTEGRAZOO.') ],
+                        children: <Widget>[ const Text('Algo falhou ao registrar produção do rebanho.'),
+                                            const Text('Por favor, contate a equipe INTEGRAZOO.'),
+                                            Text(exception.toString()) ],
                         ),
                     ),
                 actions: <Widget>[
                     TextButton(child: const Text('Fechar'),
                                onPressed: () {
-                                   setState(() { hasFailedOnce = false; });
+                                   setState(() { exception = null; });
                                }),
                 ],
             );
@@ -75,18 +75,17 @@ class _HerdProductionFormState extends State<HerdProductionForm> {
                     if (_formKey.currentState!.validate()) {
                         _formKey.currentState?.save();
                         widget.controller.herdProductionController.recordHerdMilkProduction(production).then(
-                            (wasSuccessful) {
-                                if (wasSuccessful) {
-                                    SnackBar snackBar = const SnackBar(
-                                        content: Text('PRODUÇÃO REGISTRADA.'),
-                                        showCloseIcon: true
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                                     .showSnackBar(snackBar);
-                                    Navigator.of(context).pop();
-                                } else {
-                                    setState(() { hasFailedOnce = true; });
-                                }
+                            (_) {
+                                SnackBar snackBar = const SnackBar(
+                                    content: Text('PRODUÇÃO REGISTRADA.'),
+                                    showCloseIcon: true
+                                );
+                                ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                Navigator.of(context).pop();
+                            },
+                            onError: (e) {
+                                setState(() => exception = e);
                             }
                         );
                     }

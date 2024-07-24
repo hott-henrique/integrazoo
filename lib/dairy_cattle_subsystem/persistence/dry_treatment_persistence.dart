@@ -26,10 +26,8 @@ class DryTreatmentPersistence {
         """);
     }
 
-    Future<bool> initiateTreatment(Cow c, DryTreatment t) async {
+    Future<void> initiateTreatment(Cow c, DryTreatment t) async {
         Database db = DatabaseConnector.db!;
-        inspect(c);
-        inspect(t);
         try {
             t.id = await db.insert(
                 'DryTreatment',
@@ -41,12 +39,8 @@ class DryTreatmentPersistence {
                     'ending_date': t.dryingDate.add(t.restingTime).millisecondsSinceEpoch
                 }
             );
-
-            return true;
         } catch (e) {
-            /* TODO: Log Error. */
-            print(e);
-            return Future(() => false);
+          return Future.error(e);
         }
     }
 }

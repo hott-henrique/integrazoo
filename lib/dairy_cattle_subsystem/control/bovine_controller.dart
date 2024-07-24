@@ -10,19 +10,19 @@ class BovineController {
 
     BovineController(this.persistence);
 
-    Future<List<Bovine>?> readHerd() async {
+    Future<List<Bovine>> readHerd() async {
         return persistence.bovinePersistence.readHerd();
     }
 
-    Future<List<Cow>?> readCows() {
+    Future<List<Cow>> readCows() {
         return persistence.bovinePersistence.readCows();
     }
 
-    Future<List<Bull>?> readBulls() {
+    Future<List<Bull>> readBulls() {
         return persistence.bovinePersistence.readBulls();
     }
 
-    Future<bool> createBovine(Bovine bovine) {
+    Future<void> createBovine(Bovine bovine) {
         return persistence.bovinePersistence.createBovine(bovine);
     }
 }

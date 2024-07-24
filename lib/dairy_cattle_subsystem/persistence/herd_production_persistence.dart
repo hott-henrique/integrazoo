@@ -23,9 +23,8 @@ class HerdProductionPersistence {
         """);
     }
 
-    Future<bool> recordHerdMilkProduction(HerdMilkProduction p) async {
+    Future<void> recordHerdMilkProduction(HerdMilkProduction p) async {
         Database db = DatabaseConnector.db!;
-        inspect(p);
         try {
             p.id = await db.insert(
                 'HerdProduction',
@@ -37,12 +36,8 @@ class HerdProductionPersistence {
                     'observation': p.observation
                 }
             );
-
-            return true;
         } catch (e) {
-            /* TODO: Log Error. */
-            print(e);
-            return Future(() => false);
+          return Future.error(e);
         }
     }
 }

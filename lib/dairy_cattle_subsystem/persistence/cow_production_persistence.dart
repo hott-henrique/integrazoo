@@ -25,7 +25,7 @@ class CowProductionPersistence {
         """);
     }
 
-    Future<bool> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
+    Future<void> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
         Database db = DatabaseConnector.db!;
 
         try {
@@ -40,12 +40,8 @@ class CowProductionPersistence {
                     'observation': m.observation
                 }
             );
-
-            return true;
         } catch (e) {
-            /* TODO: Log Error. */
-            print(e);
-            return Future(() => false);
+          return Future.error(e);
         }
     }
 }
