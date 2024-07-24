@@ -13,7 +13,7 @@ class CowProductionPersistence {
         db.execute("""
             CREATE TABLE IF NOT EXISTS CowProduction( 
                 id           INTEGER UNIQUE PRIMARY KEY,
-                cow_id       INTEGER INTEGER                        NOT NULL,
+                cow_id       INTEGER                                NOT NULL,
                 volume       REAL                                   NOT NULL,
                 date         INTEGER                                NOT NULL,
                 day_period   INTEGER CHECK(day_period IN (1, 2, 3)) NOT NULL,

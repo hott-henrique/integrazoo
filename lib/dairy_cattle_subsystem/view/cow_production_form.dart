@@ -122,7 +122,6 @@ class _CowProductionFormState extends State<CowProductionForm> {
                       selectedCow = cows[0];
 
                       final cow = DropdownMenu<Cow>(
-                          // initialSelection: cows[0],
                           dropdownMenuEntries: cows.map((cow) {
                               return DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}');
                           }).toList(),

@@ -6,4 +6,3 @@ class DryTreatment {
 
     DryTreatment(this.id, this.medicine, this.dryingDate, this.restingTime);
 }
-

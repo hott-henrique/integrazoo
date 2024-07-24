@@ -5,6 +5,8 @@ import 'package:integrazoo/base.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/dry_treatment.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 
 
 class DryTreatmentForm extends StatefulWidget {
@@ -20,9 +22,31 @@ class DryTreatmentForm extends StatefulWidget {
 class _DryTreatmentFormState extends State<DryTreatmentForm> {
     final _formKey = GlobalKey<FormState>();
     Cow selectedCow = Cow(0, "UNKNOWN");
+    DryTreatment dryTreatment = DryTreatment(0, "UNKNOWN", DateTime.now(), Duration.zero);
+
+    bool hasFailedOnce = false;
 
     @override
     Widget build(BuildContext context) {
+        if (hasFailedOnce) {
+            /* TODO: Log this fail. */
+            return AlertDialog(
+                title: const Text('Falha ao criar animal.'),
+                content: const SingleChildScrollView(
+                    child: ListBody(
+                        children: <Widget>[ Text('Algo falhou ao registrar produção do animal.'),
+                                            Text('Por favor, contate a equipe INTEGRAZOO.') ],
+                        ),
+                    ),
+                actions: <Widget>[
+                    TextButton(child: const Text('Fechar'),
+                               onPressed: () {
+                                   setState(() { hasFailedOnce = false; });
+                               }),
+                ],
+            );
+        }
+
         final medicineField = TextFormField(
             keyboardType: TextInputType.text,
             decoration: const InputDecoration(hintText: 'Exemplo: Rilexine 500',
@@ -30,7 +54,7 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                                               label: Text("Nome do Medicamento"),
                                               floatingLabelBehavior: FloatingLabelBehavior.always),
             onSaved: (value) {
-
+                dryTreatment.medicine = value ?? dryTreatment.medicine;
             },
         );
 
@@ -40,6 +64,9 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                                               border: OutlineInputBorder(),
                                               label: Text("Número de Dias de Descanso"),
                                               floatingLabelBehavior: FloatingLabelBehavior.always),
+            onSaved: (value) {
+                dryTreatment.restingTime = Duration(days: int.tryParse(value ?? "0") ?? dryTreatment.restingTime.inDays);
+            },
         );
 
         final dateSelector = InputDatePickerFormField(
@@ -48,13 +75,34 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
             lastDate: DateTime.now(),
             keyboardType: TextInputType.text,
             fieldLabelText: "Data da Secagem",
+            onDateSaved: (value) {
+                dryTreatment.dryingDate = value;
+            },
         );
 
         final saveButton = Row(children: [
             Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                        Navigator.of(context).pop();
+                        if (_formKey.currentState!.validate()) {
+                            _formKey.currentState?.save();
+
+                            widget.controller.dryTreatmentController.initiateTreatment(selectedCow, dryTreatment).then(
+                                (wasSuccessful) {
+                                    if (wasSuccessful) {
+                                        SnackBar snackBar = const SnackBar(
+                                            content: Text('TRATAMENTO REGISTRADA.'),
+                                            showCloseIcon: true
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                                        .showSnackBar(snackBar);
+                                        Navigator.of(context).pop();
+                                    } else {
+                                        setState(() { hasFailedOnce = true; });
+                                    }
+                                }
+                            );
+                        }
                     },
                     child: const Text('INICIAR TRATAMENTO')
                 )
@@ -71,8 +119,9 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                       return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
                     }
 
+                    selectedCow = cows[0];
+
                     final cowSelector = DropdownMenu<Cow>(
-                        initialSelection: cows[0],
                         dropdownMenuEntries: cows.map((cow) {
                             return DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}');
                         }).toList(),
@@ -85,23 +134,28 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
                         inputDecorationTheme: const InputDecorationTheme(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             border: OutlineInputBorder()
-                        )
+                        ),
+                        initialSelection: cows[0],
                     );
 
                     Divider divider = const Divider(height: 8, color: Colors.transparent);
 
                     return Container(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(children: [
-                            cowSelector,
-                            divider,
-                            medicineField,
-                            divider,
-                            restingField,
-                            divider,
-                            dateSelector,
-                            saveButton
-                        ])
+                        child: Form(
+                            autovalidateMode: AutovalidateMode.always,
+                            key: _formKey,
+                            child: Column(children: [
+                                cowSelector,
+                                divider,
+                                medicineField,
+                                divider,
+                                restingField,
+                                divider,
+                                dateSelector,
+                                saveButton
+                            ])
+                        )
                     );
                 } else {
                     return const CircularProgressIndicator();
