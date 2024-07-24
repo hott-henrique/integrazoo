@@ -6,7 +6,6 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dar
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/dry_treatment.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 
 
 class DryTreatmentForm extends StatefulWidget {
