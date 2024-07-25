@@ -40,7 +40,7 @@ class ReproductionPersistence {
           'kind': 1,
           'cow_id': attempt.cow.id,
           'bull_id': null,
-          'semen': attempt.semen,
+          'semen': attempt.semen.id,
           'date': attempt.date.millisecondsSinceEpoch,
           'diagnostic': null
         }

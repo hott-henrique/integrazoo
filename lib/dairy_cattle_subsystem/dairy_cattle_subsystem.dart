@@ -12,12 +12,14 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/herd_production_contro
 import 'package:integrazoo/dairy_cattle_subsystem/control/dry_treatment_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/reproduction_controller.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/control/semen_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/cow_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/herd_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/dry_treatment_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/treatment_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/reproduction_persistence.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/persistence/semen_persistence.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/view/cow_production_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/herd_production_form.dart';
@@ -43,6 +45,7 @@ class DairyCattleSubsystem {
       DryTreatmentPersistence(),
       TreatmentPersistence(),
       ReproductionPersistence(),
+      SemenPersistence(),
     );
 
     centralController = CentralController(
@@ -52,6 +55,7 @@ class DairyCattleSubsystem {
       DryTreatmentController(centralPersistence),
       TreatmentController(centralPersistence),
       ReproductionController(centralPersistence),
+      SemenController(centralPersistence),
     );
   }
 

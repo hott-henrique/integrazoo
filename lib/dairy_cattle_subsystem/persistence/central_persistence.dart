@@ -6,6 +6,7 @@ import 'package:integrazoo/dairy_cattle_subsystem/persistence/herd_production_pe
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/dry_treatment_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/treatment_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/reproduction_persistence.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/persistence/semen_persistence.dart';
 
 class CentralPersistence {
   BovinePersistence bovinePersistence;
@@ -14,13 +15,15 @@ class CentralPersistence {
   DryTreatmentPersistence dryTreatmentPersistence;
   TreatmentPersistence treatmentPersistence;
   ReproductionPersistence reproductionPersistence;
+  SemenPersistence semenPersistence;
 
   CentralPersistence(this.bovinePersistence,
                      this.cowProductionPersistence,
                      this.herdProductionPersistence,
                      this.dryTreatmentPersistence,
                      this.treatmentPersistence,
-                     this.reproductionPersistence);
+                     this.reproductionPersistence,
+                     this.semenPersistence);
 
   static onDatabaseCreate(Database db, int version) {
     BovinePersistence.onDatabaseCreate(db, version);
@@ -29,5 +32,6 @@ class CentralPersistence {
     DryTreatmentPersistence.onDatabaseCreate(db, version);
     TreatmentPersistence.onDatabaseCreate(db, version);
     ReproductionPersistence.onDatabaseCreate(db, version);
+    SemenPersistence.onDatabaseCreate(db, version);
   }
 }
