@@ -1,10 +1,10 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/main.dart';
 
-import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/bovine.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 
 
@@ -15,7 +15,7 @@ class TreatmentPersistence {
     db.execute("""
       CREATE TABLE IF NOT EXISTS Treatment(
         id            INTEGER UNIQUE PRIMARY KEY,
-        cow_id        INTEGER                                NOT NULL,
+        bovine_id     INTEGER                                NOT NULL,
         reason        TEXT                                   NOT NULL,
         medicine      TEXT                                   NOT NULL,
         starting_date INTEGER                                NOT NULL,
@@ -23,20 +23,19 @@ class TreatmentPersistence {
         resting_time  INTEGER                                NOT NULL,
         release_date  INTEGER                                NOT NULL,
 
-        FOREIGN KEY(cow_id) REFERENCES Bovine(id)
+        FOREIGN KEY(bovine_id) REFERENCES Bovine(id)
       );
     """);
   }
 
-  Future<void> initiateTreatment(Cow c, Treatment t) async {
+  Future<void> initiateTreatment(Bovine b, Treatment t) async {
     Database db = DatabaseConnector.db!;
-    inspect(c);
-    inspect(t);
+
     try {
       t.id = await db.insert(
         'Treatment',
         {
-          'cow_id': c.id,
+          'bovine_id': b.id,
           'reason': t.reason,
           'medicine': t.medicine,
           'starting_date': t.period.start.millisecondsSinceEpoch,
@@ -45,6 +44,37 @@ class TreatmentPersistence {
           'release_date': t.tankReleaseDate().millisecondsSinceEpoch
         }
       );
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<List<Treatment>> getTreatments(Bovine b) async {
+    Database db = DatabaseConnector.db!;
+
+    try {
+      final data = await db.query(
+        'Treatment',
+        where: 'bovine_id = ?',
+        whereArgs: [ b.id ]
+      );
+
+      if (data.isEmpty) {
+        return List.empty();
+      }
+
+      return data.map((e) {
+        return Treatment(
+          e['id'] as int,
+          e['reason'] as String,
+          e['medicine'] as String,
+          DateTimeRange(
+            start: DateTime.fromMillisecondsSinceEpoch(e['starting_date'] as int),
+            end: DateTime.fromMillisecondsSinceEpoch(e['ending_date'] as int),
+          ),
+          Duration(days: e['resting_time'] as int)
+        );
+      }).toList();
     } catch (e) {
       return Future.error(e);
     }

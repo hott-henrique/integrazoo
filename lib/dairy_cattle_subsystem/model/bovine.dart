@@ -28,7 +28,7 @@ class Bovine {
     Weaning? weaning;
     List<Treatment>? treatments;
 
-    Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning, this.treatments ]);
+    Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning ]);
 
     @override
     String toString() {
