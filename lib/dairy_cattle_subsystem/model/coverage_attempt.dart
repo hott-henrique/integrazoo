@@ -8,7 +8,7 @@ class CoverageAttempt extends ReproductionAttempt {
 
     CoverageAttempt._(super.id, super.cow, this.bull, super.date, super.kind, super.diagnostic);
 
-    factory CoverageAttempt(int id, Cow cow, Bull bull, DateTime date, bool diagnostic) {
+    factory CoverageAttempt(int id, Cow cow, Bull bull, DateTime date, ReproductionDiagonostic diagnostic) {
         return CoverageAttempt._(id, cow, bull, date, ReproductionKind.coverage, diagnostic);
     }
 }

@@ -1,5 +1,24 @@
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 
+enum ReproductionDiagonostic {
+  positive,
+  negative,
+  waiting;
+
+  @override
+  String toString() {
+      switch (this) {
+        case positive:
+          return 'Prenhes Confirmada';
+
+        case negative:
+          return 'Prenhes Falhou';
+
+        case waiting:
+          return 'Esperando Diagnóstico';
+      }
+  }
+}
 
 enum ReproductionKind {
     artificialInsemination,
@@ -22,7 +41,7 @@ class ReproductionAttempt {
     Cow cow;
     DateTime date;
     ReproductionKind kind;
-    bool diagnostic;
+    ReproductionDiagonostic diagnostic;
 
 
     ReproductionAttempt(this.id, this.cow, this.date, this.kind, this.diagnostic);

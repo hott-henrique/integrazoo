@@ -53,4 +53,24 @@ class SemenPersistence {
       return Future.error(e);
     }
   }
+
+  Future<Semen?> getSemenById(int id) async {
+    Database db = DatabaseConnector.db!;
+    try {
+      final data = await db.query(
+        'Semen',
+        where: 'id = ?',
+        whereArgs: [ id ],
+        columns: [ 'id', 'number', 'name' ]
+      );
+
+      if (data.isEmpty) {
+        return null;
+      }
+
+      return Semen(data[0]['id'] as int, data[0]['number'] as String, data[0]['name'] as String);
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 }

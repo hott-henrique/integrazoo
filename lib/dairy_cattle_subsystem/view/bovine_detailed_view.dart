@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/artificial_insemination_attempt.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/bovine.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
@@ -71,6 +72,22 @@ class _BovineDetailedView extends State<BovineDetailedView> {
 
           columnBody.add(Row(children: [ Expanded(child: Card.outlined(color: Colors.amber[100], child: Column(children: treatments))) ]));
 
+          if (snapshot.data!.containsKey("artificialInsemination")) {
+            final artificialInseminationAttempts = snapshot.data!['artificialInsemination'] as List<ArtificialInseminationAttempt>;
+
+            inspect(artificialInseminationAttempts);
+
+            final inseminations = artificialInseminationAttempts.map(
+              (t) => Row(children: [ Expanded(child: Center(child:
+                Text("${formatter.format(t.date)}: ${t.semen.bullsName} - ${t.diagnostic}")
+              )) ])
+            ).toList();
+
+            inseminations.insert(0, const Row(children: [ Expanded(child: Center(child: Text("Tentativas de Inseminação Artificial"))) ]));
+
+            columnBody.add(Row(children: [ Expanded(child: Card.outlined(color: Colors.amber[100], child: Column(children: inseminations))) ]));
+          }
+
           if (snapshot.data!.containsKey("milkProduction")) {
             final milkProduction = snapshot.data!['milkProduction'] as List<CowMilkProduction>;
 
@@ -79,8 +96,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
             final productionChart = BarChart(BarChartData(
               barGroups: milkProduction.asMap().entries.map(
                 (entry) {
-                  inspect(entry.key);
-                  inspect(entry.value.volume);
                   return BarChartGroupData(x: entry.key, barRods: [ BarChartRodData(toY: entry.value.volume) ]);
                 }
               ).toList(),
@@ -98,8 +113,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
                 ));
           }
 
-
-
           return IntegrazooBaseApp(body: ListView(children: columnBody));
         }
       );
@@ -113,7 +126,9 @@ class _BovineDetailedView extends State<BovineDetailedView> {
       }
 
       if (widget.cattle.sex == Sex.female) {
-        mappedData["milkProduction"] = await widget.controller.cowProductionController.getMilkProduction(Cow(widget.cattle.id, widget.cattle.name));
+        Cow c = Cow(widget.cattle.id, widget.cattle.name);
+        mappedData["milkProduction"] = await widget.controller.cowProductionController.getMilkProduction(c);
+        mappedData["artificialInsemination"] = await widget.controller.reproductionController.getAllArtificialInseminationAttemptFromCow(c); 
       }
 
       return Future.value(mappedData);

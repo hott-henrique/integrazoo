@@ -7,6 +7,7 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dar
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/bull.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/coverage_attempt.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dart';
 
 
 class CoverageForm extends StatefulWidget {
@@ -23,7 +24,7 @@ class CoverageForm extends StatefulWidget {
 class _CoverageFormState extends State<CoverageForm> {
     final _formKey = GlobalKey<FormState>();
 
-    CoverageAttempt coverageAttempt = CoverageAttempt(0, Cow(0, "UNKNOWN"), Bull(0, "UNKNOWN"), DateTime.now(), false);
+    CoverageAttempt coverageAttempt = CoverageAttempt(0, Cow(0, "UNKNOWN"), Bull(0, "UNKNOWN"), DateTime.now(), ReproductionDiagonostic.waiting);
 
     Exception? exception;
 

@@ -6,6 +6,7 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dar
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/artificial_insemination_attempt.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/semen.dart';
 
 
@@ -21,7 +22,7 @@ class ArtificialInseminationForm extends StatefulWidget {
 class _ArtificialInseminationFormState extends State<ArtificialInseminationForm> {
   final _formKey = GlobalKey<FormState>();
 
-  ArtificialInseminationAttempt artificialInseminationAttempt = ArtificialInseminationAttempt(0, Cow(0, "UNKNOWN"), Semen(0, "0", "UNKNOWN"), DateTime.now(), false);
+  ArtificialInseminationAttempt artificialInseminationAttempt = ArtificialInseminationAttempt(0, Cow(0, "UNKNOWN"), Semen(0, "0", "UNKNOWN"), DateTime.now(), ReproductionDiagonostic.waiting);
 
   Exception? exception;
 

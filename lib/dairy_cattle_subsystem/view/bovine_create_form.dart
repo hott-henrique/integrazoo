@@ -97,7 +97,7 @@ class CattleFormState extends State<BovineCreateForm> {
                                                         showCloseIcon: true
                                                   );
                                                   ScaffoldMessenger.of(context)
-                                                                    .showSnackBar(snackBar);
+                                                                   .showSnackBar(snackBar);
                                                   Navigator.of(context).pop();
                                             },
                                             onError: (e) {
