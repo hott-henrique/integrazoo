@@ -78,17 +78,21 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
               widget.controller.semenController.isSemenPresent(artificialInseminationAttempt.semen).then(
                 (semenIsPresent) {
                   if (!semenIsPresent) {
-                    widget.controller.semenController.insertSemen(artificialInseminationAttempt.semen);
+                    /* Have to use .then() after insert to sync the semen id with what was inserted. */
+                    widget.controller.semenController.insertSemen(artificialInseminationAttempt.semen).then(
+                      (value) {
+                        registerArtificialInseminationAttempt(context);
+                      }
+                    );
+                  } else {
+                    widget.controller.reproductionController.registerArtificialInseminationAttempt(artificialInseminationAttempt).then(
+                      (_) {
+                        registerArtificialInseminationAttempt(context);
+                      },
+                      onError: (e) => setState(() => exception = e)
+                    );
                   }
 
-                  widget.controller.reproductionController.registerArtificialInseminationAttempt(artificialInseminationAttempt).then(
-                    (_) {
-                      SnackBar snackBar = const SnackBar(content: Text('TENTATIVA DE REPRODUÇÃO REGISTRADA.'), showCloseIcon: true);
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      Navigator.of(context).pop();
-                    },
-                    onError: (e) => setState(() => exception = e)
-                  );
                 },
                 onError: (e) => setState(() => exception = e)
               );
@@ -148,6 +152,17 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
           }
         }
       )
+    );
+  }
+
+  void registerArtificialInseminationAttempt(BuildContext context) {
+    widget.controller.reproductionController.registerArtificialInseminationAttempt(artificialInseminationAttempt).then(
+      (_) {
+        SnackBar snackBar = const SnackBar(content: Text('TENTATIVA DE REPRODUÇÃO REGISTRADA.'), showCloseIcon: true);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.of(context).pop();
+      },
+      onError: (e) => setState(() => exception = e)
     );
   }
 }
