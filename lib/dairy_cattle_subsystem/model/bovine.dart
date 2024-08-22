@@ -26,9 +26,9 @@ class Bovine {
     Birth? birth;
     List<NewbornFeeding>? feeding;
     Weaning? weaning;
-    List<Treatment>? treatments;
+    List<Treatment> treatments;
 
-    Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning ]);
+    Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning ]) : treatments = List.empty(growable: true);
 
     @override
     String toString() {

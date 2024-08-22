@@ -5,14 +5,16 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/cow_milk_production.dart
 
 
 class CowProductionController {
-    CentralPersistence persistence;
+  CentralPersistence persistence;
 
-    CowProductionController(this.persistence);
+  CowProductionController(this.persistence);
 
-    Future<void> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
-        return persistence.cowProductionPersistence.recordCowMilkProduction(c, m);
-    }
+  Future<void> recordCowMilkProduction(Cow c, CowMilkProduction m) async {
+    return persistence.cowProductionPersistence.recordCowMilkProduction(c, m);
+  }
 
-
+  Future<List<CowMilkProduction>> getMilkProduction(Cow c) async {
+    return persistence.cowProductionPersistence.getMilkProduction(c);
+  }
 }
 

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:integrazoo/dairy_cattle_subsystem/model/day_period.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/main.dart';
@@ -40,6 +43,32 @@ class CowProductionPersistence {
                     'observation': m.observation
                 }
             );
+        } catch (e) {
+          return Future.error(e);
+        }
+    }
+
+    Future<List<CowMilkProduction>> getMilkProduction(Cow c) async {
+      Database db = DatabaseConnector.db!;
+
+        try {
+            final data = await db.query(
+              "CowProduction",
+              columns: [ "id", "date", "volume", "day_period", "discard", "observation" ],
+              where: 'cow_id = ?',
+              whereArgs: [ c.id ]
+            );
+
+            return data.map((e) {
+              return CowMilkProduction(
+                e['id'] as int,
+                e['volume'] as double,
+                DateTime.fromMillisecondsSinceEpoch(e['date'] as int),
+                DayPeriodIZ.values[e['day_period'] as int],
+                (e['discard'] as int) == 1 ? true : false,
+                e['observation'] as String
+              );
+            }).toList();
         } catch (e) {
           return Future.error(e);
         }

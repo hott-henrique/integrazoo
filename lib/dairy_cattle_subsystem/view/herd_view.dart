@@ -59,7 +59,7 @@ class _HerdView extends State<HerdView> {
                   );
                 }
 
-                return BovineListTile(cattle: cattle[index - 1]);
+                return BovineListTile(cattle: cattle[index - 1], controller: widget.controller,);
               },
               separatorBuilder: (BuildContext context, int index) => const Divider(),
             );
