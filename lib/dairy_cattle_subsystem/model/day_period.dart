@@ -1,19 +1,19 @@
 enum DayPeriodIZ {
-    morning,
-    afternon,
-    night;
+  morning,
+  afternon,
+  night;
 
-    @override
-    toString() {
-        switch (this) {
-            case morning:
-                return 'Manhã';
+  @override
+  toString() {
+    switch (this) {
+      case morning:
+        return 'Manhã';
 
-            case afternon:
-                return 'Tarde';
+      case afternon:
+        return 'Tarde';
 
-            case night:
-                return 'Noite';
-        }
+      case night:
+        return 'Noite';
     }
+  }
 }

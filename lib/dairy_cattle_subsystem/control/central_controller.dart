@@ -1,10 +1,11 @@
 import 'package:integrazoo/dairy_cattle_subsystem/control/bovine_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/cow_production_controller.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/control/herd_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/dry_treatment_controller.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/control/herd_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/reproduction_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/semen_controller.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.dart';
+
 
 class CentralController {
   BovineController bovineController;

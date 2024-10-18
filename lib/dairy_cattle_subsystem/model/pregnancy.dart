@@ -4,12 +4,12 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/successful_reproduction.
 
 
 class Pregnancy {
-    int id;
-    DateTime date;
-    DateTimeRange dryingForecast;
-    String? observation;
+  int id;
+  DateTime date;
+  DateTimeRange dryingForecast;
+  String? observation;
 
-    SuccessfulReproduction reproduction;
+  SuccessfulReproduction reproduction;
 
-    Pregnancy(this.id, this.date, this.dryingForecast, this.observation, this.reproduction);
+  Pregnancy(this.id, this.date, this.dryingForecast, this.observation, this.reproduction);
 }

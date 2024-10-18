@@ -1,28 +1,28 @@
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/central_persistence.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/bovine.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/bull.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 
 
 class BovineController {
-    CentralPersistence persistence;
+  CentralPersistence persistence;
 
-    BovineController(this.persistence);
+  BovineController(this.persistence);
 
-    Future<List<Bovine>> readHerd() async {
-        return persistence.bovinePersistence.readHerd();
-    }
+  Future<List<Bovine>> readHerd() async {
+    return persistence.bovinePersistence.readHerd();
+  }
 
-    Future<List<Cow>> readCows() {
-        return persistence.bovinePersistence.readCows();
-    }
+  Future<List<Cow>> readCows() {
+    return persistence.bovinePersistence.readCows();
+  }
 
-    Future<List<Bull>> readBulls() {
-        return persistence.bovinePersistence.readBulls();
-    }
+  Future<List<Bull>> readBulls() {
+    return persistence.bovinePersistence.readBulls();
+  }
 
-    Future<void> createBovine(Bovine bovine) {
-        return persistence.bovinePersistence.createBovine(bovine);
-    }
+  Future<void> createBovine(Bovine bovine) {
+    return persistence.bovinePersistence.createBovine(bovine);
+  }
 }

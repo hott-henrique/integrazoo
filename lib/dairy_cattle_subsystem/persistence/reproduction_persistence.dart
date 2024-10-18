@@ -1,5 +1,3 @@
-import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/model/semen.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/main.dart';
@@ -7,6 +5,8 @@ import 'package:integrazoo/main.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/artificial_insemination_attempt.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/coverage_attempt.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/semen.dart';
 
 
 class ReproductionPersistence {
@@ -73,7 +73,6 @@ class ReproductionPersistence {
     Database db = DatabaseConnector.db!;
 
     try {
-
       final data = await db.rawQuery("""
         SELECT R.id, R.kind, R.cow_id, R.bull_id, R.semen, R.date, R.diagnostic, S.id AS semen_id, S.number, S.name
         FROM ReproductionAttempt AS R JOIN Semen AS S ON R.semen = S.id

@@ -1,7 +1,7 @@
 class Semen {
-    int id;
-    String number;
-    String bullsName;
+  int id;
+  String number;
+  String bullsName;
 
-    Semen(this.id, this.number, this.bullsName);
+  Semen(this.id, this.number, this.bullsName);
 }

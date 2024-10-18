@@ -1,7 +1,7 @@
 class NewbornFeeding {
-    int id;
-    DateTime date;
-    double volume;
+  int id;
+  DateTime date;
+  double volume;
 
-    NewbornFeeding(this.id, this.date, this.volume);
+  NewbornFeeding(this.id, this.date, this.volume);
 }

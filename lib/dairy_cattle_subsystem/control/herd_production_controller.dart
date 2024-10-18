@@ -4,12 +4,11 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/herd_milk_production.dar
 
 
 class HerdProductionController {
-    CentralPersistence persistence;
+  CentralPersistence persistence;
 
-    HerdProductionController(this.persistence);
+  HerdProductionController(this.persistence);
 
-    Future<void> recordHerdMilkProduction(HerdMilkProduction p) async {
-      return persistence.herdProductionPersistence.recordHerdMilkProduction(p);
-    }
-
+  Future<void> recordHerdMilkProduction(HerdMilkProduction p) async {
+    return persistence.herdProductionPersistence.recordHerdMilkProduction(p);
+  }
 }

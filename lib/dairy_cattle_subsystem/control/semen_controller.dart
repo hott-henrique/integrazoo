@@ -9,7 +9,7 @@ class SemenController {
   SemenController(this.persistence);
 
   Future<void> insertSemen(Semen s) {
-      return persistence.semenPersistence.insertSemen(s);
+    return persistence.semenPersistence.insertSemen(s);
   }
 
   Future<bool> isSemenPresent(Semen s) {

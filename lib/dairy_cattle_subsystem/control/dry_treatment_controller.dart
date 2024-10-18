@@ -5,11 +5,11 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/dry_treatment.dart';
 
 
 class DryTreatmentController {
-    CentralPersistence persistence;
+  CentralPersistence persistence;
 
-    DryTreatmentController(this.persistence);
+  DryTreatmentController(this.persistence);
 
-    Future<void> initiateTreatment(Cow cow, DryTreatment treatment) {
-        return persistence.dryTreatmentPersistence.initiateTreatment(cow, treatment);
-    }
+  Future<void> initiateTreatment(Cow cow, DryTreatment treatment) {
+    return persistence.dryTreatmentPersistence.initiateTreatment(cow, treatment);
+  }
 }

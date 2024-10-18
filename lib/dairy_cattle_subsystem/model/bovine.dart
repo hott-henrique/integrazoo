@@ -4,34 +4,34 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/weaning.dart';
 
 enum Sex {
-    male, female;
+  male, female;
 
-    @override
-    String toString() {
-        switch (this) {
-            case Sex.male:
-                return "Macho";
+  @override
+  String toString() {
+    switch (this) {
+      case Sex.male:
+        return "Macho";
 
-            case Sex.female:
-                return "Fêmea";
-        }
+      case Sex.female:
+        return "Fêmea";
     }
+  }
 }
 
 class Bovine {
-    int id;
-    String name;
-    Sex sex;
+  int id;
+  String name;
+  Sex sex;
 
-    Birth? birth;
-    List<NewbornFeeding>? feeding;
-    Weaning? weaning;
-    List<Treatment> treatments;
+  Birth? birth;
+  List<NewbornFeeding>? feeding;
+  Weaning? weaning;
+  List<Treatment> treatments;
 
-    Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning ]) : treatments = List.empty(growable: true);
+  Bovine(this.id, this.name, this.sex, [ this.birth, this.feeding, this.weaning ]) : treatments = List.empty(growable: true);
 
-    @override
-    String toString() {
-        return '{ id: $id, name: $name, sex: $sex }';
-    }
+  @override
+  String toString() {
+      return '{ id: $id, name: $name, sex: $sex }';
+  }
 }

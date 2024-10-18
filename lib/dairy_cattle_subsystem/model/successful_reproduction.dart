@@ -4,12 +4,12 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dar
 
 
 class SuccessfulReproduction {
-    int id;
-    DateTimeRange birthForecast;
-    Duration milkWaitTime;
-    String? observation;
+  int id;
+  DateTimeRange birthForecast;
+  Duration milkWaitTime;
+  String? observation;
 
-    ReproductionAttempt attempt;
+  ReproductionAttempt attempt;
 
-    SuccessfulReproduction(this.id, this.birthForecast, this.milkWaitTime, this.observation, this.attempt);
+  SuccessfulReproduction(this.id, this.birthForecast, this.milkWaitTime, this.observation, this.attempt);
 }

@@ -110,57 +110,56 @@ class _TreatmentFormState extends State<TreatmentForm> {
     return IntegrazooBaseApp(
       body: FutureBuilder<List<Cow>>(
         future: widget.controller.bovineController.readCows(),
-        builder:
-          (context, AsyncSnapshot<List<Cow>> snapshot) {
-            if (snapshot.hasData) {
-              final cows = snapshot.data!;
+        builder: (context, AsyncSnapshot<List<Cow>> snapshot) {
+          if (snapshot.hasData) {
+            final cows = snapshot.data!;
 
-              if (cows.isEmpty) {
-                return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
-              }
-
-              selectedCow = cows[0];
-
-              final cowSelector = DropdownMenu<Cow>(
-                  initialSelection: cows[0],
-                  dropdownMenuEntries: cows.map((cow) => DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}')).toList(),
-                  onSelected: (value) => selectedCow = value ?? selectedCow,
-                  label: const Text('Vaca'),
-                  expandedInsets: EdgeInsets.zero,
-                  menuHeight: 300,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                     border: OutlineInputBorder()
-                  )
-              );
-
-              Divider divider = const Divider(height: 8, color: Colors.transparent);
-
-              return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    autovalidateMode: AutovalidateMode.always,
-                    key: _formKey,
-                    child: Column(children: [
-                      cowSelector,
-                      divider,
-                      reasonField,
-                      divider,
-                      medicineNameField,
-                      divider,
-                      startingDateField,
-                      divider,
-                      endingDateField,
-                      divider,
-                      restingDurationField,
-                      saveButton
-                    ])
-                  )
-              );
-            } else {
-              return const CircularProgressIndicator();
+            if (cows.isEmpty) {
+              return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
             }
+
+            selectedCow = cows[0];
+
+            final cowSelector = DropdownMenu<Cow>(
+              initialSelection: cows[0],
+              dropdownMenuEntries: cows.map((cow) => DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}')).toList(),
+              onSelected: (value) => selectedCow = value ?? selectedCow,
+              label: const Text('Vaca'),
+              expandedInsets: EdgeInsets.zero,
+              menuHeight: 300,
+              inputDecorationTheme: const InputDecorationTheme(
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                border: OutlineInputBorder()
+              )
+            );
+
+            Divider divider = const Divider(height: 8, color: Colors.transparent);
+
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                autovalidateMode: AutovalidateMode.always,
+                key: _formKey,
+                child: Column(children: [
+                  cowSelector,
+                  divider,
+                  reasonField,
+                  divider,
+                  medicineNameField,
+                  divider,
+                  startingDateField,
+                  divider,
+                  endingDateField,
+                  divider,
+                  restingDurationField,
+                  saveButton
+                ])
+              )
+            );
+          } else {
+            return const CircularProgressIndicator();
           }
+        }
       )
     );
   }
