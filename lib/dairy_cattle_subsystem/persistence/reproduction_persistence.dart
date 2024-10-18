@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:integrazoo/dairy_cattle_subsystem/model/reproduction_attempt.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/semen.dart';
 import 'package:sqflite/sqflite.dart';

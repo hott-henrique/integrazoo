@@ -35,7 +35,7 @@ class DatabaseConnector {
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    /* TODO: Comment this line when not testing database creation. */
+    /* INFO: Comment this line when not testing database creation. */
     await deleteDatabase(join(await getDatabasesPath(), 'integrazoo.sqlite'));
 
     await openDatabase(

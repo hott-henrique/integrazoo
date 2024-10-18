@@ -10,7 +10,6 @@ import 'package:integrazoo/dairy_cattle_subsystem/model/artificial_insemination_
 import 'package:integrazoo/dairy_cattle_subsystem/model/bovine.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow_milk_production.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/model/treatment.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
@@ -60,7 +59,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
           columnBody.add(Row(children: [ Expanded(child: Container(color: const Color.fromARGB(255, 114, 180, 117), child: Center(child: Text(widget.cattle.name, style: textStyle)))) ]));
 
           final DateFormat formatter = DateFormat('dd/MM/yy');
-          final DateFormat formatterS = DateFormat('dd/MM');
 
           final treatments = widget.cattle.treatments.map(
             (t) => Row(children: [ Expanded(child: Center(child:

@@ -1,12 +1,10 @@
-import 'dart:developer';
-
-import 'package:integrazoo/dairy_cattle_subsystem/model/day_period.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/main.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow_milk_production.dart';
+import 'package:integrazoo/dairy_cattle_subsystem/model/day_period.dart';
 
 
 class CowProductionPersistence {
