@@ -8,7 +8,6 @@ import 'package:integrazoo/dairy_cattle_subsystem/persistence/central_persistenc
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/bovine_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/cow_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/dry_treatment_persistence.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/persistence/herd_production_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/reproduction_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/semen_persistence.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/persistence/treatment_persistence.dart';
@@ -18,7 +17,6 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dar
 import 'package:integrazoo/dairy_cattle_subsystem/control/bovine_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/cow_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/dry_treatment_controller.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/control/herd_production_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/reproduction_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/semen_controller.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.dart';
@@ -26,7 +24,6 @@ import 'package:integrazoo/dairy_cattle_subsystem/control/treatment_controller.d
 import 'package:integrazoo/dairy_cattle_subsystem/view/artificial_insemination_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/coverage_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/cow_production_form.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/view/herd_production_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/dry_treatment_form.dart';
 import 'package:integrazoo/dairy_cattle_subsystem/view/treatment_form.dart';
 
@@ -43,7 +40,6 @@ class DairyCattleSubsystem {
     centralPersistence = CentralPersistence(
       BovinePersistence(),
       CowProductionPersistence(),
-      HerdProductionPersistence(),
       DryTreatmentPersistence(),
       TreatmentPersistence(),
       ReproductionPersistence(),
@@ -53,7 +49,6 @@ class DairyCattleSubsystem {
     centralController = CentralController(
       BovineController(centralPersistence),
       CowProductionController(centralPersistence),
-      HerdProductionController(centralPersistence),
       DryTreatmentController(centralPersistence),
       TreatmentController(centralPersistence),
       ReproductionController(centralPersistence),
@@ -82,12 +77,6 @@ class DairyCattleSubsystem {
             Navigator.of(context).pop();
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => CowProductionForm(controller: centralController))
-            );
-          }),
-          ListTile(title: const Text('Rebanho'), onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => HerdProductionForm(controller: centralController))
             );
           }),
         ]
