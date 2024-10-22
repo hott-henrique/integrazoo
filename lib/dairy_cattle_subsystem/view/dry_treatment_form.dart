@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:integrazoo/base.dart';
 
+import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
+
 import 'package:integrazoo/dairy_cattle_subsystem/control/central_controller.dart';
 
 import 'package:integrazoo/dairy_cattle_subsystem/model/cow.dart';
@@ -27,20 +29,9 @@ class _DryTreatmentFormState extends State<DryTreatmentForm> {
   @override
   Widget build(BuildContext context) {
     if (exception != null) {
-      return AlertDialog(
-        title: const Text('Falha ao registrar tratamento.'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[ const Text('Algo falhou ao registrar tratamento.'),
-                                const Text('Por favor, contate a equipe INTEGRAZOO.'),
-                                Text(exception.toString()) ]
-          )
-        ),
-        actions: <Widget>[
-          TextButton(child: const Text('Fechar'),
-                     onPressed: () => setState(() => exception = null))
-        ]
-      );
+      return UnexpectedErrorAlertDialog(title: 'Erro Inesperado',
+                                        message: 'Algo de inespearado aconteceu durante a execução do aplicativo.',
+                                        onPressed: () => setState(() => exception = null));
     }
 
     final medicineField = TextFormField(
