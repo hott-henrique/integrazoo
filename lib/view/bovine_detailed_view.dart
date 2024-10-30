@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'dart:math';
+
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:fl_chart/fl_chart.dart';
-
-import 'package:intl/intl.dart';
 
 import 'package:integrazoo/base.dart';
 
@@ -45,8 +43,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
                                         onPressed: () => setState(() => exception = null));
     }
 
-    const textStyle = TextStyle(fontSize: 30, color: Colors.white);
-
     return FutureBuilder(
       future: fetchData(),
       builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
@@ -55,15 +51,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
         }
 
         List<Widget> columnBody = List.empty(growable: true);
-
-        // columnBody.add(Row(children: [ Expanded(child: Container(color: const Color.fromARGB(255, 114, 180, 117), child: Center(child: Text(widget.cattle.name, style: textStyle)))) ]));
-
-        // final treatments = ListView.builder(
-        //   itemCount: min(widget.cattle.treatments.length, 3),
-        //   itemBuilder: (BuildContext context, int index) {
-        //     return TreatmentListTile(treatment: widget.cattle.treatments[index]);
-        //   }
-        // );
 
         final treatments = List<Widget>.generate(
           min(widget.cattle.treatments.length, 3),
@@ -75,8 +62,6 @@ class _BovineDetailedView extends State<BovineDetailedView> {
         if (snapshot.data!.containsKey("artificialInsemination")) {
           final artificialInseminationAttempts = snapshot.data!['artificialInsemination'] as List<ArtificialInseminationAttempt>;
 
-          inspect(artificialInseminationAttempts);
-
           final inseminations = List<Widget>.generate(
             min(widget.cattle.treatments.length, 3),
             (index) => ArtificialInseminationAttemptListTile(attempt: artificialInseminationAttempts[index])
@@ -85,28 +70,50 @@ class _BovineDetailedView extends State<BovineDetailedView> {
           columnBody = columnBody + inseminations;
         }
 
-        // if (snapshot.data!.containsKey("milkProduction")) {
-        //   final milkProduction = snapshot.data!['milkProduction'] as List<CowMilkProduction>;
+        if (snapshot.data!.containsKey("milkProduction")) {
+          final milkProduction = snapshot.data!['milkProduction'] as List<CowMilkProduction>;
 
-        //   inspect(milkProduction);
+          milkProduction.sort((x1, x2) => x1.date.millisecondsSinceEpoch.compareTo(x2.date.millisecondsSinceEpoch));
 
-        //   final productionChart = BarChart(BarChartData(
-        //     barGroups: milkProduction.asMap().entries.map(
-        //       (entry) => BarChartGroupData(x: entry.key, barRods: [ BarChartRodData(toY: entry.value.volume) ])
-        //     ).toList(),
-        //   ));
+          final maxProduction = milkProduction.reduce((x1, x2) => x1.volume >= x2.volume ? x1 : x2).volume;
 
-        //   columnBody.add(Container(
-        //     padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-        //     child: Card(child: AspectRatio(aspectRatio: 1.3,
-        //       child: Column(children: [
-        //         const Spacer(flex: 1),
-        //         const Expanded(flex: 2, child: Text("Produção", style: TextStyle(fontSize: 20))),
-        //         Expanded(flex: 12, child: Padding(padding: const EdgeInsets.all(8), child: productionChart))
-        //       ])
-        //     ))
-        //   ));
-        // }
+          final DateFormat formatter = DateFormat('dd/MM');
+
+          final productionChart = BarChart(BarChartData(
+            barGroups: milkProduction.asMap().entries.map(
+              (entry) => BarChartGroupData(
+                x: entry.key,
+                barRods: [ BarChartRodData(
+                  toY: entry.value.volume,
+                  color: entry.value.discard ? Colors.red : Colors.green,
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(2), topRight: Radius.circular(2))
+                ) ]
+              )
+            ).toList(),
+            titlesData: FlTitlesData(
+              topTitles: const AxisTitles(axisNameWidget: Text("Produção"), axisNameSize: 32),
+              bottomTitles: AxisTitles(sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) => Text(formatter.format(milkProduction[value.toInt()].date))
+              )),
+              rightTitles: AxisTitles(sideTitles: SideTitles(
+                reservedSize: 44,
+                showTitles: true,
+                getTitlesWidget: (value, meta) => const Text("")
+              ))
+            ),
+            maxY: (maxProduction / 10.0).ceil() * 10.0
+          ));
+
+          columnBody.add(Container(
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: Card(child: AspectRatio(aspectRatio: 1.3,
+              child: Column(children: [
+                Expanded(flex: 12, child: Padding(padding: const EdgeInsets.all(8), child: productionChart))
+              ])
+            ))
+          ));
+        }
 
         return IntegrazooBaseApp(body:Column(children: columnBody));
       }
