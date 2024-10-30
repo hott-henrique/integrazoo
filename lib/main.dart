@@ -6,33 +6,10 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart';
 
+import 'package:integrazoo/persistence/database_connector.dart';
+
 import 'package:integrazoo/base.dart';
-import 'package:integrazoo/dairy_cattle_subsystem/dairy_cattle_subsystem.dart';
 
-
-class DatabaseConnector {
-  static final DatabaseConnector _singleton = DatabaseConnector._internal();
-
-  static Database? db;
-  static bool _isDBOpened = false;
-
-  factory DatabaseConnector() {
-    return _singleton;
-  }
-
-  DatabaseConnector._internal();
-
-  static connectToDatabase(Database db) {
-    _isDBOpened = true;
-    DatabaseConnector.db = db;
-  }
-
-  static isConnected() => DatabaseConnector._isDBOpened;
-
-  static onCreate(Database db, int version) {
-    DairyCattleSubsystem.onDatabaseCreate(db, version);
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,10 +30,8 @@ void main() async {
     onOpen: (db) {
       DatabaseConnector.connectToDatabase(db);
     },
-    onUpgrade:(db, oldVersion, newVersion) {
-    },
-    onDowngrade:(db, oldVersion, newVersion) {
-    },
+    onUpgrade: (db, oldVersion, newVersion) {},
+    onDowngrade: (db, oldVersion, newVersion) {},
   );
 
   runApp(MaterialApp(
@@ -65,13 +40,13 @@ void main() async {
       GlobalWidgetsLocalizations.delegate
     ],
     home: const IntegrazooApp(),
-    supportedLocales: const [ Locale('pt', 'BR') ],
+    supportedLocales: const [Locale('pt', 'BR')],
     theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green))
   ));
 }
 
 class IntegrazooApp extends StatefulWidget {
-  const IntegrazooApp({ super.key });
+  const IntegrazooApp({super.key});
 
   @override
   State<StatefulWidget> createState() => _IntegrazooAppState();
