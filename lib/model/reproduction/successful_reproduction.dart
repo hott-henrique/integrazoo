@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:integrazoo/model/reproduction_attempt.dart';
+import 'package:integrazoo/model/reproduction/attempt.dart';
 
 
 class SuccessfulReproduction {

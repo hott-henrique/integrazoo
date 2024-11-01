@@ -1,8 +1,8 @@
 import 'package:integrazoo/persistence/treatment_persistence.dart';
 
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/treatment.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/health/treatment.dart';
 
 
 class TreatmentController {

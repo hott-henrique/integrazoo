@@ -2,11 +2,11 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/persistence/database_connector.dart';
 
-import 'package:integrazoo/model/artificial_insemination_attempt.dart';
-import 'package:integrazoo/model/coverage_attempt.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/reproduction_attempt.dart';
-import 'package:integrazoo/model/semen.dart';
+import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
+import 'package:integrazoo/model/reproduction/coverage_attempt.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/reproduction/attempt.dart';
+import 'package:integrazoo/model/reproduction/semen.dart';
 
 
 class ReproductionPersistence {

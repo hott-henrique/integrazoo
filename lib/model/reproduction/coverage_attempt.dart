@@ -1,6 +1,6 @@
-import 'package:integrazoo/model/bull.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/reproduction_attempt.dart';
+import 'package:integrazoo/model/bovine/bull.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/reproduction/attempt.dart';
 
 
 class CoverageAttempt extends ReproductionAttempt {

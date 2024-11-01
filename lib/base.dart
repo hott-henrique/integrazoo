@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:integrazoo/about_page.dart';
 
-import 'package:integrazoo/view/artificial_insemination_form.dart';
-import 'package:integrazoo/view/coverage_form.dart';
-import 'package:integrazoo/view/cow_production_form.dart';
-import 'package:integrazoo/view/dry_treatment_form.dart';
-import 'package:integrazoo/view/treatment_form.dart';
+import 'package:integrazoo/view/forms/artificial_insemination.dart';
+import 'package:integrazoo/view/forms/coverage.dart';
+import 'package:integrazoo/view/forms/production.dart';
+import 'package:integrazoo/view/forms/dry_treatment.dart';
+import 'package:integrazoo/view/forms/treatment.dart';
 
-import 'package:integrazoo/view/analysis_view.dart';
-import 'package:integrazoo/view/health_calendar_view.dart';
-import 'package:integrazoo/view/herd_view.dart';
+import 'package:integrazoo/view/screens/analysis.dart';
+import 'package:integrazoo/view/screens/health_calendar.dart';
+import 'package:integrazoo/view/screens/herd.dart';
 
 
 class IntegrazooBaseApp extends StatefulWidget {
@@ -63,7 +63,7 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
         title: const Text("Análise"),
         onTap: () {
           Navigator.of(context).pop();
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AnalysisView()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AnalysisScreen()));
         }
       ),
       ListTile(
@@ -71,7 +71,7 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
         onTap: () {
           Navigator.of(context).pop();
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const HerdView()));
+              builder: (context) => const HerdScreen()));
         }
       ),
       ExpansionTile(title: const Text("Produção"), children: [
@@ -119,7 +119,7 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
         title: const Text("Calendário Sanitário"),
         onTap: () {
           Navigator.of(context).pop();
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarView()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarScreen()));
         }
       ),
       ListTile(

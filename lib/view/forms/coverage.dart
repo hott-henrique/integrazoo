@@ -7,10 +7,10 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
 
-import 'package:integrazoo/model/bull.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/coverage_attempt.dart';
-import 'package:integrazoo/model/reproduction_attempt.dart';
+import 'package:integrazoo/model/bovine/bull.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/reproduction/coverage_attempt.dart';
+import 'package:integrazoo/model/reproduction/attempt.dart';
 
 
 class CoverageForm extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:integrazoo/persistence/bovine_persistence.dart';
 
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/bull.dart';
-import 'package:integrazoo/model/cow.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/bovine/bull.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
 
 
 class BovineController {

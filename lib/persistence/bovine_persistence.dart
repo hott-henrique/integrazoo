@@ -2,9 +2,9 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/persistence/database_connector.dart';
 
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/bull.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/bovine/bull.dart';
 
 
 class BovinePersistence {

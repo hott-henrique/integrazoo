@@ -7,8 +7,8 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/treatment_controller.dart';
 
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/treatment.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/health/treatment.dart';
 
 class TreatmentForm extends StatefulWidget {
   const TreatmentForm({super.key});

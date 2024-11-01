@@ -40,8 +40,8 @@ class Indicator extends StatelessWidget {
   }
 }
 
-class AnalysisView extends StatelessWidget {
-  const AnalysisView({ super.key });
+class AnalysisScreen extends StatelessWidget {
+  const AnalysisScreen({ super.key });
 
   @override
   Widget build(BuildContext context) {

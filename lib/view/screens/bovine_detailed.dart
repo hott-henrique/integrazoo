@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer';
 
 import 'package:intl/intl.dart';
 
@@ -14,25 +15,25 @@ import 'package:integrazoo/control/cow_production_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
 import 'package:integrazoo/control/treatment_controller.dart';
 
-import 'package:integrazoo/view/treatment_list_tile.dart';
-import 'package:integrazoo/view/artificial_insemination_attempt_list_tile.dart';
+import 'package:integrazoo/view/components/bovine/treatment_list_tile.dart';
+import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
 
-import 'package:integrazoo/model/artificial_insemination_attempt.dart';
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/cow_milk_production.dart';
+import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/bovine/milk_production.dart';
 
 
-class BovineDetailedView extends StatefulWidget {
+class BovineDetailedScreen extends StatefulWidget {
   final Bovine cattle;
 
-  const BovineDetailedView({ super.key, required this.cattle });
+  const BovineDetailedScreen({ super.key, required this.cattle });
 
   @override
-  State<BovineDetailedView> createState() => _BovineDetailedView();
+  State<BovineDetailedScreen> createState() => _BovineDetailedScreen();
 }
 
-class _BovineDetailedView extends State<BovineDetailedView> {
+class _BovineDetailedScreen extends State<BovineDetailedScreen> {
   Exception? exception;
 
   @override
@@ -70,9 +71,9 @@ class _BovineDetailedView extends State<BovineDetailedView> {
           columnBody = columnBody + inseminations;
         }
 
-        if (snapshot.data!.containsKey("milkProduction")) {
-          final milkProduction = snapshot.data!['milkProduction'] as List<CowMilkProduction>;
+        final milkProduction = (snapshot.data!["milkProduction"] ?? List<CowMilkProduction>.empty()) as List<CowMilkProduction>;
 
+        if (milkProduction.isNotEmpty) {
           milkProduction.sort((x1, x2) => x1.date.millisecondsSinceEpoch.compareTo(x2.date.millisecondsSinceEpoch));
 
           final maxProduction = milkProduction.reduce((x1, x2) => x1.volume >= x2.volume ? x1 : x2).volume;

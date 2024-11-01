@@ -1,6 +1,6 @@
 import 'package:integrazoo/persistence/semen_persistence.dart';
 
-import 'package:integrazoo/model/semen.dart';
+import 'package:integrazoo/model/reproduction/semen.dart';
 
 
 class SemenController {

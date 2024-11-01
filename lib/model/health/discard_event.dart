@@ -1,4 +1,4 @@
-import 'package:integrazoo/model/bovine.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
 
 
 enum DiscardReason {

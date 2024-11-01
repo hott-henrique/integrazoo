@@ -7,10 +7,8 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/cow_production_controller.dart';
 
-import 'package:integrazoo/model/day_period.dart';
-
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/cow_milk_production.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/bovine/milk_production.dart';
 
 
 class CowProductionForm extends StatefulWidget {

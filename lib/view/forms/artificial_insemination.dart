@@ -8,10 +8,10 @@ import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
 import 'package:integrazoo/control/semen_controller.dart';
 
-import 'package:integrazoo/model/artificial_insemination_attempt.dart';
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/reproduction_attempt.dart';
-import 'package:integrazoo/model/semen.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/reproduction/attempt.dart';
+import 'package:integrazoo/model/reproduction/semen.dart';
+import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
 
 
 class ArtificialInseminationForm extends StatefulWidget {

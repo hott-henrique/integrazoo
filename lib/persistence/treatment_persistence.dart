@@ -4,8 +4,8 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/persistence/database_connector.dart';
 
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/treatment.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/health/treatment.dart';
 
 
 class TreatmentPersistence {

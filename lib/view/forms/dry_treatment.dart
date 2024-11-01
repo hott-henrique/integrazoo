@@ -7,8 +7,8 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/dry_treatment_controller.dart';
 
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/dry_treatment.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/health/dry_treatment.dart';
 
 
 class DryTreatmentForm extends StatefulWidget {

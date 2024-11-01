@@ -1,4 +1,4 @@
-import 'package:integrazoo/model/health_calendar_event.dart';
+import 'package:integrazoo/model/health/health_calendar_event.dart';
 
 
 class HealthCalendar {

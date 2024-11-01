@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:integrazoo/model/successful_reproduction.dart';
+import 'package:integrazoo/model/reproduction/successful_reproduction.dart';
 
 
 class Pregnancy {

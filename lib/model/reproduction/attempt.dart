@@ -1,4 +1,4 @@
-import 'package:integrazoo/model/cow.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
 
 
 enum ReproductionDiagonostic {

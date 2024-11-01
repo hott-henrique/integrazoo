@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:integrazoo/persistence/database_connector.dart';
 
-import 'package:integrazoo/model/semen.dart';
+import 'package:integrazoo/model/reproduction/semen.dart';
 
 
 class SemenPersistence {

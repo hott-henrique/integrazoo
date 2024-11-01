@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:integrazoo/model/artificial_insemination_attempt.dart';
+import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
 
 class ArtificialInseminationAttemptListTile extends StatelessWidget {
   final ArtificialInseminationAttempt attempt;

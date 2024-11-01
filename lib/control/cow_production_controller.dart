@@ -1,7 +1,7 @@
 import 'package:integrazoo/persistence/cow_production_persistence.dart';
 
-import 'package:integrazoo/model/cow.dart';
-import 'package:integrazoo/model/cow_milk_production.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/model/bovine/milk_production.dart';
 
 
 class CowProductionController {

@@ -1,8 +1,8 @@
 import 'package:integrazoo/persistence/reproduction_persistence.dart';
 
-import 'package:integrazoo/model/artificial_insemination_attempt.dart';
-import 'package:integrazoo/model/coverage_attempt.dart';
-import 'package:integrazoo/model/cow.dart';
+import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
+import 'package:integrazoo/model/reproduction/coverage_attempt.dart';
+import 'package:integrazoo/model/bovine/cow.dart';
 
 
 class ReproductionController {

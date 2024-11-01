@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:integrazoo/base.dart';
 
-import 'package:integrazoo/model/health_calendar.dart';
+import 'package:integrazoo/model/health/health_calendar.dart';
 
 
 extension StringExtension on String {
@@ -13,8 +13,8 @@ extension StringExtension on String {
   }
 }
 
-class HealthCalendarView extends StatelessWidget {
-  const HealthCalendarView({ super.key });
+class HealthCalendarScreen extends StatelessWidget {
+  const HealthCalendarScreen({ super.key });
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,11 @@
-import 'package:integrazoo/model/birth.dart';
-import 'package:integrazoo/model/bovine.dart';
-import 'package:integrazoo/model/cow_milk_production.dart';
-import 'package:integrazoo/model/dry_treatment.dart';
-import 'package:integrazoo/model/newborn_feeding.dart';
-import 'package:integrazoo/model/weaning.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/bovine/milk_production.dart';
+import 'package:integrazoo/model/bovine/newborn_feeding.dart';
+import 'package:integrazoo/model/bovine/weaning.dart';
+
+import 'package:integrazoo/model/reproduction/birth.dart';
+
+import 'package:integrazoo/model/health/dry_treatment.dart';
 
 
 class Cow extends Bovine {

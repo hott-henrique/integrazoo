@@ -6,7 +6,7 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 
-import 'package:integrazoo/model/bovine.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
 
 
 class BovineCreateForm extends StatefulWidget {

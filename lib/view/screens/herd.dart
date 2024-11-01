@@ -6,20 +6,20 @@ import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 
-import 'package:integrazoo/view/bovine_create_form.dart';
-import 'package:integrazoo/view/bovine_list_tile.dart';
+import 'package:integrazoo/view/forms/bovine_create.dart';
+import 'package:integrazoo/view/components/bovine/bovine_list_tile.dart';
 
-import 'package:integrazoo/model/bovine.dart';
+import 'package:integrazoo/model/bovine/bovine.dart';
 
 
-class HerdView extends StatefulWidget {
-  const HerdView({ super.key });
+class HerdScreen extends StatefulWidget {
+  const HerdScreen({ super.key });
 
   @override
-  State<HerdView> createState() => _HerdView();
+  State<HerdScreen> createState() => _HerdScreen();
 }
 
-class _HerdView extends State<HerdView> {
+class _HerdScreen extends State<HerdScreen> {
   Exception? exception;
 
   @override

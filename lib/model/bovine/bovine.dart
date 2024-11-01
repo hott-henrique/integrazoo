@@ -1,7 +1,7 @@
-import 'package:integrazoo/model/birth.dart';
-import 'package:integrazoo/model/newborn_feeding.dart';
-import 'package:integrazoo/model/treatment.dart';
-import 'package:integrazoo/model/weaning.dart';
+import 'package:integrazoo/model/reproduction/birth.dart';
+import 'package:integrazoo/model/bovine/newborn_feeding.dart';
+import 'package:integrazoo/model/health/treatment.dart';
+import 'package:integrazoo/model/bovine/weaning.dart';
 
 enum Sex {
   male, female;
