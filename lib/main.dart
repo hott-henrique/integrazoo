@@ -57,6 +57,6 @@ class _IntegrazooAppState extends State<IntegrazooApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const IntegrazooBaseApp(body: Center(child: Text('Hello World!')));
+    return const IntegrazooBaseApp(body: Center(child: Text('Testing branch protection!')));
   }
 }
