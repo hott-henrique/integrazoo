@@ -23,7 +23,7 @@ class BovinePersistence {
   static Future<List<Bovine>> readHerd() async {
     Database db = DatabaseConnector.db!;
     try {
-      final data = await db.query( 'Bovine');
+      final data = await db.query('Bovine');
 
       return data.map(
         (e) {

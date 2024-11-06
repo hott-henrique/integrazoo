@@ -10,13 +10,13 @@ enum ReproductionDiagonostic {
   String toString() {
     switch (this) {
       case positive:
-        return 'Prenhes Confirmada';
+        return 'Positivo';
 
       case negative:
-        return 'Prenhes Falhou';
+        return 'Negativo';
 
       case waiting:
-        return 'Esperando Diagnóstico';
+        return 'Esperando';
     }
   }
 }

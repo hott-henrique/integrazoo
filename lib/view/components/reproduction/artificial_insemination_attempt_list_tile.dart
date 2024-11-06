@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
 
+import 'package:integrazoo/view/screens/artificial_insemination.dart';
+
 class ArtificialInseminationAttemptListTile extends StatelessWidget {
   final ArtificialInseminationAttempt attempt;
 
@@ -17,7 +19,9 @@ class ArtificialInseminationAttemptListTile extends StatelessWidget {
       title: const Text('Inseminação Artificial'),
       subtitle: Text('Vaca: ${attempt.cow.name} - Semen: ${attempt.semen.bullsName} (${attempt.semen.id})'),
       trailing: Text(formatter.format(attempt.date)),
-      onTap: () {}
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(attempt: attempt)));
+      }
     );
   }
 }
