@@ -33,7 +33,7 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('INTEGRAZOO', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+          title: Text('INTEGRAZOO', style: Theme.of(context).textTheme.titleLarge),
           backgroundColor: Colors.green,
           centerTitle: true,
           leading: leadingBuilder,

@@ -41,7 +41,43 @@ void main() async {
     ],
     home: const IntegrazooApp(),
     supportedLocales: const [Locale('pt', 'BR')],
-    theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green))
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+      textTheme: const TextTheme(
+        displayMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w800
+        ),
+        titleSmall: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w800
+        ),
+        titleMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w800
+        ),
+        titleLarge: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w800
+        ),
+        bodySmall: TextStyle(
+          color: Colors.black,
+          fontSize: 16
+        ),
+        bodyMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 18
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 20
+        )
+      ),
+    )
   ));
 }
 
