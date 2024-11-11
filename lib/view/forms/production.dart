@@ -57,7 +57,8 @@ class _CowProductionFormState extends State<CowProductionForm> {
     );
 
     final saveSection = Row(children: [
-      Expanded(child: ElevatedButton(
+      Expanded(child: TextButton(
+        style: Theme.of(context).textButtonTheme.style,
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
@@ -67,8 +68,10 @@ class _CowProductionFormState extends State<CowProductionForm> {
                   content: Text('PRODUÇÃO REGISTRADA.'),
                   showCloseIcon: true
                 );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.of(context).pop();
+                }
               },
               onError: (e) {
                 setState(() => exception = e);

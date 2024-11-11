@@ -44,39 +44,19 @@ void main() async {
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       textTheme: const TextTheme(
-        displayMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w800
-        ),
-        titleSmall: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w800
-        ),
-        titleMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.w800
-        ),
         titleLarge: TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w800
         ),
-        bodySmall: TextStyle(
-          color: Colors.black,
-          fontSize: 16
-        ),
-        bodyMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 18
-        ),
-        bodyLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 20
-        )
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(Colors.green[400]),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          shape: WidgetStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))))
+        )
+      )
     )
   ));
 }

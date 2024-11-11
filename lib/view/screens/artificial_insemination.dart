@@ -9,6 +9,7 @@ import 'package:integrazoo/base.dart';
 import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
+import 'package:integrazoo/view/forms/reproduction/pregnancy.dart';
 
 
 class ArtificialInseminationDetailedScreen extends StatefulWidget {
@@ -126,7 +127,9 @@ class _ArtificialInseminationDetailedScreen extends State<ArtificialInsemination
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)))
             ),
             child: const Text("Registrar Diagnóstico Positivo"),
-            onPressed: () => {}
+            onPressed: () => {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PregnancyForm(attempt: widget.attempt)))
+            }
           )) ])
         );
 

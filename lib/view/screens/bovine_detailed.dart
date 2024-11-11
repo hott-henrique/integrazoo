@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer';
 
 import 'package:intl/intl.dart';
 
@@ -62,8 +63,10 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         if (snapshot.data!.containsKey("artificialInsemination")) {
           final artificialInseminationAttempts = snapshot.data!['artificialInsemination'] as List<ArtificialInseminationAttempt>;
 
+          inspect(artificialInseminationAttempts);
+
           final inseminations = List<Widget>.generate(
-            min(widget.cattle.treatments.length, 3),
+            min(artificialInseminationAttempts.length, 3),
             (index) => ArtificialInseminationAttemptListTile(attempt: artificialInseminationAttempts[index])
           );
 
