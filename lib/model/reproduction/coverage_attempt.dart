@@ -11,4 +11,9 @@ class CoverageAttempt extends ReproductionAttempt {
   factory CoverageAttempt(int id, Cow cow, Bull bull, DateTime date, ReproductionDiagonostic diagnostic) {
     return CoverageAttempt._(id, cow, bull, date, ReproductionKind.coverage, diagnostic);
   }
+
+  @override
+  toString() {
+    return bull.name;
+  }
 }

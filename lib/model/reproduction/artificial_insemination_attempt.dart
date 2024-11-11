@@ -11,4 +11,9 @@ class ArtificialInseminationAttempt extends ReproductionAttempt {
   factory ArtificialInseminationAttempt(int id, Cow cow, Semen semen, DateTime date, ReproductionDiagonostic diagnostic) {
     return ArtificialInseminationAttempt._(id, cow, semen, date, ReproductionKind.artificialInsemination, diagnostic);
   }
+
+  @override
+  toString() {
+    return "${semen.number} - ${semen.bullsName}";
+  }
 }
