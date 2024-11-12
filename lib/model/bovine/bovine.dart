@@ -32,6 +32,6 @@ class Bovine {
 
   @override
   String toString() {
-      return '{ id: $id, name: $name, sex: $sex }';
+    return '{ id: $id, name: $name, sex: $sex }';
   }
 }

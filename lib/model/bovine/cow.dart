@@ -14,6 +14,10 @@ class Cow extends Bovine {
 
   Cow._(super.id, super.name, super.sex, [ super.birth, super.feeding, super.weaning, this.production, this.dryTreatments ]);
 
+  factory Cow.empty() {
+    return Cow(0, "");
+  }
+
   factory Cow(int id,
               String name,
               [ Birth? birth,
