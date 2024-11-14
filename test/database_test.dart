@@ -1,7 +1,10 @@
+import 'package:flutter/src/material/date.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/model/health/treatment.dart';
 import 'package:integrazoo/persistence/bovine_persistence.dart';
 import 'package:integrazoo/persistence/database_connector.dart';
+import 'package:integrazoo/persistence/treatment_persistence.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
@@ -13,6 +16,7 @@ void main() async {
   setUp(() async {
     database = await openDatabase(inMemoryDatabasePath);
     await BovinePersistence.onDatabaseCreate(database, 1);
+    await TreatmentPersistence.onDatabaseCreate(database, 1);
     DatabaseConnector.db = database;
   });
 
@@ -50,6 +54,40 @@ void main() async {
       expect(updatedBovineFromDb.sex, Sex.female);
 
       expect(result.length, 2);
+    });
+  });
+
+  group('treatment_persistence tests', () {
+    test('Update a treatment', () async {
+      final bovine = Bovine(1, 'Bovine 1', Sex.male);
+      
+      final treatment = Treatment(
+        bovine.id,
+        'Treatment test',
+        'Medicine test',
+        DateTimeRange(start: DateTime(2024), end: DateTime(2025)),
+        const Duration(days: 2)
+      );
+      await TreatmentPersistence.initiateTreatment(bovine, treatment);
+
+      final updatedTreatment = Treatment(
+        bovine.id,
+        'Updated Treatment test',
+        'Updated Medicine test',
+        DateTimeRange(start: DateTime(2025), end: DateTime(2026)),
+        const Duration(days: 6)
+      );
+      await TreatmentPersistence.updateTreatment(bovine.id, updatedTreatment);
+
+      final result = await TreatmentPersistence.getTreatments(bovine);
+      
+      final updatedTreatmentFromDb = result.firstWhere((bovine) => bovine.id == 1);
+      expect(updatedTreatmentFromDb.reason, 'Updated Treatment test');
+      expect(updatedTreatmentFromDb.medicine, 'Updated Medicine test');
+      expect(updatedTreatmentFromDb.period, DateTimeRange(start: DateTime(2025), end: DateTime(2026)));
+      expect(updatedTreatmentFromDb.restingTime, const Duration(days: 6));
+
+      expect(result.length, 1);
     });
   });
 }
