@@ -97,4 +97,20 @@ class BovinePersistence {
       return Future.error(e);
     }
   }
+
+  static Future<void> updateBovine(Bovine bovine) async {
+    Database db = DatabaseConnector.db!;
+
+    try {
+      await db.update(
+        'Bovine',
+        { 'name': bovine.name, 'sex': bovine.sex.index },
+        where: 'id = ?',
+        whereArgs: [bovine.id],
+      );
+
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 }

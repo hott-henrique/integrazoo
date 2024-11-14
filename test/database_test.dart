@@ -21,9 +21,9 @@ void main() async {
   });
 
   test('Create bovines and list all of them', () async {
-      await BovinePersistence.createBovine(Bovine(0, 'Bovine 0', Sex.male));
-      await BovinePersistence.createBovine(Bovine(1, 'Bovine 1', Sex.female));
-      await BovinePersistence.createBovine(Bovine(2, 'Bovine 2', Sex.male));
+      await BovinePersistence.createBovine(Bovine(1, 'Bovine 1', Sex.male));
+      await BovinePersistence.createBovine(Bovine(2, 'Bovine 2', Sex.female));
+      await BovinePersistence.createBovine(Bovine(3, 'Bovine 3', Sex.male));
   
       final result = await BovinePersistence.readHerd();
       print('===== Bovines in Database =====');
@@ -32,5 +32,21 @@ void main() async {
       }
 
       expect(result.length, 3);
-    });
+  });
+
+  test('Update a bovine', () async {
+    await BovinePersistence.createBovine(Bovine(1, 'Bovine 1', Sex.male));
+    await BovinePersistence.createBovine(Bovine(2, 'Bovine 2', Sex.female));
+
+    Bovine updatedBovine = Bovine(1, 'Updated Bovine 1', Sex.female);
+    await BovinePersistence.updateBovine(updatedBovine);
+
+    final result = await BovinePersistence.readHerd();
+
+    final updatedBovineFromDb = result.firstWhere((bovine) => bovine.id == 1);
+    expect(updatedBovineFromDb.name, 'Updated Bovine 1');
+    expect(updatedBovineFromDb.sex, Sex.female);
+
+    expect(result.length, 2);
+  });
 }
