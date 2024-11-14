@@ -39,7 +39,8 @@ void main() async {
     await BovinePersistence.createBovine(Bovine(2, 'Bovine 2', Sex.female));
 
     Bovine updatedBovine = Bovine(1, 'Updated Bovine 1', Sex.female);
-    await BovinePersistence.updateBovine(updatedBovine);
+    final id = updatedBovine.id;
+    await BovinePersistence.updateBovine(id, updatedBovine);
 
     final result = await BovinePersistence.readHerd();
 
