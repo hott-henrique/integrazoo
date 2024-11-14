@@ -98,7 +98,7 @@ class BovinePersistence {
     }
   }
 
-  static Future<void> updateBovine(Bovine bovine) async {
+  static Future<void> updateBovine(int id, Bovine bovine) async {
     Database db = DatabaseConnector.db!;
 
     try {
@@ -106,7 +106,7 @@ class BovinePersistence {
         'Bovine',
         { 'name': bovine.name, 'sex': bovine.sex.index },
         where: 'id = ?',
-        whereArgs: [bovine.id],
+        whereArgs: [id],
       );
 
     } catch (e) {
