@@ -79,4 +79,25 @@ class TreatmentPersistence {
       return Future.error(e);
     }
   }
+
+  static Future<void> updateTreatment(int id, Treatment t) async {
+    Database db = DatabaseConnector.db!;
+
+    try {
+      await db.update(
+        'Treatment',
+        { 
+          'reason': t.reason,
+          'medicine': t.medicine,
+          'starting_date': t.period.start.millisecondsSinceEpoch,
+          'ending_date': t.period.end.millisecondsSinceEpoch,
+          'resting_time': t.restingTime.inDays
+        },
+        where: 'id = ?',
+        whereArgs: [ id ],
+      );
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 }
