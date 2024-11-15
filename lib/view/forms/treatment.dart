@@ -19,15 +19,14 @@ class TreatmentForm extends StatefulWidget {
 
 class _TreatmentFormState extends State<TreatmentForm> {
   final _formKey = GlobalKey<FormState>();
-  Cow selectedCow = Cow(0, "UNKNOWN");
+  Cow selectedCow = Cow.empty();
   Treatment treatment = Treatment(
-      0,
-      "UNKNOWN",
-      "UNKNOWN",
-      DateTimeRange(
-          start: DateTime.now(),
-          end: DateTime.now().add(const Duration(days: 1))),
-      Duration.zero);
+    0,
+    "UNKNOWN",
+    "UNKNOWN",
+    DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1))),
+    Duration.zero
+  );
 
   Exception? exception;
 
@@ -35,29 +34,31 @@ class _TreatmentFormState extends State<TreatmentForm> {
   Widget build(BuildContext context) {
     if (exception != null) {
       return UnexpectedErrorAlertDialog(
-          title: 'Erro Inesperado',
-          message:
-              'Algo de inespearado aconteceu durante a execução do aplicativo.',
-          onPressed: () => setState(() => exception = null));
+        title: 'Erro Inesperado',
+        message: 'Algo de inespearado aconteceu durante a execução do aplicativo.',
+        onPressed: () => setState(() => exception = null)
+      );
     }
 
     final reasonField = TextFormField(
       keyboardType: TextInputType.text,
       decoration: const InputDecoration(
-          hintText: 'Exemplo: Picada de cascavél.',
-          border: OutlineInputBorder(),
-          label: Text("Razão do Tratmento"),
-          floatingLabelBehavior: FloatingLabelBehavior.always),
+        hintText: 'Exemplo: Picada de cascavél.',
+        border: OutlineInputBorder(),
+        label: Text("Razão do Tratmento"),
+        floatingLabelBehavior: FloatingLabelBehavior.always
+      ),
       onSaved: (value) => treatment.reason = value ?? treatment.reason,
     );
 
     final medicineNameField = TextFormField(
       keyboardType: TextInputType.text,
       decoration: const InputDecoration(
-          hintText: 'Exemplo: Flunixin Meglumine',
-          border: OutlineInputBorder(),
-          label: Text("Nome do Medicamento"),
-          floatingLabelBehavior: FloatingLabelBehavior.always),
+        hintText: 'Exemplo: Flunixin Meglumine',
+        border: OutlineInputBorder(),
+        label: Text("Nome do Medicamento"),
+        floatingLabelBehavior: FloatingLabelBehavior.always
+      ),
       onSaved: (value) => treatment.medicine = value ?? treatment.medicine,
     );
 
@@ -67,8 +68,7 @@ class _TreatmentFormState extends State<TreatmentForm> {
       lastDate: DateTime.now(),
       keyboardType: TextInputType.text,
       fieldLabelText: "Data Inicial do Tratamento",
-      onDateSaved: (value) => treatment.period =
-          DateTimeRange(start: value, end: treatment.period.end),
+      onDateSaved: (value) => treatment.period = DateTimeRange(start: value, end: treatment.period.end),
     );
 
     final endingDateField = InputDatePickerFormField(
@@ -77,94 +77,96 @@ class _TreatmentFormState extends State<TreatmentForm> {
       lastDate: DateTime(DateTime.now().year + 10),
       keyboardType: TextInputType.text,
       fieldLabelText: "Data Final do Tratamento",
-      onDateSaved: (value) => treatment.period =
-          DateTimeRange(start: treatment.period.start, end: value),
+      onDateSaved: (value) => treatment.period = DateTimeRange(start: treatment.period.start, end: value),
     );
 
     final restingDurationField = TextFormField(
       keyboardType: TextInputType.number,
       decoration: const InputDecoration(
-          hintText: 'Exemplo: 5',
-          border: OutlineInputBorder(),
-          label: Text("Número de Dias de Descanso"),
-          floatingLabelBehavior: FloatingLabelBehavior.always),
-      onSaved: (value) => treatment.restingTime = Duration(
-          days: int.tryParse(value ?? "0") ?? treatment.restingTime.inDays),
+        hintText: 'Exemplo: 5',
+        border: OutlineInputBorder(),
+        label: Text("Número de Dias de Descanso"),
+        floatingLabelBehavior: FloatingLabelBehavior.always
+      ),
+      onSaved: (value) => treatment.restingTime = Duration(days: int.tryParse(value ?? "0") ?? treatment.restingTime.inDays),
     );
 
-    final saveButton = Row(children: [
-      Expanded(
-          child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
+    final saveButton = Row(children: [ Expanded(
+      child: TextButton(
+        style: Theme.of(context).textButtonTheme.style,
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
 
-                  TreatmentController.initiateTreatment(selectedCow, treatment)
-                      .then((_) {
-                    SnackBar snackBar = const SnackBar(
-                        content: Text('TRATAMENTO REGISTRADO.'),
-                        showCloseIcon: true);
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    Navigator.of(context).pop();
-                  }, onError: (e) => setState(() => exception = e));
+            TreatmentController.initiateTreatment(selectedCow, treatment).then(
+              (_) {
+                SnackBar snackBar = const SnackBar(content: Text('TRATAMENTO REGISTRADO.'), showCloseIcon: true);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.of(context).pop();
                 }
               },
-              child: const Text('INICIAR TRATAMENTO')))
-    ]);
+              onError: (e) => setState(() => exception = e)
+            );
+          }
+        },
+        child: const Text('INICIAR TRATAMENTO')
+      )
+    ) ]);
 
     return IntegrazooBaseApp(
-        body: FutureBuilder<List<Cow>>(
-            future: BovineController.readCows(),
-            builder: (context, AsyncSnapshot<List<Cow>> snapshot) {
-              if (snapshot.hasData) {
-                final cows = snapshot.data!;
+      body: FutureBuilder<List<Cow>>(
+        future: BovineController.readCows(),
+        builder: (context, AsyncSnapshot<List<Cow>> snapshot) {
+          if (!snapshot.hasData) {
+            return const CircularProgressIndicator();
+          }
+          final cows = snapshot.data!;
 
-                if (cows.isEmpty) {
-                  return const Center(
-                      child: Text('Nenhum animal encontrado no rebanho.'));
-                }
+          if (cows.isEmpty) {
+            return const Center(child: Text('Nenhum animal encontrado no rebanho.'));
+          }
 
-                selectedCow = cows[0];
+          selectedCow = cows[0];
 
-                final cowSelector = DropdownMenu<Cow>(
-                    initialSelection: cows[0],
-                    dropdownMenuEntries: cows
-                        .map((cow) => DropdownMenuEntry(
-                            value: cow, label: '[${cow.id}] ${cow.name}'))
-                        .toList(),
-                    onSelected: (value) => selectedCow = value ?? selectedCow,
-                    label: const Text('Vaca'),
-                    expandedInsets: EdgeInsets.zero,
-                    menuHeight: 300,
-                    inputDecorationTheme: const InputDecorationTheme(
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        border: OutlineInputBorder()));
+          final cowSelector = DropdownMenu<Cow>(
+            initialSelection: cows[0],
+            dropdownMenuEntries: cows.map((cow) => DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}')).toList(),
+            onSelected: (value) => selectedCow = value ?? selectedCow,
+            label: const Text('Vaca'),
+            expandedInsets: EdgeInsets.zero,
+            menuHeight: 300,
+            inputDecorationTheme: const InputDecorationTheme(
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder()
+            )
+          );
 
-                Divider divider =
-                    const Divider(height: 8, color: Colors.transparent);
+          Divider divider = const Divider(height: 8, color: Colors.transparent);
 
-                return Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                        autovalidateMode: AutovalidateMode.always,
-                        key: _formKey,
-                        child: Column(children: [
-                          cowSelector,
-                          divider,
-                          reasonField,
-                          divider,
-                          medicineNameField,
-                          divider,
-                          startingDateField,
-                          divider,
-                          endingDateField,
-                          divider,
-                          restingDurationField,
-                          saveButton
-                        ])));
-              } else {
-                return const CircularProgressIndicator();
-              }
-            }));
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              autovalidateMode: AutovalidateMode.always,
+              key: _formKey,
+              child: Column(children: [
+                cowSelector,
+                divider,
+                reasonField,
+                divider,
+                medicineNameField,
+                divider,
+                startingDateField,
+                divider,
+                endingDateField,
+                divider,
+                restingDurationField,
+                saveButton
+              ])
+            )
+          );
+        }
+      )
+    );
   }
 }
