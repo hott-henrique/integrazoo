@@ -1,7 +1,7 @@
 import 'package:integrazoo/globals.dart';
 
 import 'package:integrazoo/database/database.dart';
-import 'package:integrazoo/model/bovine/cow.dart';
+
 
 class BovinePersistence {
   BovinePersistence();
