@@ -74,15 +74,13 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
               builder: (context) => const HerdScreen()));
         }
       ),
-      // ExpansionTile(title: const Text("Produção"), children: [
-      //   ListTile(
-      //     title: const Text('Vaca'),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CowProductionForm()));
-      //     }
-      //   ),
-      // ]),
+      ListTile(
+        title: const Text("Produção"),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProductionForm()));
+        }
+      ),
       // ExpansionTile(title: const Text("Reprodução"), children: [
       //   ListTile(
       //     title: const Text('Cobertura'),

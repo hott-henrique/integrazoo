@@ -1120,6 +1120,14 @@ class $ProductionsTable extends Productions
       check: () => ComparableExpr(volume).isBiggerThan(const Constant(0.0)),
       type: DriftSqlType.double,
       requiredDuringInsert: true);
+  static const VerificationMeta _dayPeriodMeta =
+      const VerificationMeta('dayPeriod');
+  @override
+  late final GeneratedColumnWithTypeConverter<ProductionDayPeriod, int>
+      dayPeriod = GeneratedColumn<int>('day_period', aliasedName, false,
+              type: DriftSqlType.int, requiredDuringInsert: true)
+          .withConverter<ProductionDayPeriod>(
+              $ProductionsTable.$converterdayPeriod);
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -1150,7 +1158,7 @@ class $ProductionsTable extends Productions
           GeneratedColumn.constraintIsAlways('REFERENCES bovines (id)'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, volume, date, discard, observation, cow];
+      [id, volume, dayPeriod, date, discard, observation, cow];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1170,6 +1178,7 @@ class $ProductionsTable extends Productions
     } else if (isInserting) {
       context.missing(_volumeMeta);
     }
+    context.handle(_dayPeriodMeta, const VerificationResult.success());
     if (data.containsKey('date')) {
       context.handle(
           _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
@@ -1207,6 +1216,9 @@ class $ProductionsTable extends Productions
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       volume: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}volume'])!,
+      dayPeriod: $ProductionsTable.$converterdayPeriod.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}day_period'])!),
       date: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
       discard: attachedDatabase.typeMapping
@@ -1222,11 +1234,15 @@ class $ProductionsTable extends Productions
   $ProductionsTable createAlias(String alias) {
     return $ProductionsTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<ProductionDayPeriod, int, int> $converterdayPeriod =
+      const EnumIndexConverter<ProductionDayPeriod>(ProductionDayPeriod.values);
 }
 
 class Production extends DataClass implements Insertable<Production> {
   final int id;
   final double volume;
+  final ProductionDayPeriod dayPeriod;
   final DateTime date;
   final bool discard;
   final String? observation;
@@ -1234,6 +1250,7 @@ class Production extends DataClass implements Insertable<Production> {
   const Production(
       {required this.id,
       required this.volume,
+      required this.dayPeriod,
       required this.date,
       required this.discard,
       this.observation,
@@ -1243,6 +1260,10 @@ class Production extends DataClass implements Insertable<Production> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['volume'] = Variable<double>(volume);
+    {
+      map['day_period'] =
+          Variable<int>($ProductionsTable.$converterdayPeriod.toSql(dayPeriod));
+    }
     map['date'] = Variable<DateTime>(date);
     map['discard'] = Variable<bool>(discard);
     if (!nullToAbsent || observation != null) {
@@ -1256,6 +1277,7 @@ class Production extends DataClass implements Insertable<Production> {
     return ProductionsCompanion(
       id: Value(id),
       volume: Value(volume),
+      dayPeriod: Value(dayPeriod),
       date: Value(date),
       discard: Value(discard),
       observation: observation == null && nullToAbsent
@@ -1271,6 +1293,8 @@ class Production extends DataClass implements Insertable<Production> {
     return Production(
       id: serializer.fromJson<int>(json['id']),
       volume: serializer.fromJson<double>(json['volume']),
+      dayPeriod: $ProductionsTable.$converterdayPeriod
+          .fromJson(serializer.fromJson<int>(json['dayPeriod'])),
       date: serializer.fromJson<DateTime>(json['date']),
       discard: serializer.fromJson<bool>(json['discard']),
       observation: serializer.fromJson<String?>(json['observation']),
@@ -1283,6 +1307,8 @@ class Production extends DataClass implements Insertable<Production> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'volume': serializer.toJson<double>(volume),
+      'dayPeriod': serializer
+          .toJson<int>($ProductionsTable.$converterdayPeriod.toJson(dayPeriod)),
       'date': serializer.toJson<DateTime>(date),
       'discard': serializer.toJson<bool>(discard),
       'observation': serializer.toJson<String?>(observation),
@@ -1293,6 +1319,7 @@ class Production extends DataClass implements Insertable<Production> {
   Production copyWith(
           {int? id,
           double? volume,
+          ProductionDayPeriod? dayPeriod,
           DateTime? date,
           bool? discard,
           Value<String?> observation = const Value.absent(),
@@ -1300,6 +1327,7 @@ class Production extends DataClass implements Insertable<Production> {
       Production(
         id: id ?? this.id,
         volume: volume ?? this.volume,
+        dayPeriod: dayPeriod ?? this.dayPeriod,
         date: date ?? this.date,
         discard: discard ?? this.discard,
         observation: observation.present ? observation.value : this.observation,
@@ -1309,6 +1337,7 @@ class Production extends DataClass implements Insertable<Production> {
     return Production(
       id: data.id.present ? data.id.value : this.id,
       volume: data.volume.present ? data.volume.value : this.volume,
+      dayPeriod: data.dayPeriod.present ? data.dayPeriod.value : this.dayPeriod,
       date: data.date.present ? data.date.value : this.date,
       discard: data.discard.present ? data.discard.value : this.discard,
       observation:
@@ -1322,6 +1351,7 @@ class Production extends DataClass implements Insertable<Production> {
     return (StringBuffer('Production(')
           ..write('id: $id, ')
           ..write('volume: $volume, ')
+          ..write('dayPeriod: $dayPeriod, ')
           ..write('date: $date, ')
           ..write('discard: $discard, ')
           ..write('observation: $observation, ')
@@ -1331,13 +1361,15 @@ class Production extends DataClass implements Insertable<Production> {
   }
 
   @override
-  int get hashCode => Object.hash(id, volume, date, discard, observation, cow);
+  int get hashCode =>
+      Object.hash(id, volume, dayPeriod, date, discard, observation, cow);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Production &&
           other.id == this.id &&
           other.volume == this.volume &&
+          other.dayPeriod == this.dayPeriod &&
           other.date == this.date &&
           other.discard == this.discard &&
           other.observation == this.observation &&
@@ -1347,6 +1379,7 @@ class Production extends DataClass implements Insertable<Production> {
 class ProductionsCompanion extends UpdateCompanion<Production> {
   final Value<int> id;
   final Value<double> volume;
+  final Value<ProductionDayPeriod> dayPeriod;
   final Value<DateTime> date;
   final Value<bool> discard;
   final Value<String?> observation;
@@ -1354,6 +1387,7 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
   const ProductionsCompanion({
     this.id = const Value.absent(),
     this.volume = const Value.absent(),
+    this.dayPeriod = const Value.absent(),
     this.date = const Value.absent(),
     this.discard = const Value.absent(),
     this.observation = const Value.absent(),
@@ -1362,17 +1396,20 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
   ProductionsCompanion.insert({
     this.id = const Value.absent(),
     required double volume,
+    required ProductionDayPeriod dayPeriod,
     required DateTime date,
     required bool discard,
     this.observation = const Value.absent(),
     required int cow,
   })  : volume = Value(volume),
+        dayPeriod = Value(dayPeriod),
         date = Value(date),
         discard = Value(discard),
         cow = Value(cow);
   static Insertable<Production> custom({
     Expression<int>? id,
     Expression<double>? volume,
+    Expression<int>? dayPeriod,
     Expression<DateTime>? date,
     Expression<bool>? discard,
     Expression<String>? observation,
@@ -1381,6 +1418,7 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (volume != null) 'volume': volume,
+      if (dayPeriod != null) 'day_period': dayPeriod,
       if (date != null) 'date': date,
       if (discard != null) 'discard': discard,
       if (observation != null) 'observation': observation,
@@ -1391,6 +1429,7 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
   ProductionsCompanion copyWith(
       {Value<int>? id,
       Value<double>? volume,
+      Value<ProductionDayPeriod>? dayPeriod,
       Value<DateTime>? date,
       Value<bool>? discard,
       Value<String?>? observation,
@@ -1398,6 +1437,7 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
     return ProductionsCompanion(
       id: id ?? this.id,
       volume: volume ?? this.volume,
+      dayPeriod: dayPeriod ?? this.dayPeriod,
       date: date ?? this.date,
       discard: discard ?? this.discard,
       observation: observation ?? this.observation,
@@ -1413,6 +1453,10 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
     }
     if (volume.present) {
       map['volume'] = Variable<double>(volume.value);
+    }
+    if (dayPeriod.present) {
+      map['day_period'] = Variable<int>(
+          $ProductionsTable.$converterdayPeriod.toSql(dayPeriod.value));
     }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
@@ -1434,6 +1478,7 @@ class ProductionsCompanion extends UpdateCompanion<Production> {
     return (StringBuffer('ProductionsCompanion(')
           ..write('id: $id, ')
           ..write('volume: $volume, ')
+          ..write('dayPeriod: $dayPeriod, ')
           ..write('date: $date, ')
           ..write('discard: $discard, ')
           ..write('observation: $observation, ')
@@ -4958,6 +5003,7 @@ typedef $$ProductionsTableCreateCompanionBuilder = ProductionsCompanion
     Function({
   Value<int> id,
   required double volume,
+  required ProductionDayPeriod dayPeriod,
   required DateTime date,
   required bool discard,
   Value<String?> observation,
@@ -4967,6 +5013,7 @@ typedef $$ProductionsTableUpdateCompanionBuilder = ProductionsCompanion
     Function({
   Value<int> id,
   Value<double> volume,
+  Value<ProductionDayPeriod> dayPeriod,
   Value<DateTime> date,
   Value<bool> discard,
   Value<String?> observation,
@@ -5005,6 +5052,11 @@ class $$ProductionsTableFilterComposer
 
   ColumnFilters<double> get volume => $composableBuilder(
       column: $table.volume, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<ProductionDayPeriod, ProductionDayPeriod, int>
+      get dayPeriod => $composableBuilder(
+          column: $table.dayPeriod,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   ColumnFilters<DateTime> get date => $composableBuilder(
       column: $table.date, builder: (column) => ColumnFilters(column));
@@ -5051,6 +5103,9 @@ class $$ProductionsTableOrderingComposer
   ColumnOrderings<double> get volume => $composableBuilder(
       column: $table.volume, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<int> get dayPeriod => $composableBuilder(
+      column: $table.dayPeriod, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get date => $composableBuilder(
       column: $table.date, builder: (column) => ColumnOrderings(column));
 
@@ -5095,6 +5150,9 @@ class $$ProductionsTableAnnotationComposer
 
   GeneratedColumn<double> get volume =>
       $composableBuilder(column: $table.volume, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ProductionDayPeriod, int> get dayPeriod =>
+      $composableBuilder(column: $table.dayPeriod, builder: (column) => column);
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
@@ -5151,6 +5209,7 @@ class $$ProductionsTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<double> volume = const Value.absent(),
+            Value<ProductionDayPeriod> dayPeriod = const Value.absent(),
             Value<DateTime> date = const Value.absent(),
             Value<bool> discard = const Value.absent(),
             Value<String?> observation = const Value.absent(),
@@ -5159,6 +5218,7 @@ class $$ProductionsTableTableManager extends RootTableManager<
               ProductionsCompanion(
             id: id,
             volume: volume,
+            dayPeriod: dayPeriod,
             date: date,
             discard: discard,
             observation: observation,
@@ -5167,6 +5227,7 @@ class $$ProductionsTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required double volume,
+            required ProductionDayPeriod dayPeriod,
             required DateTime date,
             required bool discard,
             Value<String?> observation = const Value.absent(),
@@ -5175,6 +5236,7 @@ class $$ProductionsTableTableManager extends RootTableManager<
               ProductionsCompanion.insert(
             id: id,
             volume: volume,
+            dayPeriod: dayPeriod,
             date: date,
             discard: discard,
             observation: observation,

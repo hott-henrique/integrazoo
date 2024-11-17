@@ -98,9 +98,30 @@ class Weanings extends Table {
   IntColumn get bovine => integer().references(Bovines, #id)();
 }
 
+enum ProductionDayPeriod {
+  morning,
+  afternon,
+  night;
+
+  @override
+  toString() {
+    switch (this) {
+      case morning:
+        return 'Manhã';
+
+      case afternon:
+        return 'Tarde';
+
+      case night:
+        return 'Noite';
+    }
+  }
+}
+
 class Productions extends Table {
   IntColumn get id => integer().autoIncrement()();
   RealColumn get volume => real().check(volume.isBiggerThan(const Constant(0.0)))();
+  IntColumn get dayPeriod => intEnum<ProductionDayPeriod>()();
   DateTimeColumn get date => dateTime()();
   BoolColumn get discard => boolean()();
   TextColumn get observation => text().nullable()();
