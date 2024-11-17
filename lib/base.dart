@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:integrazoo/view/forms/artificial_insemination.dart';
 import 'package:integrazoo/view/forms/coverage.dart';
 import 'package:integrazoo/view/forms/production.dart';
+import 'package:integrazoo/view/forms/treatment.dart';
 // import 'package:integrazoo/view/forms/dry_treatment.dart';
-// import 'package:integrazoo/view/forms/treatment.dart';
 
 import 'package:integrazoo/view/screens/analysis.dart';
 // import 'package:integrazoo/view/screens/health_calendar.dart';
@@ -97,22 +97,13 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
           }
         )
       ]),
-      // ExpansionTile(title: const Text("Tratamentos"), children: [
-      //   ListTile(
-      //     title: const Text('Vacas Secas'),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DryTreatmentForm()));
-      //     }
-      //   ),
-      //   ListTile(
-      //     title: const Text('Demais Tratamentos'),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TreatmentForm()));
-      //     }
-      //   ),
-      // ]),
+      ListTile(
+        title: const Text('Tratamento'),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TreatmentForm()));
+        }
+      )
       // ListTile(
       //   title: const Text("Calendário Sanitário"),
       //   onTap: () {
