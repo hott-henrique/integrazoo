@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:integrazoo/base.dart';
 
+import 'package:integrazoo/view/components/button.dart';
+import 'package:integrazoo/view/components/bovine/bovine_dropdown.dart';
 import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/database/database.dart';
@@ -26,7 +28,7 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
   int semenId = 0;
   DateTime artificialInseminationDate = DateTime.now();
   String semenNumber = "";
-  String bullsName = "";
+  String bullName = "";
 
   Exception? exception;
 
@@ -39,7 +41,9 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
                                         onPressed: () => setState(() => exception = null));
     }
 
-    final dateField = InputDatePickerFormField(
+    const divider = Divider(height: 8, color: Colors.transparent);
+
+    final datePicker = InputDatePickerFormField(
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
@@ -57,91 +61,70 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
       onSaved: (value) => semenNumber = value ?? semenNumber
     );
 
-    final bullsNameField = TextFormField(
+    final bullNameField = TextFormField(
       keyboardType: TextInputType.text,
       decoration: const InputDecoration(hintText: 'Exemplo: Soberano',
                                         border: OutlineInputBorder(),
                                         label: Text("Nome do Touro"),
                                         floatingLabelBehavior: FloatingLabelBehavior.always),
-      onSaved: (value) => bullsName = value ?? bullsName,
+      onSaved: (value) => bullName = value ?? bullName,
     );
 
-    final saveButton = Row(children: [
-      Expanded(
-        child: ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              _formKey.currentState!.save();
-              inspect(semenNumber);
-              inspect(bullsName);
-              final semen = Semen.fromJson({
-                'semenNumber': semenNumber,
-                'bullName': bullsName,
-              });
-              inspect(semen);
-              SemenController.insertSemen(semen).then(
-                (value) => registerArtificialInseminationAttempt(context)
-              );
-            }
-          },
-          child: const Text('REGISTRAR TENTATIVA')
-        )
-      )
-    ]);
-
-    return IntegrazooBaseApp(body:
-      FutureBuilder<List<Bovine>>(
+    final cowDropdown = BovineDropdown(
       future: BovineController.readCows(),
-      builder: (context, AsyncSnapshot<List<Bovine>> snapshot) {
-        if (!snapshot.hasData) {
-          return const CircularProgressIndicator();
-        }
-        final cows = snapshot.data!;
-
-        if (cows.isEmpty) {
-          return const Center(child: Text('Nenhuma vaca encontrada no rebanho.'));
-        }
-
-        cowId = cows[0].id;
-
-        final cowSelector = DropdownMenu<Bovine>(
-          initialSelection: cows[0],
-          dropdownMenuEntries: cows.map((cow) => DropdownMenuEntry(value: cow, label: '[${cow.id}] ${cow.name}')).toList(),
-          onSelected: (value) => cowId = value!.id,
-          label: const Text('Vaca'),
-          expandedInsets: EdgeInsets.zero,
-          menuHeight: 300,
-          inputDecorationTheme: const InputDecorationTheme(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: OutlineInputBorder()
-          )
-        );
-
-        Divider divider = const Divider(height: 8, color: Colors.transparent);
-
-        return Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            autovalidateMode: AutovalidateMode.always,
-            key: _formKey,
-            child: Column(children: [
-              cowSelector,
-              divider,
-              semenField,
-              divider,
-              bullsNameField,
-              divider,
-              dateField,
-              saveButton
-            ])
-          )
-        );
-      }
-      )
+      label: "Vaca",
+      onSelected: (value) => cowId = value != null ? value.id : 0
     );
+
+    final saveButton = Button(text: "Salvar", color: Colors.green[400]!, onPressed: registerArtificialInsemination);
+
+    final column = <Widget>[
+      cowDropdown,
+      divider,
+      semenField,
+      divider,
+      bullNameField,
+      divider,
+      datePicker,
+      saveButton
+    ];
+
+    return IntegrazooBaseApp(body: Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        autovalidateMode: AutovalidateMode.always,
+        key: _formKey,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: column)
+      )
+    ));
   }
 
-  void registerArtificialInseminationAttempt(BuildContext context) {
+  void registerArtificialInsemination() {
+    if (cowId == 0) {
+      SnackBar snackBar = const SnackBar(
+        content: Text('Por favor, selecione a vaca.'),
+        backgroundColor: Colors.red,
+        showCloseIcon: true
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final semen = Semen.fromJson({
+        'semenNumber': semenNumber,
+        'bullName': bullName,
+      });
+
+      SemenController.insertSemen(semen).then(
+        (value) => registerArtificialInseminationAttempt()
+      );
+    }
+  }
+
+  void registerArtificialInseminationAttempt() {
     final reproduction = Reproduction.fromJson({
       'id': 0,
       'kind': ReproductionKind.artificialInsemination.index,
@@ -154,9 +137,15 @@ class _ArtificialInseminationFormState extends State<ArtificialInseminationForm>
 
     ReproductionController.registerArtificialInseminationAttempt(reproduction).then(
       (_) {
-        SnackBar snackBar = const SnackBar(content: Text('TENTATIVA DE REPRODUÇÃO REGISTRADA.'), showCloseIcon: true);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.of(context).pop();
+        SnackBar snackBar = const SnackBar(
+          content: Text('Tentativa de reprodução registrada.'),
+          backgroundColor: Colors.green,
+          showCloseIcon: true
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.of(context).pop();
+        }
       },
       onError: (e) => setState(() => exception = e)
     );

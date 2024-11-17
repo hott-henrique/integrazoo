@@ -148,6 +148,7 @@ class _ProductionFormState extends State<ProductionForm> {
         (_) {
           SnackBar snackBar = const SnackBar(
             content: Text('Produção registrada.'),
+            backgroundColor: Colors.green,
             showCloseIcon: true
           );
           if (context.mounted) {

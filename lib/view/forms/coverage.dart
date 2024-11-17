@@ -108,7 +108,11 @@ class _CoverageFormState extends State<CoverageForm> {
       });
       ReproductionController.registerCoverageAttempt(reproduction).then(
         (_) {
-          SnackBar snackBar = const SnackBar(content: Text('Tentativa de reprodução registrada.'), showCloseIcon: true);
+          SnackBar snackBar = const SnackBar(
+            content: Text('Tentativa de reprodução registrada.'),
+            backgroundColor: Colors.green,
+            showCloseIcon: true
+          );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           Navigator.of(context).pop();
         },
