@@ -1,8 +1,6 @@
 import 'package:integrazoo/persistence/bovine_persistence.dart';
 
-import 'package:integrazoo/model/bovine/bovine.dart';
-import 'package:integrazoo/model/bovine/bull.dart';
-import 'package:integrazoo/model/bovine/cow.dart';
+import 'package:integrazoo/database/database.dart';
 
 
 class BovineController {
@@ -12,11 +10,11 @@ class BovineController {
     return BovinePersistence.readHerd();
   }
 
-  static Future<List<Cow>> readCows() {
+  static Future<List<Bovine>> readCows() {
     return BovinePersistence.readCows();
   }
 
-  static Future<List<Bull>> readBulls() {
+  static Future<List<Bovine>> readBulls() {
     return BovinePersistence.readBulls();
   }
 

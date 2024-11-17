@@ -74,61 +74,61 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
               builder: (context) => const HerdScreen()));
         }
       ),
-      ExpansionTile(title: const Text("Produção"), children: [
-        ListTile(
-          title: const Text('Vaca'),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CowProductionForm()));
-          }
-        ),
-      ]),
-      ExpansionTile(title: const Text("Reprodução"), children: [
-        ListTile(
-          title: const Text('Cobertura'),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
-          }
-        ),
-        ListTile(
-          title: const Text('Insiminação Artificial'),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
-          }
-        ),
-      ]),
-      ExpansionTile(title: const Text("Tratamentos"), children: [
-        ListTile(
-          title: const Text('Vacas Secas'),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DryTreatmentForm()));
-          }
-        ),
-        ListTile(
-          title: const Text('Demais Tratamentos'),
-          onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TreatmentForm()));
-          }
-        ),
-      ]),
-      ListTile(
-        title: const Text("Calendário Sanitário"),
-        onTap: () {
-          Navigator.of(context).pop();
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarScreen()));
-        }
-      ),
-      ListTile(
-        title: const Text("Sobre"),
-        onTap: () {
-          Navigator.of(context).pop();
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutPage()));
-        }
-      ),
+      // ExpansionTile(title: const Text("Produção"), children: [
+      //   ListTile(
+      //     title: const Text('Vaca'),
+      //     onTap: () {
+      //       Navigator.of(context).pop();
+      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CowProductionForm()));
+      //     }
+      //   ),
+      // ]),
+      // ExpansionTile(title: const Text("Reprodução"), children: [
+      //   ListTile(
+      //     title: const Text('Cobertura'),
+      //     onTap: () {
+      //       Navigator.of(context).pop();
+      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
+      //     }
+      //   ),
+      //   ListTile(
+      //     title: const Text('Insiminação Artificial'),
+      //     onTap: () {
+      //       Navigator.of(context).pop();
+      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
+      //     }
+      //   ),
+      // ]),
+      // ExpansionTile(title: const Text("Tratamentos"), children: [
+      //   ListTile(
+      //     title: const Text('Vacas Secas'),
+      //     onTap: () {
+      //       Navigator.of(context).pop();
+      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DryTreatmentForm()));
+      //     }
+      //   ),
+      //   ListTile(
+      //     title: const Text('Demais Tratamentos'),
+      //     onTap: () {
+      //       Navigator.of(context).pop();
+      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TreatmentForm()));
+      //     }
+      //   ),
+      // ]),
+      // ListTile(
+      //   title: const Text("Calendário Sanitário"),
+      //   onTap: () {
+      //     Navigator.of(context).pop();
+      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarScreen()));
+      //   }
+      // ),
+      // ListTile(
+      //   title: const Text("Sobre"),
+      //   onTap: () {
+      //     Navigator.of(context).pop();
+      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutPage()));
+      //   }
+      // ),
     ];
 
     return ListView(children: tiles);
