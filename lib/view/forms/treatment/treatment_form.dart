@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:integrazoo/base.dart';
@@ -32,6 +34,7 @@ class _TreatmentFormState extends State<TreatmentForm> {
   @override
   Widget build(BuildContext context) {
     if (exception != null) {
+      inspect(exception);
       return UnexpectedErrorAlertDialog(
         title: 'Erro Inesperado',
         message: 'Algo de inespearado aconteceu durante a execução do aplicativo.',
@@ -150,7 +153,7 @@ class _TreatmentFormState extends State<TreatmentForm> {
         decoration: const InputDecoration(
           hintText: 'Exemplo: 5',
           border: OutlineInputBorder(),
-          label: Text("Número de Dias de Descanso"),
+          label: Text("Tempo de Descanso (Dias)"),
           floatingLabelBehavior: FloatingLabelBehavior.always
         ),
         onSaved: (value) => durationInDays = int.tryParse(value ?? "") ?? durationInDays,
@@ -178,14 +181,12 @@ class _TreatmentFormState extends State<TreatmentForm> {
       Row(children: [
         Checkbox(
           value: drying,
-          activeColor: Colors.redAccent,
-          side: const BorderSide(color: Colors.redAccent),
           onChanged: (value) => setState(() {
             drying = value ?? false;
             body.clear();
           })
         ),
-        const Expanded(child: Text('Secagem', style: TextStyle(color: Colors.redAccent))),
+        const Expanded(child: Text('Secagem')),
       ])
     );
 

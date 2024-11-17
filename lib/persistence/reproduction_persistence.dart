@@ -54,33 +54,33 @@ class ReproductionPersistence {
     await database.into(database.reproductions).insert(companion);
   }
 
-  static Future<List<Reproduction>> getArtificialInseminationsFromCow(Bovine cow, int pageSz, int page) async {
+  static Future<List<Reproduction>> getArtificialInseminationsFromCow(int cowId, int pageSz, int page) async {
     final bovine = await (database.select(database.bovines)
-                          ..where((b) => b.id.equals(cow.id)))
+                          ..where((b) => b.id.equals(cowId)))
                           .getSingleOrNull();
 
     if (bovine == null || bovine.sex == Sex.male) {
-      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = ${cow.id})"));
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = $cowId)"));
     }
 
     return (database.select(database.reproductions)
-                    ..where((r) => r.cow.equals(cow.id) & r.kind.equals(ReproductionKind.artificialInsemination.index))
+                    ..where((r) => r.cow.equals(cowId) & r.kind.equals(ReproductionKind.artificialInsemination.index))
                     ..limit(pageSz, offset: page * pageSz)
                     ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
                     .get();
   }
 
-  static Future<List<Reproduction>> getCoveragesFromCow(Bovine cow, int pageSz, int page) async {
+  static Future<List<Reproduction>> getCoveragesFromCow(int cowId, int pageSz, int page) async {
     final bovine = await (database.select(database.bovines)
-                          ..where((b) => b.id.equals(cow.id)))
+                          ..where((b) => b.id.equals(cowId)))
                           .getSingleOrNull();
 
     if (bovine == null || bovine.sex == Sex.male) {
-      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = ${cow.id})"));
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = $cowId)"));
     }
 
     return (database.select(database.reproductions)
-                    ..where((r) => r.cow.equals(cow.id) & r.kind.equals(ReproductionKind.coverage.index))
+                    ..where((r) => r.cow.equals(cowId) & r.kind.equals(ReproductionKind.coverage.index))
                     ..limit(pageSz, offset: page * pageSz)
                     ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
                     .get();

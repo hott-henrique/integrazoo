@@ -1,22 +1,21 @@
-import 'dart:math';
 import 'dart:developer';
-
-import 'package:intl/intl.dart';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+import 'package:intl/intl.dart';
 
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:integrazoo/base.dart';
 
+import 'package:integrazoo/view/components/treatment/treatment_list_tile.dart';
+import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
-// import 'package:integrazoo/control/cow_production_controller.dart';
-// import 'package:integrazoo/control/reproduction_controller.dart';
-// import 'package:integrazoo/control/treatment_controller.dart';
-
-import 'package:integrazoo/view/components/bovine/treatment_list_tile.dart';
-import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
+import 'package:integrazoo/control/production_controller.dart';
+import 'package:integrazoo/control/reproduction_controller.dart';
+import 'package:integrazoo/control/treatment_controller.dart';
 
 import 'package:integrazoo/database/database.dart';
 
@@ -41,98 +40,116 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
                                         onPressed: () => setState(() => exception = null));
     }
 
+    List<Widget> columnBody = List.empty(growable: true);
+
+    columnBody.add(renderTreatments());
+    columnBody.add(renderArtificialInseminations());
+    columnBody.add(renderProduction());
+
+    return IntegrazooBaseApp(body: ListView(children: columnBody));
+  }
+
+  Widget renderProduction() {
     return FutureBuilder(
-      future: fetchData(),
-      builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-        if (!snapshot.hasData){
+      future: ProductionController.getMilkProduction(widget.bovine.id, 31, 0),
+      builder: (context, AsyncSnapshot<List<Production>> snapshot) {
+        if (!snapshot.hasData) {
           return const CircularProgressIndicator();
         }
 
-        List<Widget> columnBody = List.empty(growable: true);
+        final productions = snapshot.data!;
 
-        // final treatments = List<Widget>.generate(
-        //   min(widget.cattle.treatments.length, 3),
-        //   (index) => TreatmentListTile(treatment: widget.cattle.treatments[index])
-        // );
+        productions.sort((x1, x2) => x1.date.millisecondsSinceEpoch.compareTo(x2.date.millisecondsSinceEpoch));
 
-        // columnBody = columnBody + treatments;
+        final maxProduction = productions.reduce((x1, x2) => x1.volume >= x2.volume ? x1 : x2).volume;
 
-        // if (snapshot.data!.containsKey("artificialInsemination")) {
-        //   final artificialInseminationAttempts = snapshot.data!['artificialInsemination'] as List<ArtificialInseminationAttempt>;
+        final DateFormat formatter = DateFormat('dd/MM');
 
-        //   inspect(artificialInseminationAttempts);
+        final productionChart = BarChart(BarChartData(
+          barGroups: productions.asMap().entries.map(
+            (entry) => BarChartGroupData(
+              x: entry.key,
+              barRods: [ BarChartRodData(
+                toY: entry.value.volume,
+                color: entry.value.discard ? Colors.red : Colors.green,
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(2), topRight: Radius.circular(2))
+              ) ]
+            )
+          ).toList(),
+          titlesData: FlTitlesData(
+            topTitles: const AxisTitles(axisNameWidget: Text("Produção dos Últimos 31 Dias"), axisNameSize: 32),
+            bottomTitles: AxisTitles(sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) => Text(formatter.format(productions[value.toInt()].date))
+            )),
+            rightTitles: AxisTitles(sideTitles: SideTitles(
+              reservedSize: 44,
+              showTitles: true,
+              getTitlesWidget: (value, meta) => const Text("")
+            ))
+          ),
+          maxY: (maxProduction / 10.0).ceil() * 10.0
+        ));
 
-        //   final inseminations = List<Widget>.generate(
-        //     min(artificialInseminationAttempts.length, 3),
-        //     (index) => ArtificialInseminationAttemptListTile(attempt: artificialInseminationAttempts[index])
-        //   );
-
-        //   columnBody = columnBody + inseminations;
-        // }
-
-        // final milkProduction = (snapshot.data!["milkProduction"] ?? List<CowMilkProduction>.empty()) as List<CowMilkProduction>;
-
-        // if (milkProduction.isNotEmpty) {
-        //   milkProduction.sort((x1, x2) => x1.date.millisecondsSinceEpoch.compareTo(x2.date.millisecondsSinceEpoch));
-
-        //   final maxProduction = milkProduction.reduce((x1, x2) => x1.volume >= x2.volume ? x1 : x2).volume;
-
-        //   final DateFormat formatter = DateFormat('dd/MM');
-
-        //   final productionChart = BarChart(BarChartData(
-        //     barGroups: milkProduction.asMap().entries.map(
-        //       (entry) => BarChartGroupData(
-        //         x: entry.key,
-        //         barRods: [ BarChartRodData(
-        //           toY: entry.value.volume,
-        //           color: entry.value.discard ? Colors.red : Colors.green,
-        //           borderRadius: const BorderRadius.only(topLeft: Radius.circular(2), topRight: Radius.circular(2))
-        //         ) ]
-        //       )
-        //     ).toList(),
-        //     titlesData: FlTitlesData(
-        //       topTitles: const AxisTitles(axisNameWidget: Text("Produção"), axisNameSize: 32),
-        //       bottomTitles: AxisTitles(sideTitles: SideTitles(
-        //         showTitles: true,
-        //         getTitlesWidget: (value, meta) => Text(formatter.format(milkProduction[value.toInt()].date))
-        //       )),
-        //       rightTitles: AxisTitles(sideTitles: SideTitles(
-        //         reservedSize: 44,
-        //         showTitles: true,
-        //         getTitlesWidget: (value, meta) => const Text("")
-        //       ))
-        //     ),
-        //     maxY: (maxProduction / 10.0).ceil() * 10.0
-        //   ));
-
-        //   columnBody.add(Container(
-        //     padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-        //     child: Card(child: AspectRatio(aspectRatio: 1.3,
-        //       child: Column(children: [
-        //         Expanded(flex: 12, child: Padding(padding: const EdgeInsets.all(8), child: productionChart))
-        //       ])
-        //     ))
-        //   ));
-        // }
-
-        return IntegrazooBaseApp(body:Column(children: columnBody));
+        return Container(
+          padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+          child: Card(child: AspectRatio(aspectRatio: 1.3,
+            child: Column(children: [
+              Expanded(flex: 12, child: Padding(padding: const EdgeInsets.all(8), child: productionChart))
+            ])
+          ))
+        );
       }
     );
   }
 
-  Future<Map<String, dynamic>> fetchData() async {
-    Map<String, dynamic> mappedData = {};
+  Widget renderTreatments() {
+    return FutureBuilder(
+      future: TreatmentController.getTreatments(widget.bovine.id, 3, 0),
+      builder: (context, AsyncSnapshot<List<Treatment>> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
 
-    // if (widget.cattle.treatments.isEmpty) {
-    //   widget.cattle.treatments.addAll(await TreatmentController.getTreatments(widget.cattle));
-    // }
+        final treatments = snapshot.data!;
 
-    // if (widget.cattle.sex == Sex.female) {
-    //   Cow c = Cow(widget.cattle.id, widget.cattle.name);
-    //   mappedData["milkProduction"] = await CowProductionController.getMilkProduction(c);
-    //   mappedData["artificialInsemination"] = await ReproductionController.getAllArtificialInseminationAttemptFromCow(c);
-    // }
+        final treatmentsTiles = List<Widget>.generate(
+          treatments.length,
+          (index) => TreatmentListTile(treatment: treatments[index])
+        );
 
-    return Future.value(mappedData);
+        treatmentsTiles.insert(0, const Text("Tratamentos"));
+
+        return Container(
+          padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+          child: Card(child: Column(children: treatmentsTiles))
+        );
+      }
+    );
+  }
+
+  Widget renderArtificialInseminations() {
+    return FutureBuilder(
+      future: ReproductionController.getArtificialInseminationAttemptsFromCow(widget.bovine.id, 3, 0),
+      builder: (context, AsyncSnapshot<List<Reproduction>> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+
+        final reproductions = snapshot.data!;
+
+        final reproductionsTiles = List<Widget>.generate(
+          reproductions.length,
+          (index) => ArtificialInseminationAttemptListTile(attempt: reproductions[index])
+        );
+
+        reproductionsTiles.insert(0, const Text("Inseminações Artificiais"));
+
+        return Container(
+          padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+          child: Card(child: Column(children: reproductionsTiles))
+        );
+      }
+    );
   }
 }

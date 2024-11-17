@@ -96,7 +96,7 @@ class _ProductionFormState extends State<ProductionForm> {
         side: const BorderSide(color: Colors.redAccent),
         onChanged: (value) => setState(() => productionDiscard = value ?? false)
       ),
-      const Expanded(child: Text('Descartar leite.', style: TextStyle(color: Colors.redAccent))),
+      const Expanded(child: Text('Descarte', style: TextStyle(color: Colors.redAccent))),
     ]);
 
     final column = <Widget>[
