@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:integrazoo/about_page.dart';
 
-// import 'package:integrazoo/view/forms/artificial_insemination.dart';
+import 'package:integrazoo/view/forms/artificial_insemination.dart';
 import 'package:integrazoo/view/forms/coverage.dart';
 import 'package:integrazoo/view/forms/production.dart';
 // import 'package:integrazoo/view/forms/dry_treatment.dart';
@@ -89,13 +89,13 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
           }
         ),
-        // ListTile(
-        //   title: const Text('Insiminação Artificial'),
-        //   onTap: () {
-        //     Navigator.of(context).pop();
-        //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
-        //   }
-        // ),
+        ListTile(
+          title: const Text('Insiminação Artificial'),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
+          }
+        )
       ]),
       // ExpansionTile(title: const Text("Tratamentos"), children: [
       //   ListTile(

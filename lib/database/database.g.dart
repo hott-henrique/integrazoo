@@ -1929,15 +1929,6 @@ class $SemensTable extends Semens with TableInfo<$SemensTable, Semen> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $SemensTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _semenNumberMeta =
       const VerificationMeta('semenNumber');
   @override
@@ -1959,7 +1950,7 @@ class $SemensTable extends Semens with TableInfo<$SemensTable, Semen> {
           type: DriftSqlType.string,
           requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, semenNumber, bullName];
+  List<GeneratedColumn> get $columns => [semenNumber, bullName];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1970,9 +1961,6 @@ class $SemensTable extends Semens with TableInfo<$SemensTable, Semen> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('semen_number')) {
       context.handle(
           _semenNumberMeta,
@@ -1991,13 +1979,11 @@ class $SemensTable extends Semens with TableInfo<$SemensTable, Semen> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {semenNumber};
   @override
   Semen map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Semen(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       semenNumber: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}semen_number'])!,
       bullName: attachedDatabase.typeMapping
@@ -2012,15 +1998,12 @@ class $SemensTable extends Semens with TableInfo<$SemensTable, Semen> {
 }
 
 class Semen extends DataClass implements Insertable<Semen> {
-  final int id;
   final String semenNumber;
   final String bullName;
-  const Semen(
-      {required this.id, required this.semenNumber, required this.bullName});
+  const Semen({required this.semenNumber, required this.bullName});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
     map['semen_number'] = Variable<String>(semenNumber);
     map['bull_name'] = Variable<String>(bullName);
     return map;
@@ -2028,7 +2011,6 @@ class Semen extends DataClass implements Insertable<Semen> {
 
   SemensCompanion toCompanion(bool nullToAbsent) {
     return SemensCompanion(
-      id: Value(id),
       semenNumber: Value(semenNumber),
       bullName: Value(bullName),
     );
@@ -2038,7 +2020,6 @@ class Semen extends DataClass implements Insertable<Semen> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Semen(
-      id: serializer.fromJson<int>(json['id']),
       semenNumber: serializer.fromJson<String>(json['semenNumber']),
       bullName: serializer.fromJson<String>(json['bullName']),
     );
@@ -2047,20 +2028,17 @@ class Semen extends DataClass implements Insertable<Semen> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
       'semenNumber': serializer.toJson<String>(semenNumber),
       'bullName': serializer.toJson<String>(bullName),
     };
   }
 
-  Semen copyWith({int? id, String? semenNumber, String? bullName}) => Semen(
-        id: id ?? this.id,
+  Semen copyWith({String? semenNumber, String? bullName}) => Semen(
         semenNumber: semenNumber ?? this.semenNumber,
         bullName: bullName ?? this.bullName,
       );
   Semen copyWithCompanion(SemensCompanion data) {
     return Semen(
-      id: data.id.present ? data.id.value : this.id,
       semenNumber:
           data.semenNumber.present ? data.semenNumber.value : this.semenNumber,
       bullName: data.bullName.present ? data.bullName.value : this.bullName,
@@ -2070,7 +2048,6 @@ class Semen extends DataClass implements Insertable<Semen> {
   @override
   String toString() {
     return (StringBuffer('Semen(')
-          ..write('id: $id, ')
           ..write('semenNumber: $semenNumber, ')
           ..write('bullName: $bullName')
           ..write(')'))
@@ -2078,63 +2055,64 @@ class Semen extends DataClass implements Insertable<Semen> {
   }
 
   @override
-  int get hashCode => Object.hash(id, semenNumber, bullName);
+  int get hashCode => Object.hash(semenNumber, bullName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Semen &&
-          other.id == this.id &&
           other.semenNumber == this.semenNumber &&
           other.bullName == this.bullName);
 }
 
 class SemensCompanion extends UpdateCompanion<Semen> {
-  final Value<int> id;
   final Value<String> semenNumber;
   final Value<String> bullName;
+  final Value<int> rowid;
   const SemensCompanion({
-    this.id = const Value.absent(),
     this.semenNumber = const Value.absent(),
     this.bullName = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   SemensCompanion.insert({
-    this.id = const Value.absent(),
     required String semenNumber,
     required String bullName,
+    this.rowid = const Value.absent(),
   })  : semenNumber = Value(semenNumber),
         bullName = Value(bullName);
   static Insertable<Semen> custom({
-    Expression<int>? id,
     Expression<String>? semenNumber,
     Expression<String>? bullName,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (semenNumber != null) 'semen_number': semenNumber,
       if (bullName != null) 'bull_name': bullName,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   SemensCompanion copyWith(
-      {Value<int>? id, Value<String>? semenNumber, Value<String>? bullName}) {
+      {Value<String>? semenNumber,
+      Value<String>? bullName,
+      Value<int>? rowid}) {
     return SemensCompanion(
-      id: id ?? this.id,
       semenNumber: semenNumber ?? this.semenNumber,
       bullName: bullName ?? this.bullName,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (semenNumber.present) {
       map['semen_number'] = Variable<String>(semenNumber.value);
     }
     if (bullName.present) {
       map['bull_name'] = Variable<String>(bullName.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -2142,9 +2120,9 @@ class SemensCompanion extends UpdateCompanion<Semen> {
   @override
   String toString() {
     return (StringBuffer('SemensCompanion(')
-          ..write('id: $id, ')
           ..write('semenNumber: $semenNumber, ')
-          ..write('bullName: $bullName')
+          ..write('bullName: $bullName, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -2204,12 +2182,12 @@ class $ReproductionsTable extends Reproductions
           GeneratedColumn.constraintIsAlways('REFERENCES bovines (id)'));
   static const VerificationMeta _semenMeta = const VerificationMeta('semen');
   @override
-  late final GeneratedColumn<int> semen = GeneratedColumn<int>(
+  late final GeneratedColumn<String> semen = GeneratedColumn<String>(
       'semen', aliasedName, true,
-      type: DriftSqlType.int,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES semens (id)'));
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES semens (semen_number)'));
   @override
   List<GeneratedColumn> get $columns =>
       [id, kind, diagnostic, date, cow, bull, semen];
@@ -2272,7 +2250,7 @@ class $ReproductionsTable extends Reproductions
       bull: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}bull']),
       semen: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}semen']),
+          .read(DriftSqlType.string, data['${effectivePrefix}semen']),
     );
   }
 
@@ -2295,7 +2273,7 @@ class Reproduction extends DataClass implements Insertable<Reproduction> {
   final DateTime date;
   final int cow;
   final int? bull;
-  final int? semen;
+  final String? semen;
   const Reproduction(
       {required this.id,
       required this.kind,
@@ -2322,7 +2300,7 @@ class Reproduction extends DataClass implements Insertable<Reproduction> {
       map['bull'] = Variable<int>(bull);
     }
     if (!nullToAbsent || semen != null) {
-      map['semen'] = Variable<int>(semen);
+      map['semen'] = Variable<String>(semen);
     }
     return map;
   }
@@ -2352,7 +2330,7 @@ class Reproduction extends DataClass implements Insertable<Reproduction> {
       date: serializer.fromJson<DateTime>(json['date']),
       cow: serializer.fromJson<int>(json['cow']),
       bull: serializer.fromJson<int?>(json['bull']),
-      semen: serializer.fromJson<int?>(json['semen']),
+      semen: serializer.fromJson<String?>(json['semen']),
     );
   }
   @override
@@ -2367,7 +2345,7 @@ class Reproduction extends DataClass implements Insertable<Reproduction> {
       'date': serializer.toJson<DateTime>(date),
       'cow': serializer.toJson<int>(cow),
       'bull': serializer.toJson<int?>(bull),
-      'semen': serializer.toJson<int?>(semen),
+      'semen': serializer.toJson<String?>(semen),
     };
   }
 
@@ -2378,7 +2356,7 @@ class Reproduction extends DataClass implements Insertable<Reproduction> {
           DateTime? date,
           int? cow,
           Value<int?> bull = const Value.absent(),
-          Value<int?> semen = const Value.absent()}) =>
+          Value<String?> semen = const Value.absent()}) =>
       Reproduction(
         id: id ?? this.id,
         kind: kind ?? this.kind,
@@ -2437,7 +2415,7 @@ class ReproductionsCompanion extends UpdateCompanion<Reproduction> {
   final Value<DateTime> date;
   final Value<int> cow;
   final Value<int?> bull;
-  final Value<int?> semen;
+  final Value<String?> semen;
   const ReproductionsCompanion({
     this.id = const Value.absent(),
     this.kind = const Value.absent(),
@@ -2465,7 +2443,7 @@ class ReproductionsCompanion extends UpdateCompanion<Reproduction> {
     Expression<DateTime>? date,
     Expression<int>? cow,
     Expression<int>? bull,
-    Expression<int>? semen,
+    Expression<String>? semen,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2485,7 +2463,7 @@ class ReproductionsCompanion extends UpdateCompanion<Reproduction> {
       Value<DateTime>? date,
       Value<int>? cow,
       Value<int?>? bull,
-      Value<int?>? semen}) {
+      Value<String?>? semen}) {
     return ReproductionsCompanion(
       id: id ?? this.id,
       kind: kind ?? this.kind,
@@ -2521,7 +2499,7 @@ class ReproductionsCompanion extends UpdateCompanion<Reproduction> {
       map['bull'] = Variable<int>(bull.value);
     }
     if (semen.present) {
-      map['semen'] = Variable<int>(semen.value);
+      map['semen'] = Variable<String>(semen.value);
     }
     return map;
   }
@@ -5611,14 +5589,14 @@ typedef $$TreatmentsTableProcessedTableManager = ProcessedTableManager<
     Treatment,
     PrefetchHooks Function({bool bovine})>;
 typedef $$SemensTableCreateCompanionBuilder = SemensCompanion Function({
-  Value<int> id,
   required String semenNumber,
   required String bullName,
+  Value<int> rowid,
 });
 typedef $$SemensTableUpdateCompanionBuilder = SemensCompanion Function({
-  Value<int> id,
   Value<String> semenNumber,
   Value<String> bullName,
+  Value<int> rowid,
 });
 
 final class $$SemensTableReferences
@@ -5628,12 +5606,12 @@ final class $$SemensTableReferences
   static MultiTypedResultKey<$ReproductionsTable, List<Reproduction>>
       _reproductionsRefsTable(_$AppDatabase db) =>
           MultiTypedResultKey.fromTable(db.reproductions,
-              aliasName:
-                  $_aliasNameGenerator(db.semens.id, db.reproductions.semen));
+              aliasName: $_aliasNameGenerator(
+                  db.semens.semenNumber, db.reproductions.semen));
 
   $$ReproductionsTableProcessedTableManager get reproductionsRefs {
     final manager = $$ReproductionsTableTableManager($_db, $_db.reproductions)
-        .filter((f) => f.semen.id($_item.id));
+        .filter((f) => f.semen.semenNumber($_item.semenNumber));
 
     final cache = $_typedResult.readTableOrNull(_reproductionsRefsTable($_db));
     return ProcessedTableManager(
@@ -5650,9 +5628,6 @@ class $$SemensTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
   ColumnFilters<String> get semenNumber => $composableBuilder(
       column: $table.semenNumber, builder: (column) => ColumnFilters(column));
 
@@ -5663,7 +5638,7 @@ class $$SemensTableFilterComposer
       Expression<bool> Function($$ReproductionsTableFilterComposer f) f) {
     final $$ReproductionsTableFilterComposer composer = $composerBuilder(
         composer: this,
-        getCurrentColumn: (t) => t.id,
+        getCurrentColumn: (t) => t.semenNumber,
         referencedTable: $db.reproductions,
         getReferencedColumn: (t) => t.semen,
         builder: (joinBuilder,
@@ -5690,9 +5665,6 @@ class $$SemensTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<String> get semenNumber => $composableBuilder(
       column: $table.semenNumber, builder: (column) => ColumnOrderings(column));
 
@@ -5709,9 +5681,6 @@ class $$SemensTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
   GeneratedColumn<String> get semenNumber => $composableBuilder(
       column: $table.semenNumber, builder: (column) => column);
 
@@ -5722,7 +5691,7 @@ class $$SemensTableAnnotationComposer
       Expression<T> Function($$ReproductionsTableAnnotationComposer a) f) {
     final $$ReproductionsTableAnnotationComposer composer = $composerBuilder(
         composer: this,
-        getCurrentColumn: (t) => t.id,
+        getCurrentColumn: (t) => t.semenNumber,
         referencedTable: $db.reproductions,
         getReferencedColumn: (t) => t.semen,
         builder: (joinBuilder,
@@ -5763,24 +5732,24 @@ class $$SemensTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$SemensTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
             Value<String> semenNumber = const Value.absent(),
             Value<String> bullName = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
           }) =>
               SemensCompanion(
-            id: id,
             semenNumber: semenNumber,
             bullName: bullName,
+            rowid: rowid,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
             required String semenNumber,
             required String bullName,
+            Value<int> rowid = const Value.absent(),
           }) =>
               SemensCompanion.insert(
-            id: id,
             semenNumber: semenNumber,
             bullName: bullName,
+            rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>
@@ -5803,9 +5772,9 @@ class $$SemensTableTableManager extends RootTableManager<
                         managerFromTypedResult: (p0) =>
                             $$SemensTableReferences(db, table, p0)
                                 .reproductionsRefs,
-                        referencedItemsForCurrentItem: (item,
-                                referencedItems) =>
-                            referencedItems.where((e) => e.semen == item.id),
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.semen == item.semenNumber),
                         typedResults: items)
                 ];
               },
@@ -5834,7 +5803,7 @@ typedef $$ReproductionsTableCreateCompanionBuilder = ReproductionsCompanion
   required DateTime date,
   required int cow,
   Value<int?> bull,
-  Value<int?> semen,
+  Value<String?> semen,
 });
 typedef $$ReproductionsTableUpdateCompanionBuilder = ReproductionsCompanion
     Function({
@@ -5844,7 +5813,7 @@ typedef $$ReproductionsTableUpdateCompanionBuilder = ReproductionsCompanion
   Value<DateTime> date,
   Value<int> cow,
   Value<int?> bull,
-  Value<int?> semen,
+  Value<String?> semen,
 });
 
 final class $$ReproductionsTableReferences
@@ -5878,13 +5847,13 @@ final class $$ReproductionsTableReferences
         manager.$state.copyWith(prefetchedData: [item]));
   }
 
-  static $SemensTable _semenTable(_$AppDatabase db) => db.semens
-      .createAlias($_aliasNameGenerator(db.reproductions.semen, db.semens.id));
+  static $SemensTable _semenTable(_$AppDatabase db) => db.semens.createAlias(
+      $_aliasNameGenerator(db.reproductions.semen, db.semens.semenNumber));
 
   $$SemensTableProcessedTableManager? get semen {
     if ($_item.semen == null) return null;
     final manager = $$SemensTableTableManager($_db, $_db.semens)
-        .filter((f) => f.id($_item.semen!));
+        .filter((f) => f.semenNumber($_item.semen!));
     final item = $_typedResult.readTableOrNull(_semenTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -5982,7 +5951,7 @@ class $$ReproductionsTableFilterComposer
         composer: this,
         getCurrentColumn: (t) => t.semen,
         referencedTable: $db.semens,
-        getReferencedColumn: (t) => t.id,
+        getReferencedColumn: (t) => t.semenNumber,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
@@ -6087,7 +6056,7 @@ class $$ReproductionsTableOrderingComposer
         composer: this,
         getCurrentColumn: (t) => t.semen,
         referencedTable: $db.semens,
-        getReferencedColumn: (t) => t.id,
+        getReferencedColumn: (t) => t.semenNumber,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
@@ -6170,7 +6139,7 @@ class $$ReproductionsTableAnnotationComposer
         composer: this,
         getCurrentColumn: (t) => t.semen,
         referencedTable: $db.semens,
-        getReferencedColumn: (t) => t.id,
+        getReferencedColumn: (t) => t.semenNumber,
         builder: (joinBuilder,
                 {$addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer}) =>
@@ -6239,7 +6208,7 @@ class $$ReproductionsTableTableManager extends RootTableManager<
             Value<DateTime> date = const Value.absent(),
             Value<int> cow = const Value.absent(),
             Value<int?> bull = const Value.absent(),
-            Value<int?> semen = const Value.absent(),
+            Value<String?> semen = const Value.absent(),
           }) =>
               ReproductionsCompanion(
             id: id,
@@ -6257,7 +6226,7 @@ class $$ReproductionsTableTableManager extends RootTableManager<
             required DateTime date,
             required int cow,
             Value<int?> bull = const Value.absent(),
-            Value<int?> semen = const Value.absent(),
+            Value<String?> semen = const Value.absent(),
           }) =>
               ReproductionsCompanion.insert(
             id: id,
@@ -6323,8 +6292,9 @@ class $$ReproductionsTableTableManager extends RootTableManager<
                     currentColumn: table.semen,
                     referencedTable:
                         $$ReproductionsTableReferences._semenTable(db),
-                    referencedColumn:
-                        $$ReproductionsTableReferences._semenTable(db).id,
+                    referencedColumn: $$ReproductionsTableReferences
+                        ._semenTable(db)
+                        .semenNumber,
                   ) as T;
                 }
 

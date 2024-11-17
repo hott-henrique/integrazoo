@@ -178,9 +178,11 @@ enum ReproductionKind {
 }
 
 class Semens extends Table {
-  IntColumn get id => integer().autoIncrement()();
   TextColumn get semenNumber => text().withLength(min: 1)();
   TextColumn get bullName => text().withLength(min: 1)();
+
+  @override
+  Set<Column> get primaryKey => { semenNumber };
 }
 
 class Reproductions extends Table {
@@ -192,7 +194,7 @@ class Reproductions extends Table {
   IntColumn get cow => integer().references(Bovines, #id)();
 
   IntColumn get bull => integer().references(Bovines, #id).nullable()();
-  IntColumn get semen => integer().references(Semens, #id).nullable()();
+  TextColumn get semen => text().references(Semens, #semenNumber).nullable()();
 }
 
 class Discards extends Table {
@@ -245,6 +247,8 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'drift-integrazoo');
+    return driftDatabase(
+      name: 'drift-integrazoo'
+    );
   }
 }

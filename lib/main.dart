@@ -18,6 +18,8 @@ void main() async {
 
   database = AppDatabase();
 
+  await database.doWhenOpened((e) => e.runCustom("PRAGMA foreign_keys = ON;"));
+
   runApp(MaterialApp(
     localizationsDelegates: const [
       GlobalMaterialLocalizations.delegate,
