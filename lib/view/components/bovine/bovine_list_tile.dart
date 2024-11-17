@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-// import 'package:integrazoo/model/bovine/bovine.dart';
 import 'package:integrazoo/view/screens/bovine_detailed.dart';
+
 import 'package:integrazoo/database/database.dart';
 
 
