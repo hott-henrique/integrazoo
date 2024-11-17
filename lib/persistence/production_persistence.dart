@@ -15,7 +15,6 @@ class ProductionPersistence {
                           .getSingleOrNull();
 
     if (bovine == null || bovine.sex == Sex.male) {
-      inspect(bovine);
       return Future.error(Exception("Trying to register a production for a male or inexistent bovine. (bovineId = $bovineId)"));
     }
 

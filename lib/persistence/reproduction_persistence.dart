@@ -1,99 +1,88 @@
-// import 'package:sqflite/sqflite.dart';
-//
-// import 'package:integrazoo/persistence/database_connector.dart';
-//
-// import 'package:integrazoo/model/reproduction/artificial_insemination_attempt.dart';
-// import 'package:integrazoo/model/reproduction/coverage_attempt.dart';
-// import 'package:integrazoo/model/bovine/cow.dart';
-// import 'package:integrazoo/model/reproduction/attempt.dart';
-// import 'package:integrazoo/model/reproduction/semen.dart';
-//
-//
-// class ReproductionPersistence {
-//   ReproductionPersistence();
-//
-//   static onDatabaseCreate(Database db, int version) {
-//     db.execute("""
-//       CREATE TABLE IF NOT EXISTS ReproductionAttempt(
-//         id            INTEGER UNIQUE PRIMARY KEY,
-//         kind          INTEGER                                NOT NULL,
-//         cow_id        INTEGER                                NOT NULL,
-//         bull_id       INTEGER,
-//         semen         INTEGER,
-//         date          INTEGER                                NOT NULL,
-//         diagnostic    INTEGER                                NOT NULL,
-//
-//         FOREIGN KEY(cow_id) REFERENCES Bovine(id),
-//         FOREIGN KEY(bull_id) REFERENCES Bovine(id)
-//       );
-//     """);
-//   }
-//
-//   static Future<void> registerArtificialInseminationAttempt(ArtificialInseminationAttempt attempt) async {
-//     Database db = DatabaseConnector.db!;
-//
-//     try {
-//       attempt.id = await db.insert(
-//         'ReproductionAttempt',
-//         {
-//           'kind': 1,
-//           'cow_id': attempt.cow.id,
-//           'bull_id': null,
-//           'semen': attempt.semen.id,
-//           'date': attempt.date.millisecondsSinceEpoch,
-//           'diagnostic': attempt.diagnostic.index
-//         }
-//       );
-//     } catch (e) {
-//       return Future.error(e);
-//     }
-//   }
-//
-//   static Future<void> registerCoverageAttempt(CoverageAttempt attempt) async {
-//     Database db = DatabaseConnector.db!;
-//
-//     try {
-//       attempt.id = await db.insert(
-//         'ReproductionAttempt',
-//         {
-//           'kind': 0,
-//           'cow_id': attempt.cow.id,
-//           'bull_id': attempt.bull.id,
-//           'semen': null,
-//           'date': attempt.date.millisecondsSinceEpoch,
-//           'diagnostic': null
-//         }
-//       );
-//     } catch (e) {
-//       return Future.error(e);
-//     }
-//   }
-//
-//   static Future<List<ArtificialInseminationAttempt>> getAllArtificialInseminationAttemptFromCow(Cow c) async {
-//     Database db = DatabaseConnector.db!;
-//
-//     try {
-//       final data = await db.rawQuery("""
-//         SELECT R.id, R.kind, R.cow_id, R.bull_id, R.semen, R.date, R.diagnostic, S.id AS semen_id, S.number, S.name
-//         FROM ReproductionAttempt AS R
-//         JOIN Semen AS S ON R.semen = S.id
-//         WHERE R.cow_id = ?;
-//       """, [ c.id ]);
-//
-//       return data.map(
-//         (e) {
-//           return ArtificialInseminationAttempt(
-//             e['id'] as int,
-//             c,
-//             Semen(e['semen_id'] as int, e['number'] as String, e['name'] as String),
-//             DateTime.fromMillisecondsSinceEpoch(e['date'] as int),
-//             ReproductionDiagonostic.values[e['diagnostic'] as int]
-//           );
-//         }
-//       ).toList();
-//     } catch (e) {
-//       return Future.error(e);
-//     }
-//   }
-// }
-//
+import 'package:drift/drift.dart';
+
+import 'package:integrazoo/globals.dart';
+
+import 'package:integrazoo/database/database.dart';
+
+
+class ReproductionPersistence {
+  ReproductionPersistence();
+
+  static Future<void> registerArtificialInseminationAttempt(Reproduction r) async {
+    final bovine = await (database.select(database.bovines)
+                          ..where((b) => b.id.equals(r.cow)))
+                          .getSingleOrNull();
+
+    if (bovine == null || bovine.sex == Sex.male) {
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (r.cow = ${r.cow})"));
+    }
+
+    if (r.semen == null) {
+      return Future.error(Exception("Trying to register a artificial insemination without a semen. (r.semen = ${r.semen})"));
+    }
+
+    final companion = ReproductionsCompanion.insert(
+      cow: r.cow,
+      kind: ReproductionKind.artificialInsemination,
+      date: r.date,
+      semen: Value(r.semen),
+    );
+
+    await database.into(database.reproductions).insert(companion);
+  }
+
+  static Future<void> registerCoverageAttempt(Reproduction r) async {
+    final bovine = await (database.select(database.bovines)
+                          ..where((b) => b.id.equals(r.cow)))
+                          .getSingleOrNull();
+
+    if (bovine == null || bovine.sex == Sex.male) {
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (r.cow = ${r.cow})"));
+    }
+
+    if (r.bull == null) {
+      return Future.error(Exception("Trying to register a coverage without a bull. (r.bull = ${r.semen})"));
+    }
+
+    final companion = ReproductionsCompanion.insert(
+      cow: r.cow,
+      kind: ReproductionKind.artificialInsemination,
+      date: r.date,
+      bull: Value(r.bull),
+    );
+
+    await database.into(database.reproductions).insert(companion);
+  }
+
+  static Future<List<Reproduction>> getArtificialInseminationsFromCow(Bovine cow, int pageSz, int page) async {
+    final bovine = await (database.select(database.bovines)
+                          ..where((b) => b.id.equals(cow.id)))
+                          .getSingleOrNull();
+
+    if (bovine == null || bovine.sex == Sex.male) {
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = ${cow.id})"));
+    }
+
+    return (database.select(database.reproductions)
+                    ..where((r) => r.cow.equals(cow.id) & r.kind.equals(ReproductionKind.artificialInsemination.index))
+                    ..limit(pageSz, offset: page * pageSz)
+                    ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
+                    .get();
+  }
+
+  static Future<List<Reproduction>> getCoveragesFromCow(Bovine cow, int pageSz, int page) async {
+    final bovine = await (database.select(database.bovines)
+                          ..where((b) => b.id.equals(cow.id)))
+                          .getSingleOrNull();
+
+    if (bovine == null || bovine.sex == Sex.male) {
+      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = ${cow.id})"));
+    }
+
+    return (database.select(database.reproductions)
+                    ..where((r) => r.cow.equals(cow.id) & r.kind.equals(ReproductionKind.coverage.index))
+                    ..limit(pageSz, offset: page * pageSz)
+                    ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
+                    .get();
+  }
+}

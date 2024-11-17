@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:integrazoo/about_page.dart';
+// import 'package:integrazoo/about_page.dart';
 
-import 'package:integrazoo/view/forms/artificial_insemination.dart';
+// import 'package:integrazoo/view/forms/artificial_insemination.dart';
 import 'package:integrazoo/view/forms/coverage.dart';
 import 'package:integrazoo/view/forms/production.dart';
-import 'package:integrazoo/view/forms/dry_treatment.dart';
-import 'package:integrazoo/view/forms/treatment.dart';
+// import 'package:integrazoo/view/forms/dry_treatment.dart';
+// import 'package:integrazoo/view/forms/treatment.dart';
 
 import 'package:integrazoo/view/screens/analysis.dart';
-import 'package:integrazoo/view/screens/health_calendar.dart';
+// import 'package:integrazoo/view/screens/health_calendar.dart';
 import 'package:integrazoo/view/screens/herd.dart';
 
 
@@ -81,22 +81,22 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProductionForm()));
         }
       ),
-      // ExpansionTile(title: const Text("Reprodução"), children: [
-      //   ListTile(
-      //     title: const Text('Cobertura'),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
-      //     }
-      //   ),
-      //   ListTile(
-      //     title: const Text('Insiminação Artificial'),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
-      //     }
-      //   ),
-      // ]),
+      ExpansionTile(title: const Text("Reprodução"), children: [
+        ListTile(
+          title: const Text('Cobertura'),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
+          }
+        ),
+        // ListTile(
+        //   title: const Text('Insiminação Artificial'),
+        //   onTap: () {
+        //     Navigator.of(context).pop();
+        //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
+        //   }
+        // ),
+      ]),
       // ExpansionTile(title: const Text("Tratamentos"), children: [
       //   ListTile(
       //     title: const Text('Vacas Secas'),
