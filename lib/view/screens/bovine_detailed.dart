@@ -9,7 +9,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:integrazoo/base.dart';
 
-import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
+import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
 // import 'package:integrazoo/control/cow_production_controller.dart';
 // import 'package:integrazoo/control/reproduction_controller.dart';

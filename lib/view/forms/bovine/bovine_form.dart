@@ -5,23 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/button.dart';
-
-import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
+import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/database/database.dart';
 
 
-class BovineCreateForm extends StatefulWidget {
-  const BovineCreateForm({ super.key });
+class BovineForm extends StatefulWidget {
+  const BovineForm({ super.key });
 
   @override
-  CattleFormState createState() {
-    return CattleFormState();
+  BovineFormState createState() {
+    return BovineFormState();
   }
 }
 
-class CattleFormState extends State<BovineCreateForm> {
+class BovineFormState extends State<BovineForm> {
   final _formKey = GlobalKey<FormState>();
 
   String bovineName = "";
@@ -97,14 +96,22 @@ class CattleFormState extends State<BovineCreateForm> {
   }
 
   void createBovine() {
-    final bovine = Bovine.fromJson({ 'id': 0, 'name': bovineName, 'sex': bovineSex.index });
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
+
+      final bovine = Bovine.fromJson({ 'id': 0, 'name': bovineName, 'sex': bovineSex.index });
+
       BovineController.createBovine(bovine).then(
         (_) {
-          SnackBar snackBar = const SnackBar(content: Text('ANIMAL ADICIONADO'), showCloseIcon: true);
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Navigator.of(context).pop();
+          if (context.mounted) {
+            SnackBar snackBar = const SnackBar(
+              content: Text('Animal adicionado.'),
+              backgroundColor: Colors.green,
+              showCloseIcon: true
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.of(context).pop();
+          }
         },
         onError: (e) => setState(() => exception = e)
       );

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:integrazoo/base.dart';
 
-import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
+import 'package:integrazoo/view/components/bovine/bovine_list_tile.dart';
+import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 
-import 'package:integrazoo/view/forms/bovine_create.dart';
-import 'package:integrazoo/view/components/bovine/bovine_list_tile.dart';
+import 'package:integrazoo/view/forms/bovine/bovine_form.dart';
 
 import 'package:integrazoo/database/database.dart';
 
@@ -45,9 +45,9 @@ class _HerdScreen extends State<HerdScreen> {
             if (index == 0) {
               return ListTile(
                 leading: const Icon(Icons.add, weight: 200),
-                title: const Text("ADICIONAR ANIMAL"),
+                title: const Text("Adicionar animal"),
                 onTap: () => Navigator.of(context)
-                                      .push(MaterialPageRoute(builder: (context) => const BovineCreateForm()))
+                                      .push(MaterialPageRoute(builder: (context) => const BovineForm()))
                                       .then((value) => setState(() { }))
               );
             }

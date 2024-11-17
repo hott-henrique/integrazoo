@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/button.dart';
+import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 import 'package:integrazoo/view/components/bovine/bovine_dropdown.dart';
-import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
@@ -106,6 +106,7 @@ class _CoverageFormState extends State<CoverageForm> {
         'bull': bullId,
         'semen': "",
       });
+
       ReproductionController.registerCoverageAttempt(reproduction).then(
         (_) {
           SnackBar snackBar = const SnackBar(

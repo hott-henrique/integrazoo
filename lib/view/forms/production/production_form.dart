@@ -6,7 +6,7 @@ import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/button.dart';
 import 'package:integrazoo/view/components/bovine/bovine_dropdown.dart';
-import 'package:integrazoo/common/unexpected_error_alert_dialog.dart';
+import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/production_controller.dart';
@@ -136,6 +136,7 @@ class _ProductionFormState extends State<ProductionForm> {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
+
       final production = Production.fromJson({
         'id': 0,
         'cow': 0,
@@ -144,14 +145,15 @@ class _ProductionFormState extends State<ProductionForm> {
         'discard': productionDiscard,
         'volume': productionVolume,
       });
+
       ProductionController.recordMilkProduction(cowId, production).then(
         (_) {
-          SnackBar snackBar = const SnackBar(
-            content: Text('Produção registrada.'),
-            backgroundColor: Colors.green,
-            showCloseIcon: true
-          );
           if (context.mounted) {
+            SnackBar snackBar = const SnackBar(
+              content: Text('Produção registrada.'),
+              backgroundColor: Colors.green,
+              showCloseIcon: true
+            );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.of(context).pop();
           }

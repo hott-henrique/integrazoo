@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:integrazoo/model/health/treatment.dart';
 
+
 class TreatmentListTile extends StatelessWidget {
   final Treatment treatment;
 

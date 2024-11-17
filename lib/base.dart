@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:integrazoo/view/forms/artificial_insemination.dart';
-import 'package:integrazoo/view/forms/coverage.dart';
-import 'package:integrazoo/view/forms/production.dart';
-import 'package:integrazoo/view/forms/treatment.dart';
+import 'package:integrazoo/view/forms/reproduction/artificial_insemination_form.dart';
+import 'package:integrazoo/view/forms/reproduction/coverage_form.dart';
+import 'package:integrazoo/view/forms/production/production_form.dart';
+import 'package:integrazoo/view/forms/treatment/treatment_form.dart';
 
 import 'package:integrazoo/view/screens/about.dart';
 import 'package:integrazoo/view/screens/analysis.dart';
@@ -30,14 +30,15 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
     });
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('INTEGRAZOO', style: Theme.of(context).textTheme.titleLarge),
-          backgroundColor: Colors.green,
-          centerTitle: true,
-          leading: leadingBuilder,
-        ),
-        body: widget.body,
-        drawer: Drawer(child: _createDrawerItems()));
+      appBar: AppBar(
+        title: Text('INTEGRAZOO', style: Theme.of(context).textTheme.titleLarge),
+        backgroundColor: Colors.green,
+        centerTitle: true,
+        leading: leadingBuilder,
+      ),
+      body: widget.body,
+      drawer: Drawer(child: _createDrawerItems())
+    );
   }
 
   ListView _createDrawerItems() {
