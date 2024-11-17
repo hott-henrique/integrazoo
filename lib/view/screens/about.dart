@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:integrazoo/base.dart';
 
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({ super.key });
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({ super.key });
 
   @override
   Widget build(BuildContext context) {

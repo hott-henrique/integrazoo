@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-// import 'package:integrazoo/about_page.dart';
-
 import 'package:integrazoo/view/forms/artificial_insemination.dart';
 import 'package:integrazoo/view/forms/coverage.dart';
 import 'package:integrazoo/view/forms/production.dart';
 import 'package:integrazoo/view/forms/treatment.dart';
-// import 'package:integrazoo/view/forms/dry_treatment.dart';
 
+import 'package:integrazoo/view/screens/about.dart';
 import 'package:integrazoo/view/screens/analysis.dart';
-// import 'package:integrazoo/view/screens/health_calendar.dart';
+import 'package:integrazoo/view/screens/health_calendar.dart';
 import 'package:integrazoo/view/screens/herd.dart';
 
 
@@ -62,22 +60,21 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
       ListTile(
         title: const Text("Análise"),
         onTap: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AnalysisScreen()));
         }
       ),
       ListTile(
         title: const Text("Rebanho"),
         onTap: () {
-          Navigator.of(context).pop();
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const HerdScreen()));
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HerdScreen()));
         }
       ),
       ListTile(
         title: const Text("Produção"),
         onTap: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProductionForm()));
         }
       ),
@@ -85,14 +82,14 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
         ListTile(
           title: const Text('Cobertura'),
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CoverageForm()));
           }
         ),
         ListTile(
           title: const Text('Insiminação Artificial'),
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ArtificialInseminationForm()));
           }
         )
@@ -100,24 +97,24 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
       ListTile(
         title: const Text('Tratamento'),
         onTap: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TreatmentForm()));
         }
-      )
-      // ListTile(
-      //   title: const Text("Calendário Sanitário"),
-      //   onTap: () {
-      //     Navigator.of(context).pop();
-      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarScreen()));
-      //   }
-      // ),
-      // ListTile(
-      //   title: const Text("Sobre"),
-      //   onTap: () {
-      //     Navigator.of(context).pop();
-      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutPage()));
-      //   }
-      // ),
+      ),
+      ListTile(
+        title: const Text("Calendário Sanitário"),
+        onTap: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HealthCalendarScreen()));
+        }
+      ),
+      ListTile(
+        title: const Text("Sobre"),
+        onTap: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutScreen()));
+        }
+      ),
     ];
 
     return ListView(children: tiles);
