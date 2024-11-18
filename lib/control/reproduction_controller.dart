@@ -22,7 +22,11 @@ class ReproductionController {
     return ReproductionPersistence.getArtificialInseminationsFromCow(bovineId, pageSz, page);
   }
 
-  static Future<List<Reproduction>> getCoveragesFromCow(bovineId, int pageSz, int page) {
+  static Future<List<Reproduction>> getCoveragesFromCow(int bovineId, int pageSz, int page) {
     return ReproductionPersistence.getCoveragesFromCow(bovineId, pageSz, page);
+  }
+
+  static Future<void> confirmPregnancy(int reproductionId, SuccessfulReproduction s, Pregnancy p) {
+    return ReproductionPersistence.confirmPregnancy(reproductionId, s, p);
   }
 }

@@ -101,4 +101,16 @@ class ReproductionPersistence {
                     ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
                     .get();
   }
+
+  static Future<void> confirmPregnancy(int reproductionId, SuccessfulReproduction s, Pregnancy p) async {
+    final companion = SuccessfulReproductionsCompanion.insert(
+      reproduction: s.reproduction,
+      birthForecastStartingDate: s.birthForecastStartingDate,
+      birthForecastEndingDate: s.birthForecastEndingDate,
+      milkWaitTimeDurationInDays: s.milkWaitTimeDurationInDays,
+      observation: Value(s.observation),
+    );
+
+    await database.into(database.successfulReproductions).insert(companion);
+  }
 }

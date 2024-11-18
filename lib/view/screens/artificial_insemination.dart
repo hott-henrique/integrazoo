@@ -8,7 +8,7 @@ import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
-import 'package:integrazoo/view/forms/reproduction/pregnancy.dart';
+import 'package:integrazoo/view/forms/reproduction/pregnancy_form.dart';
 
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/semen_controller.dart';
@@ -168,11 +168,5 @@ class _ArtificialInseminationDetailedScreen extends State<ArtificialInsemination
         );
       }
     );
-  }
-
-  Future<Map<String, dynamic>> fetchData() async {
-    Map<String, dynamic> mappedData = {};
-
-    return Future.value(mappedData);
   }
 }
