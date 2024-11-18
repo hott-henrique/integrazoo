@@ -11,6 +11,7 @@ import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/treatment/treatment_list_tile.dart';
 import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
+import 'package:integrazoo/view/components/reproduction/coverage_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
 import 'package:integrazoo/control/production_controller.dart';
@@ -43,7 +44,7 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
     List<Widget> columnBody = List.empty(growable: true);
 
     columnBody.add(renderTreatments());
-    columnBody.add(renderArtificialInseminations());
+    columnBody.add(renderReproductions());
     columnBody.add(renderProduction());
 
     return IntegrazooBaseApp(body: ListView(children: columnBody));
@@ -58,6 +59,19 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         }
 
         final productions = snapshot.data!;
+
+        if (productions.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: const Card(child: AspectRatio(aspectRatio: 1.3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [  Text("Nenhuma produção registrada.", textAlign: TextAlign.center) ]
+              )
+            ))
+          );
+        }
 
         productions.sort((x1, x2) => x1.date.millisecondsSinceEpoch.compareTo(x2.date.millisecondsSinceEpoch));
 
@@ -120,6 +134,10 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
 
         treatmentsTiles.insert(0, const Text("Tratamentos"));
 
+        if (treatments.isEmpty) {
+          treatmentsTiles.add(const Text("Nenhum tratamento registrado."));
+        }
+
         return Container(
           padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
           child: Card(child: Column(children: treatmentsTiles))
@@ -128,9 +146,9 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
     );
   }
 
-  Widget renderArtificialInseminations() {
+  Widget renderReproductions() {
     return FutureBuilder(
-      future: ReproductionController.getArtificialInseminationAttemptsFromCow(widget.bovine.id, 3, 0),
+      future: ReproductionController.getReproductionsFromCow(widget.bovine.id, 3, 0),
       builder: (context, AsyncSnapshot<List<Reproduction>> snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
@@ -140,10 +158,16 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
 
         final reproductionsTiles = List<Widget>.generate(
           reproductions.length,
-          (index) => ArtificialInseminationAttemptListTile(attempt: reproductions[index])
+          (index) {
+            if (reproductions[index].kind == ReproductionKind.artificialInsemination) {
+              return ArtificialInseminationAttemptListTile(attempt: reproductions[index]);
+            } else {
+              return CoverageAttemptListTile(attempt: reproductions[index]);
+            }
+          }
         );
 
-        reproductionsTiles.insert(0, const Text("Inseminações Artificiais"));
+        reproductionsTiles.insert(0, const Text("Reproduções"));
 
         return Container(
           padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),

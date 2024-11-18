@@ -46,12 +46,28 @@ class ReproductionPersistence {
 
     final companion = ReproductionsCompanion.insert(
       cow: r.cow,
-      kind: ReproductionKind.artificialInsemination,
+      kind: ReproductionKind.coverage,
       date: r.date,
       bull: Value(r.bull),
     );
 
     await database.into(database.reproductions).insert(companion);
+  }
+
+  static Future<List<Reproduction>> getReproductionsFromCow(int cowId, int pageSz, int page) async {
+    final bovine = await (database.select(database.bovines)
+                          ..where((b) => b.id.equals(cowId)))
+                          .getSingleOrNull();
+
+    if (bovine == null || bovine.sex == Sex.male) {
+      return Future.error(Exception("Trying to get reproductions for a male or inexistent bovine. (cow.id = $cowId)"));
+    }
+
+    return (database.select(database.reproductions)
+                    ..where((r) => r.cow.equals(cowId))
+                    ..limit(pageSz, offset: page * pageSz)
+                    ..orderBy([ (b) => OrderingTerm(expression: b.date, mode: OrderingMode.desc) ]))
+                    .get();
   }
 
   static Future<List<Reproduction>> getArtificialInseminationsFromCow(int cowId, int pageSz, int page) async {
@@ -60,7 +76,7 @@ class ReproductionPersistence {
                           .getSingleOrNull();
 
     if (bovine == null || bovine.sex == Sex.male) {
-      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = $cowId)"));
+      return Future.error(Exception("Trying to get reproductions for a male or inexistent bovine. (cow.id = $cowId)"));
     }
 
     return (database.select(database.reproductions)
@@ -76,7 +92,7 @@ class ReproductionPersistence {
                           .getSingleOrNull();
 
     if (bovine == null || bovine.sex == Sex.male) {
-      return Future.error(Exception("Trying to register a reproduction for a male or inexistent bovine. (cow.id = $cowId)"));
+      return Future.error(Exception("Trying to get reproductions for a male or inexistent bovine. (cow.id = $cowId)"));
     }
 
     return (database.select(database.reproductions)

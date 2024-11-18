@@ -25,4 +25,8 @@ class BovinePersistence {
   static Future<void> updateBovine(Bovine bovine) async {
     await database.into(database.bovines).insertOnConflictUpdate(bovine);
   }
+
+  static Future<Bovine> getBovine(int bovineId) async {
+    return (database.select(database.bovines)..where((b) => b.id.equals(bovineId))).getSingle();
+  }
 }

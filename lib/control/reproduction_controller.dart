@@ -14,6 +14,10 @@ class ReproductionController {
     return ReproductionPersistence.registerCoverageAttempt(attempt);
   }
 
+  static Future<List<Reproduction>> getReproductionsFromCow(int bovineId, int pageSz, int page) {
+    return ReproductionPersistence.getReproductionsFromCow(bovineId, pageSz, page);
+  }
+
   static Future<List<Reproduction>> getArtificialInseminationAttemptsFromCow(int bovineId, int pageSz, int page) {
     return ReproductionPersistence.getArtificialInseminationsFromCow(bovineId, pageSz, page);
   }

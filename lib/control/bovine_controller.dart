@@ -21,4 +21,8 @@ class BovineController {
   static Future<void> createBovine(Bovine bovine) {
     return BovinePersistence.createBovine(bovine);
   }
+
+  static Future<Bovine> getBovine(int bovineId) {
+    return BovinePersistence.getBovine(bovineId);
+  }
 }

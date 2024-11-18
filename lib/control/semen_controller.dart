@@ -9,4 +9,8 @@ class SemenController {
   static Future<int> insertSemen(Semen s) {
     return SemenPersistence.insertSemen(s);
   }
+
+  static Future<Semen> getSemen(String semenNumber) {
+    return SemenPersistence.getSemen(semenNumber);
+  }
 }
