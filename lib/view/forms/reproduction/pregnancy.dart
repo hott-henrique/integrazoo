@@ -4,11 +4,11 @@ import 'package:integrazoo/base.dart';
 
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
 
-import 'package:integrazoo/model/reproduction/attempt.dart';
+import 'package:integrazoo/database/database.dart';
 
 
 class PregnancyForm extends StatefulWidget {
-  final ReproductionAttempt attempt;
+  final Reproduction attempt;
 
   const PregnancyForm({ super.key, required this.attempt });
 
@@ -36,7 +36,7 @@ class _PregnancyFormState extends State<PregnancyForm> {
         child: Column(children: [
           Row(children: [
             const Expanded(child: Text("Vaca")),
-            Expanded(child: Text(widget.attempt.cow.name, textAlign: TextAlign.right)),
+            Expanded(child: Text(widget.attempt.cow.toString(), textAlign: TextAlign.right)),
           ]),
         ])
       )

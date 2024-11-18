@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-// import 'package:integrazoo/view/screens/artificial_insemination.dart';
+import 'package:integrazoo/view/screens/artificial_insemination.dart';
 
 import 'package:integrazoo/control/semen_controller.dart';
 
@@ -24,7 +24,7 @@ class ArtificialInseminationAttemptListTile extends StatelessWidget {
       subtitle: renderSemen(),
       trailing: Text(formatter.format(attempt.date)),
       onTap: () {
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(attempt: attempt)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(attempt: attempt)));
       }
     );
   }
