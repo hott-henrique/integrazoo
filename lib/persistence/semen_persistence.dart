@@ -1,76 +1,20 @@
-import 'package:sqflite/sqflite.dart';
+import 'package:integrazoo/globals.dart';
 
-import 'package:integrazoo/persistence/database_connector.dart';
-
-import 'package:integrazoo/model/reproduction/semen.dart';
+import 'package:integrazoo/database/database.dart';
 
 
 class SemenPersistence {
   SemenPersistence();
 
-  static onDatabaseCreate(Database db, int version) {
-    db.execute("""
-      CREATE TABLE IF NOT EXISTS Semen(
-        id            INTEGER UNIQUE PRIMARY KEY,
-        number        TEXT                                   NOT NULL,
-        name          TEXT                                   NOT NULL
-      );
-    """);
+  static Future<int> insertSemen(Semen s) async {
+    return database.into(database.semens).insertOnConflictUpdate(
+      SemensCompanion.insert(semenNumber: s.semenNumber, bullName: s.bullName)
+    );
   }
 
-  static Future<void> insertSemen(Semen s) async {
-    Database db = DatabaseConnector.db!;
-    try {
-      s.id = await db.insert(
-        'Semen',
-        {
-          'number': s.number,
-          'name': s.bullsName
-        }
-      );
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
-
-  static Future<bool> isSemenPresent(Semen s) async {
-    Database db = DatabaseConnector.db!;
-    try {
-      final data = await db.query(
-        'Semen',
-        where: 'number = ?',
-        whereArgs: [ s.number ],
-        columns: [ 'id' ],
-        limit: 1
-      );
-
-      if (data.isNotEmpty) {
-        s.id = data[0]['id'] as int;
-      }
-
-      return data.isNotEmpty;
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
-
-  static Future<Semen?> getSemenById(int id) async {
-    Database db = DatabaseConnector.db!;
-    try {
-      final data = await db.query(
-        'Semen',
-        where: 'id = ?',
-        whereArgs: [ id ],
-        columns: [ 'id', 'number', 'name' ]
-      );
-
-      if (data.isEmpty) {
-        return null;
-      }
-
-      return Semen(data[0]['id'] as int, data[0]['number'] as String, data[0]['name'] as String);
-    } catch (e) {
-      return Future.error(e);
-    }
+  static Future<Semen> getSemen(String semenNumber) async {
+    return (database.select(database.semens)
+                    ..where((s) => s.semenNumber.equals(semenNumber)))
+                    .getSingle();
   }
 }

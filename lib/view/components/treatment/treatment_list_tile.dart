@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:integrazoo/model/health/treatment.dart';
+import 'package:integrazoo/database/database.dart';
+
 
 class TreatmentListTile extends StatelessWidget {
   final Treatment treatment;
@@ -16,7 +17,7 @@ class TreatmentListTile extends StatelessWidget {
     return ListTile(
       title: Text(treatment.medicine),
       subtitle: Text(treatment.reason),
-      trailing: Text('${formatter.format(treatment.period.start)} - ${formatter.format(treatment.period.end)}'),
+      trailing: Text('${formatter.format(treatment.startingDate)} - ${formatter.format(treatment.endingDate)}'),
       onTap: () {}
     );
   }

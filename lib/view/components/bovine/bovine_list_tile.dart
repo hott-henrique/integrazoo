@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:integrazoo/model/bovine/bovine.dart';
 import 'package:integrazoo/view/screens/bovine_detailed.dart';
+
+import 'package:integrazoo/database/database.dart';
 
 
 class BovineListTile extends StatelessWidget {
-  final Bovine cattle;
+  final Bovine bovine;
 
-  const BovineListTile({ super.key, required this.cattle });
+  const BovineListTile({ super.key, required this.bovine });
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +19,11 @@ class BovineListTile extends StatelessWidget {
     const ImageIcon bullHead = ImageIcon(AssetImage("assets/icons/bull-head.png"));
 
     return ListTile(
-      title: Text(cattle.name),
-      subtitle: cattle.birth == null ? null : Text('Data de Nascimento: ${formatter.format(cattle.birth!.date)}'),
-      leading: cattle.sex == Sex.male ? bullHead : cowHead,
+      title: Text(bovine.name),
+      // subtitle: cattle.birth == null ? null : Text('Data de Nascimento: ${formatter.format(cattle.birth!.date)}'),
+      leading: bovine.sex == Sex.male ? bullHead : cowHead,
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => BovineDetailedScreen(cattle: cattle)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => BovineDetailedScreen(bovine: bovine)));
       }
     );
   }

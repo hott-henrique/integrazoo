@@ -1,4 +1,4 @@
-import 'package:integrazoo/model/bovine/bovine.dart';
+import 'package:integrazoo/database/database.dart';
 
 
 abstract class HealthCalendarEvent {
