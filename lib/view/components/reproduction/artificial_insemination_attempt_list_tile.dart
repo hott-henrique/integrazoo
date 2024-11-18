@@ -39,7 +39,7 @@ class ArtificialInseminationAttemptListTile extends StatelessWidget {
 
         final semen = snapshot.data!;
 
-        return Text('Semen: ${semen.bullName} (${semen.semenNumber})');
+        return Text('Semen: ${semen.bullName} #${semen.semenNumber}');
       }
     );
   }

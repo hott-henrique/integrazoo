@@ -18,6 +18,8 @@ import 'package:integrazoo/control/production_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
 import 'package:integrazoo/control/treatment_controller.dart';
 
+import 'package:integrazoo/view/components/button.dart';
+
 import 'package:integrazoo/database/database.dart';
 
 
@@ -46,6 +48,14 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
     columnBody.add(renderTreatments());
     columnBody.add(renderReproductions());
     columnBody.add(renderProduction());
+    columnBody.add(Container(
+      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+      child: Button(
+        color: Colors.red,
+        text: "Descartar",
+        onPressed: () {}
+      )
+    ));
 
     return IntegrazooBaseApp(body: ListView(children: columnBody));
   }
@@ -135,7 +145,7 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         treatmentsTiles.insert(0, const Text("Tratamentos"));
 
         if (treatments.isEmpty) {
-          treatmentsTiles.add(const Text("Nenhum tratamento registrado."));
+          treatmentsTiles.add(const ListTile(title: Text("Nenhum tratamento registrado.", textAlign: TextAlign.center), dense: true));
         }
 
         return Container(
@@ -166,6 +176,10 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
             }
           }
         );
+
+        if (reproductions.isEmpty) {
+          reproductionsTiles.add(const ListTile(title: Text("Nenhum tratamento registrado.", textAlign: TextAlign.center), dense: true));
+        }
 
         reproductionsTiles.insert(0, const Text("Reproduções"));
 

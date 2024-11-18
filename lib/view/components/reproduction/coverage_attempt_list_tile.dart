@@ -39,7 +39,7 @@ class CoverageAttemptListTile extends StatelessWidget {
 
         final bull = snapshot.data!;
 
-        return Text('Reprodutor: ${bull.name} - ${bull.id}');
+        return Text('Reprodutor: ${bull.name} #${bull.id}');
       }
     );
   }
