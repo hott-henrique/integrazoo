@@ -25,4 +25,16 @@ class BovineController {
   static Future<Bovine> getBovine(int bovineId) {
     return BovinePersistence.getBovine(bovineId);
   }
+
+  static Future<void> discardBovine(Discard discard) async {
+    return BovinePersistence.discardBovine(discard);
+  }
+
+  static Future<bool> wasDiscarded(int bovineId) async {
+    return BovinePersistence.wasDiscarded(bovineId);
+  }
+
+  static Future<void> cancelDiscard(int bovineId) async {
+    return BovinePersistence.cancelDiscard(bovineId);
+  }
 }
