@@ -2552,7 +2552,7 @@ class $DiscardsTable extends Discards with TableInfo<$DiscardsTable, Discard> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES bovines (id)'));
+          GeneratedColumn.constraintIsAlways('UNIQUE REFERENCES bovines (id)'));
   @override
   List<GeneratedColumn> get $columns => [id, reason, observation, bovine];
   @override

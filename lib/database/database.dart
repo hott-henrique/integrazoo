@@ -202,7 +202,7 @@ class Discards extends Table {
   IntColumn get reason => intEnum<DiscardReason>()();
   TextColumn get observation => text().nullable()();
 
-  IntColumn get bovine => integer().references(Bovines, #id)();
+  IntColumn get bovine => integer().unique().references(Bovines, #id)();
 }
 
 class SuccessfulReproductions extends Table {
