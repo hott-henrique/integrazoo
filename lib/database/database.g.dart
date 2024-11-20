@@ -2790,409 +2790,6 @@ class DiscardsCompanion extends UpdateCompanion<Discard> {
   }
 }
 
-class $SuccessfulReproductionsTable extends SuccessfulReproductions
-    with TableInfo<$SuccessfulReproductionsTable, SuccessfulReproduction> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $SuccessfulReproductionsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _observationMeta =
-      const VerificationMeta('observation');
-  @override
-  late final GeneratedColumn<String> observation = GeneratedColumn<String>(
-      'observation', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _birthForecastStartingDateMeta =
-      const VerificationMeta('birthForecastStartingDate');
-  @override
-  late final GeneratedColumn<DateTime> birthForecastStartingDate =
-      GeneratedColumn<DateTime>(
-          'birth_forecast_starting_date', aliasedName, false,
-          type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _birthForecastEndingDateMeta =
-      const VerificationMeta('birthForecastEndingDate');
-  @override
-  late final GeneratedColumn<DateTime> birthForecastEndingDate =
-      GeneratedColumn<DateTime>(
-          'birth_forecast_ending_date', aliasedName, false,
-          type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _milkWaitTimeDurationInDaysMeta =
-      const VerificationMeta('milkWaitTimeDurationInDays');
-  @override
-  late final GeneratedColumn<int> milkWaitTimeDurationInDays =
-      GeneratedColumn<int>(
-          'milk_wait_time_duration_in_days', aliasedName, false,
-          check: () => ComparableExpr(milkWaitTimeDurationInDays)
-              .isBiggerThan(const Constant(0)),
-          type: DriftSqlType.int,
-          requiredDuringInsert: true);
-  static const VerificationMeta _reproductionMeta =
-      const VerificationMeta('reproduction');
-  @override
-  late final GeneratedColumn<int> reproduction = GeneratedColumn<int>(
-      'reproduction', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES reproductions (id)'));
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        observation,
-        birthForecastStartingDate,
-        birthForecastEndingDate,
-        milkWaitTimeDurationInDays,
-        reproduction
-      ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'successful_reproductions';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<SuccessfulReproduction> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('observation')) {
-      context.handle(
-          _observationMeta,
-          observation.isAcceptableOrUnknown(
-              data['observation']!, _observationMeta));
-    }
-    if (data.containsKey('birth_forecast_starting_date')) {
-      context.handle(
-          _birthForecastStartingDateMeta,
-          birthForecastStartingDate.isAcceptableOrUnknown(
-              data['birth_forecast_starting_date']!,
-              _birthForecastStartingDateMeta));
-    } else if (isInserting) {
-      context.missing(_birthForecastStartingDateMeta);
-    }
-    if (data.containsKey('birth_forecast_ending_date')) {
-      context.handle(
-          _birthForecastEndingDateMeta,
-          birthForecastEndingDate.isAcceptableOrUnknown(
-              data['birth_forecast_ending_date']!,
-              _birthForecastEndingDateMeta));
-    } else if (isInserting) {
-      context.missing(_birthForecastEndingDateMeta);
-    }
-    if (data.containsKey('milk_wait_time_duration_in_days')) {
-      context.handle(
-          _milkWaitTimeDurationInDaysMeta,
-          milkWaitTimeDurationInDays.isAcceptableOrUnknown(
-              data['milk_wait_time_duration_in_days']!,
-              _milkWaitTimeDurationInDaysMeta));
-    } else if (isInserting) {
-      context.missing(_milkWaitTimeDurationInDaysMeta);
-    }
-    if (data.containsKey('reproduction')) {
-      context.handle(
-          _reproductionMeta,
-          reproduction.isAcceptableOrUnknown(
-              data['reproduction']!, _reproductionMeta));
-    } else if (isInserting) {
-      context.missing(_reproductionMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  SuccessfulReproduction map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SuccessfulReproduction(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      observation: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}observation']),
-      birthForecastStartingDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime,
-          data['${effectivePrefix}birth_forecast_starting_date'])!,
-      birthForecastEndingDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime,
-          data['${effectivePrefix}birth_forecast_ending_date'])!,
-      milkWaitTimeDurationInDays: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}milk_wait_time_duration_in_days'])!,
-      reproduction: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}reproduction'])!,
-    );
-  }
-
-  @override
-  $SuccessfulReproductionsTable createAlias(String alias) {
-    return $SuccessfulReproductionsTable(attachedDatabase, alias);
-  }
-}
-
-class SuccessfulReproduction extends DataClass
-    implements Insertable<SuccessfulReproduction> {
-  final int id;
-  final String? observation;
-  final DateTime birthForecastStartingDate;
-  final DateTime birthForecastEndingDate;
-  final int milkWaitTimeDurationInDays;
-  final int reproduction;
-  const SuccessfulReproduction(
-      {required this.id,
-      this.observation,
-      required this.birthForecastStartingDate,
-      required this.birthForecastEndingDate,
-      required this.milkWaitTimeDurationInDays,
-      required this.reproduction});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || observation != null) {
-      map['observation'] = Variable<String>(observation);
-    }
-    map['birth_forecast_starting_date'] =
-        Variable<DateTime>(birthForecastStartingDate);
-    map['birth_forecast_ending_date'] =
-        Variable<DateTime>(birthForecastEndingDate);
-    map['milk_wait_time_duration_in_days'] =
-        Variable<int>(milkWaitTimeDurationInDays);
-    map['reproduction'] = Variable<int>(reproduction);
-    return map;
-  }
-
-  SuccessfulReproductionsCompanion toCompanion(bool nullToAbsent) {
-    return SuccessfulReproductionsCompanion(
-      id: Value(id),
-      observation: observation == null && nullToAbsent
-          ? const Value.absent()
-          : Value(observation),
-      birthForecastStartingDate: Value(birthForecastStartingDate),
-      birthForecastEndingDate: Value(birthForecastEndingDate),
-      milkWaitTimeDurationInDays: Value(milkWaitTimeDurationInDays),
-      reproduction: Value(reproduction),
-    );
-  }
-
-  factory SuccessfulReproduction.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SuccessfulReproduction(
-      id: serializer.fromJson<int>(json['id']),
-      observation: serializer.fromJson<String?>(json['observation']),
-      birthForecastStartingDate:
-          serializer.fromJson<DateTime>(json['birthForecastStartingDate']),
-      birthForecastEndingDate:
-          serializer.fromJson<DateTime>(json['birthForecastEndingDate']),
-      milkWaitTimeDurationInDays:
-          serializer.fromJson<int>(json['milkWaitTimeDurationInDays']),
-      reproduction: serializer.fromJson<int>(json['reproduction']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'observation': serializer.toJson<String?>(observation),
-      'birthForecastStartingDate':
-          serializer.toJson<DateTime>(birthForecastStartingDate),
-      'birthForecastEndingDate':
-          serializer.toJson<DateTime>(birthForecastEndingDate),
-      'milkWaitTimeDurationInDays':
-          serializer.toJson<int>(milkWaitTimeDurationInDays),
-      'reproduction': serializer.toJson<int>(reproduction),
-    };
-  }
-
-  SuccessfulReproduction copyWith(
-          {int? id,
-          Value<String?> observation = const Value.absent(),
-          DateTime? birthForecastStartingDate,
-          DateTime? birthForecastEndingDate,
-          int? milkWaitTimeDurationInDays,
-          int? reproduction}) =>
-      SuccessfulReproduction(
-        id: id ?? this.id,
-        observation: observation.present ? observation.value : this.observation,
-        birthForecastStartingDate:
-            birthForecastStartingDate ?? this.birthForecastStartingDate,
-        birthForecastEndingDate:
-            birthForecastEndingDate ?? this.birthForecastEndingDate,
-        milkWaitTimeDurationInDays:
-            milkWaitTimeDurationInDays ?? this.milkWaitTimeDurationInDays,
-        reproduction: reproduction ?? this.reproduction,
-      );
-  SuccessfulReproduction copyWithCompanion(
-      SuccessfulReproductionsCompanion data) {
-    return SuccessfulReproduction(
-      id: data.id.present ? data.id.value : this.id,
-      observation:
-          data.observation.present ? data.observation.value : this.observation,
-      birthForecastStartingDate: data.birthForecastStartingDate.present
-          ? data.birthForecastStartingDate.value
-          : this.birthForecastStartingDate,
-      birthForecastEndingDate: data.birthForecastEndingDate.present
-          ? data.birthForecastEndingDate.value
-          : this.birthForecastEndingDate,
-      milkWaitTimeDurationInDays: data.milkWaitTimeDurationInDays.present
-          ? data.milkWaitTimeDurationInDays.value
-          : this.milkWaitTimeDurationInDays,
-      reproduction: data.reproduction.present
-          ? data.reproduction.value
-          : this.reproduction,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('SuccessfulReproduction(')
-          ..write('id: $id, ')
-          ..write('observation: $observation, ')
-          ..write('birthForecastStartingDate: $birthForecastStartingDate, ')
-          ..write('birthForecastEndingDate: $birthForecastEndingDate, ')
-          ..write('milkWaitTimeDurationInDays: $milkWaitTimeDurationInDays, ')
-          ..write('reproduction: $reproduction')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, observation, birthForecastStartingDate,
-      birthForecastEndingDate, milkWaitTimeDurationInDays, reproduction);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SuccessfulReproduction &&
-          other.id == this.id &&
-          other.observation == this.observation &&
-          other.birthForecastStartingDate == this.birthForecastStartingDate &&
-          other.birthForecastEndingDate == this.birthForecastEndingDate &&
-          other.milkWaitTimeDurationInDays == this.milkWaitTimeDurationInDays &&
-          other.reproduction == this.reproduction);
-}
-
-class SuccessfulReproductionsCompanion
-    extends UpdateCompanion<SuccessfulReproduction> {
-  final Value<int> id;
-  final Value<String?> observation;
-  final Value<DateTime> birthForecastStartingDate;
-  final Value<DateTime> birthForecastEndingDate;
-  final Value<int> milkWaitTimeDurationInDays;
-  final Value<int> reproduction;
-  const SuccessfulReproductionsCompanion({
-    this.id = const Value.absent(),
-    this.observation = const Value.absent(),
-    this.birthForecastStartingDate = const Value.absent(),
-    this.birthForecastEndingDate = const Value.absent(),
-    this.milkWaitTimeDurationInDays = const Value.absent(),
-    this.reproduction = const Value.absent(),
-  });
-  SuccessfulReproductionsCompanion.insert({
-    this.id = const Value.absent(),
-    this.observation = const Value.absent(),
-    required DateTime birthForecastStartingDate,
-    required DateTime birthForecastEndingDate,
-    required int milkWaitTimeDurationInDays,
-    required int reproduction,
-  })  : birthForecastStartingDate = Value(birthForecastStartingDate),
-        birthForecastEndingDate = Value(birthForecastEndingDate),
-        milkWaitTimeDurationInDays = Value(milkWaitTimeDurationInDays),
-        reproduction = Value(reproduction);
-  static Insertable<SuccessfulReproduction> custom({
-    Expression<int>? id,
-    Expression<String>? observation,
-    Expression<DateTime>? birthForecastStartingDate,
-    Expression<DateTime>? birthForecastEndingDate,
-    Expression<int>? milkWaitTimeDurationInDays,
-    Expression<int>? reproduction,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (observation != null) 'observation': observation,
-      if (birthForecastStartingDate != null)
-        'birth_forecast_starting_date': birthForecastStartingDate,
-      if (birthForecastEndingDate != null)
-        'birth_forecast_ending_date': birthForecastEndingDate,
-      if (milkWaitTimeDurationInDays != null)
-        'milk_wait_time_duration_in_days': milkWaitTimeDurationInDays,
-      if (reproduction != null) 'reproduction': reproduction,
-    });
-  }
-
-  SuccessfulReproductionsCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? observation,
-      Value<DateTime>? birthForecastStartingDate,
-      Value<DateTime>? birthForecastEndingDate,
-      Value<int>? milkWaitTimeDurationInDays,
-      Value<int>? reproduction}) {
-    return SuccessfulReproductionsCompanion(
-      id: id ?? this.id,
-      observation: observation ?? this.observation,
-      birthForecastStartingDate:
-          birthForecastStartingDate ?? this.birthForecastStartingDate,
-      birthForecastEndingDate:
-          birthForecastEndingDate ?? this.birthForecastEndingDate,
-      milkWaitTimeDurationInDays:
-          milkWaitTimeDurationInDays ?? this.milkWaitTimeDurationInDays,
-      reproduction: reproduction ?? this.reproduction,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (observation.present) {
-      map['observation'] = Variable<String>(observation.value);
-    }
-    if (birthForecastStartingDate.present) {
-      map['birth_forecast_starting_date'] =
-          Variable<DateTime>(birthForecastStartingDate.value);
-    }
-    if (birthForecastEndingDate.present) {
-      map['birth_forecast_ending_date'] =
-          Variable<DateTime>(birthForecastEndingDate.value);
-    }
-    if (milkWaitTimeDurationInDays.present) {
-      map['milk_wait_time_duration_in_days'] =
-          Variable<int>(milkWaitTimeDurationInDays.value);
-    }
-    if (reproduction.present) {
-      map['reproduction'] = Variable<int>(reproduction.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('SuccessfulReproductionsCompanion(')
-          ..write('id: $id, ')
-          ..write('observation: $observation, ')
-          ..write('birthForecastStartingDate: $birthForecastStartingDate, ')
-          ..write('birthForecastEndingDate: $birthForecastEndingDate, ')
-          ..write('milkWaitTimeDurationInDays: $milkWaitTimeDurationInDays, ')
-          ..write('reproduction: $reproduction')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $PregnanciesTable extends Pregnancies
     with TableInfo<$PregnanciesTable, Pregnancy> {
   @override
@@ -3213,43 +2810,52 @@ class $PregnanciesTable extends Pregnancies
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
       'date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _dryingForecastStartingDateMeta =
-      const VerificationMeta('dryingForecastStartingDate');
+  static const VerificationMeta _dryingForecastMeta =
+      const VerificationMeta('dryingForecast');
   @override
-  late final GeneratedColumn<DateTime> dryingForecastStartingDate =
-      GeneratedColumn<DateTime>(
-          'drying_forecast_starting_date', aliasedName, false,
+  late final GeneratedColumn<DateTime> dryingForecast =
+      GeneratedColumn<DateTime>('drying_forecast', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _dryingForecastEndingDateMeta =
-      const VerificationMeta('dryingForecastEndingDate');
+  static const VerificationMeta _birthForecastMeta =
+      const VerificationMeta('birthForecast');
   @override
-  late final GeneratedColumn<DateTime> dryingForecastEndingDate =
-      GeneratedColumn<DateTime>(
-          'drying_forecast_ending_date', aliasedName, false,
+  late final GeneratedColumn<DateTime> birthForecast =
+      GeneratedColumn<DateTime>('birth_forecast', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _milkWaitTimeDurationInDaysMeta =
+      const VerificationMeta('milkWaitTimeDurationInDays');
+  @override
+  late final GeneratedColumn<int> milkWaitTimeDurationInDays =
+      GeneratedColumn<int>(
+          'milk_wait_time_duration_in_days', aliasedName, false,
+          check: () => ComparableExpr(milkWaitTimeDurationInDays)
+              .isBiggerThan(const Constant(0)),
+          type: DriftSqlType.int,
+          requiredDuringInsert: true);
   static const VerificationMeta _observationMeta =
       const VerificationMeta('observation');
   @override
   late final GeneratedColumn<String> observation = GeneratedColumn<String>(
       'observation', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _successfulReproductionMeta =
-      const VerificationMeta('successfulReproduction');
+  static const VerificationMeta _reproductionMeta =
+      const VerificationMeta('reproduction');
   @override
-  late final GeneratedColumn<int> successfulReproduction = GeneratedColumn<int>(
-      'successful_reproduction', aliasedName, false,
+  late final GeneratedColumn<int> reproduction = GeneratedColumn<int>(
+      'reproduction', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'REFERENCES successful_reproductions (id)'));
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES reproductions (id)'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
         date,
-        dryingForecastStartingDate,
-        dryingForecastEndingDate,
+        dryingForecast,
+        birthForecast,
+        milkWaitTimeDurationInDays,
         observation,
-        successfulReproduction
+        reproduction
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3270,23 +2876,30 @@ class $PregnanciesTable extends Pregnancies
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
-    if (data.containsKey('drying_forecast_starting_date')) {
+    if (data.containsKey('drying_forecast')) {
       context.handle(
-          _dryingForecastStartingDateMeta,
-          dryingForecastStartingDate.isAcceptableOrUnknown(
-              data['drying_forecast_starting_date']!,
-              _dryingForecastStartingDateMeta));
+          _dryingForecastMeta,
+          dryingForecast.isAcceptableOrUnknown(
+              data['drying_forecast']!, _dryingForecastMeta));
     } else if (isInserting) {
-      context.missing(_dryingForecastStartingDateMeta);
+      context.missing(_dryingForecastMeta);
     }
-    if (data.containsKey('drying_forecast_ending_date')) {
+    if (data.containsKey('birth_forecast')) {
       context.handle(
-          _dryingForecastEndingDateMeta,
-          dryingForecastEndingDate.isAcceptableOrUnknown(
-              data['drying_forecast_ending_date']!,
-              _dryingForecastEndingDateMeta));
+          _birthForecastMeta,
+          birthForecast.isAcceptableOrUnknown(
+              data['birth_forecast']!, _birthForecastMeta));
     } else if (isInserting) {
-      context.missing(_dryingForecastEndingDateMeta);
+      context.missing(_birthForecastMeta);
+    }
+    if (data.containsKey('milk_wait_time_duration_in_days')) {
+      context.handle(
+          _milkWaitTimeDurationInDaysMeta,
+          milkWaitTimeDurationInDays.isAcceptableOrUnknown(
+              data['milk_wait_time_duration_in_days']!,
+              _milkWaitTimeDurationInDaysMeta));
+    } else if (isInserting) {
+      context.missing(_milkWaitTimeDurationInDaysMeta);
     }
     if (data.containsKey('observation')) {
       context.handle(
@@ -3294,13 +2907,13 @@ class $PregnanciesTable extends Pregnancies
           observation.isAcceptableOrUnknown(
               data['observation']!, _observationMeta));
     }
-    if (data.containsKey('successful_reproduction')) {
+    if (data.containsKey('reproduction')) {
       context.handle(
-          _successfulReproductionMeta,
-          successfulReproduction.isAcceptableOrUnknown(
-              data['successful_reproduction']!, _successfulReproductionMeta));
+          _reproductionMeta,
+          reproduction.isAcceptableOrUnknown(
+              data['reproduction']!, _reproductionMeta));
     } else if (isInserting) {
-      context.missing(_successfulReproductionMeta);
+      context.missing(_reproductionMeta);
     }
     return context;
   }
@@ -3315,16 +2928,17 @@ class $PregnanciesTable extends Pregnancies
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       date: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
-      dryingForecastStartingDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime,
-          data['${effectivePrefix}drying_forecast_starting_date'])!,
-      dryingForecastEndingDate: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime,
-          data['${effectivePrefix}drying_forecast_ending_date'])!,
+      dryingForecast: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}drying_forecast'])!,
+      birthForecast: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}birth_forecast'])!,
+      milkWaitTimeDurationInDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}milk_wait_time_duration_in_days'])!,
       observation: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}observation']),
-      successfulReproduction: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}successful_reproduction'])!,
+      reproduction: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}reproduction'])!,
     );
   }
 
@@ -3337,30 +2951,32 @@ class $PregnanciesTable extends Pregnancies
 class Pregnancy extends DataClass implements Insertable<Pregnancy> {
   final int id;
   final DateTime date;
-  final DateTime dryingForecastStartingDate;
-  final DateTime dryingForecastEndingDate;
+  final DateTime dryingForecast;
+  final DateTime birthForecast;
+  final int milkWaitTimeDurationInDays;
   final String? observation;
-  final int successfulReproduction;
+  final int reproduction;
   const Pregnancy(
       {required this.id,
       required this.date,
-      required this.dryingForecastStartingDate,
-      required this.dryingForecastEndingDate,
+      required this.dryingForecast,
+      required this.birthForecast,
+      required this.milkWaitTimeDurationInDays,
       this.observation,
-      required this.successfulReproduction});
+      required this.reproduction});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['date'] = Variable<DateTime>(date);
-    map['drying_forecast_starting_date'] =
-        Variable<DateTime>(dryingForecastStartingDate);
-    map['drying_forecast_ending_date'] =
-        Variable<DateTime>(dryingForecastEndingDate);
+    map['drying_forecast'] = Variable<DateTime>(dryingForecast);
+    map['birth_forecast'] = Variable<DateTime>(birthForecast);
+    map['milk_wait_time_duration_in_days'] =
+        Variable<int>(milkWaitTimeDurationInDays);
     if (!nullToAbsent || observation != null) {
       map['observation'] = Variable<String>(observation);
     }
-    map['successful_reproduction'] = Variable<int>(successfulReproduction);
+    map['reproduction'] = Variable<int>(reproduction);
     return map;
   }
 
@@ -3368,12 +2984,13 @@ class Pregnancy extends DataClass implements Insertable<Pregnancy> {
     return PregnanciesCompanion(
       id: Value(id),
       date: Value(date),
-      dryingForecastStartingDate: Value(dryingForecastStartingDate),
-      dryingForecastEndingDate: Value(dryingForecastEndingDate),
+      dryingForecast: Value(dryingForecast),
+      birthForecast: Value(birthForecast),
+      milkWaitTimeDurationInDays: Value(milkWaitTimeDurationInDays),
       observation: observation == null && nullToAbsent
           ? const Value.absent()
           : Value(observation),
-      successfulReproduction: Value(successfulReproduction),
+      reproduction: Value(reproduction),
     );
   }
 
@@ -3383,13 +3000,12 @@ class Pregnancy extends DataClass implements Insertable<Pregnancy> {
     return Pregnancy(
       id: serializer.fromJson<int>(json['id']),
       date: serializer.fromJson<DateTime>(json['date']),
-      dryingForecastStartingDate:
-          serializer.fromJson<DateTime>(json['dryingForecastStartingDate']),
-      dryingForecastEndingDate:
-          serializer.fromJson<DateTime>(json['dryingForecastEndingDate']),
+      dryingForecast: serializer.fromJson<DateTime>(json['dryingForecast']),
+      birthForecast: serializer.fromJson<DateTime>(json['birthForecast']),
+      milkWaitTimeDurationInDays:
+          serializer.fromJson<int>(json['milkWaitTimeDurationInDays']),
       observation: serializer.fromJson<String?>(json['observation']),
-      successfulReproduction:
-          serializer.fromJson<int>(json['successfulReproduction']),
+      reproduction: serializer.fromJson<int>(json['reproduction']),
     );
   }
   @override
@@ -3398,48 +3014,51 @@ class Pregnancy extends DataClass implements Insertable<Pregnancy> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'date': serializer.toJson<DateTime>(date),
-      'dryingForecastStartingDate':
-          serializer.toJson<DateTime>(dryingForecastStartingDate),
-      'dryingForecastEndingDate':
-          serializer.toJson<DateTime>(dryingForecastEndingDate),
+      'dryingForecast': serializer.toJson<DateTime>(dryingForecast),
+      'birthForecast': serializer.toJson<DateTime>(birthForecast),
+      'milkWaitTimeDurationInDays':
+          serializer.toJson<int>(milkWaitTimeDurationInDays),
       'observation': serializer.toJson<String?>(observation),
-      'successfulReproduction': serializer.toJson<int>(successfulReproduction),
+      'reproduction': serializer.toJson<int>(reproduction),
     };
   }
 
   Pregnancy copyWith(
           {int? id,
           DateTime? date,
-          DateTime? dryingForecastStartingDate,
-          DateTime? dryingForecastEndingDate,
+          DateTime? dryingForecast,
+          DateTime? birthForecast,
+          int? milkWaitTimeDurationInDays,
           Value<String?> observation = const Value.absent(),
-          int? successfulReproduction}) =>
+          int? reproduction}) =>
       Pregnancy(
         id: id ?? this.id,
         date: date ?? this.date,
-        dryingForecastStartingDate:
-            dryingForecastStartingDate ?? this.dryingForecastStartingDate,
-        dryingForecastEndingDate:
-            dryingForecastEndingDate ?? this.dryingForecastEndingDate,
+        dryingForecast: dryingForecast ?? this.dryingForecast,
+        birthForecast: birthForecast ?? this.birthForecast,
+        milkWaitTimeDurationInDays:
+            milkWaitTimeDurationInDays ?? this.milkWaitTimeDurationInDays,
         observation: observation.present ? observation.value : this.observation,
-        successfulReproduction:
-            successfulReproduction ?? this.successfulReproduction,
+        reproduction: reproduction ?? this.reproduction,
       );
   Pregnancy copyWithCompanion(PregnanciesCompanion data) {
     return Pregnancy(
       id: data.id.present ? data.id.value : this.id,
       date: data.date.present ? data.date.value : this.date,
-      dryingForecastStartingDate: data.dryingForecastStartingDate.present
-          ? data.dryingForecastStartingDate.value
-          : this.dryingForecastStartingDate,
-      dryingForecastEndingDate: data.dryingForecastEndingDate.present
-          ? data.dryingForecastEndingDate.value
-          : this.dryingForecastEndingDate,
+      dryingForecast: data.dryingForecast.present
+          ? data.dryingForecast.value
+          : this.dryingForecast,
+      birthForecast: data.birthForecast.present
+          ? data.birthForecast.value
+          : this.birthForecast,
+      milkWaitTimeDurationInDays: data.milkWaitTimeDurationInDays.present
+          ? data.milkWaitTimeDurationInDays.value
+          : this.milkWaitTimeDurationInDays,
       observation:
           data.observation.present ? data.observation.value : this.observation,
-      successfulReproduction: data.successfulReproduction.present
-          ? data.successfulReproduction.value
-          : this.successfulReproduction,
+      reproduction: data.reproduction.present
+          ? data.reproduction.value
+          : this.reproduction,
     );
   }
 
@@ -3448,93 +3067,99 @@ class Pregnancy extends DataClass implements Insertable<Pregnancy> {
     return (StringBuffer('Pregnancy(')
           ..write('id: $id, ')
           ..write('date: $date, ')
-          ..write('dryingForecastStartingDate: $dryingForecastStartingDate, ')
-          ..write('dryingForecastEndingDate: $dryingForecastEndingDate, ')
+          ..write('dryingForecast: $dryingForecast, ')
+          ..write('birthForecast: $birthForecast, ')
+          ..write('milkWaitTimeDurationInDays: $milkWaitTimeDurationInDays, ')
           ..write('observation: $observation, ')
-          ..write('successfulReproduction: $successfulReproduction')
+          ..write('reproduction: $reproduction')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, date, dryingForecastStartingDate,
-      dryingForecastEndingDate, observation, successfulReproduction);
+  int get hashCode => Object.hash(id, date, dryingForecast, birthForecast,
+      milkWaitTimeDurationInDays, observation, reproduction);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Pregnancy &&
           other.id == this.id &&
           other.date == this.date &&
-          other.dryingForecastStartingDate == this.dryingForecastStartingDate &&
-          other.dryingForecastEndingDate == this.dryingForecastEndingDate &&
+          other.dryingForecast == this.dryingForecast &&
+          other.birthForecast == this.birthForecast &&
+          other.milkWaitTimeDurationInDays == this.milkWaitTimeDurationInDays &&
           other.observation == this.observation &&
-          other.successfulReproduction == this.successfulReproduction);
+          other.reproduction == this.reproduction);
 }
 
 class PregnanciesCompanion extends UpdateCompanion<Pregnancy> {
   final Value<int> id;
   final Value<DateTime> date;
-  final Value<DateTime> dryingForecastStartingDate;
-  final Value<DateTime> dryingForecastEndingDate;
+  final Value<DateTime> dryingForecast;
+  final Value<DateTime> birthForecast;
+  final Value<int> milkWaitTimeDurationInDays;
   final Value<String?> observation;
-  final Value<int> successfulReproduction;
+  final Value<int> reproduction;
   const PregnanciesCompanion({
     this.id = const Value.absent(),
     this.date = const Value.absent(),
-    this.dryingForecastStartingDate = const Value.absent(),
-    this.dryingForecastEndingDate = const Value.absent(),
+    this.dryingForecast = const Value.absent(),
+    this.birthForecast = const Value.absent(),
+    this.milkWaitTimeDurationInDays = const Value.absent(),
     this.observation = const Value.absent(),
-    this.successfulReproduction = const Value.absent(),
+    this.reproduction = const Value.absent(),
   });
   PregnanciesCompanion.insert({
     this.id = const Value.absent(),
     required DateTime date,
-    required DateTime dryingForecastStartingDate,
-    required DateTime dryingForecastEndingDate,
+    required DateTime dryingForecast,
+    required DateTime birthForecast,
+    required int milkWaitTimeDurationInDays,
     this.observation = const Value.absent(),
-    required int successfulReproduction,
+    required int reproduction,
   })  : date = Value(date),
-        dryingForecastStartingDate = Value(dryingForecastStartingDate),
-        dryingForecastEndingDate = Value(dryingForecastEndingDate),
-        successfulReproduction = Value(successfulReproduction);
+        dryingForecast = Value(dryingForecast),
+        birthForecast = Value(birthForecast),
+        milkWaitTimeDurationInDays = Value(milkWaitTimeDurationInDays),
+        reproduction = Value(reproduction);
   static Insertable<Pregnancy> custom({
     Expression<int>? id,
     Expression<DateTime>? date,
-    Expression<DateTime>? dryingForecastStartingDate,
-    Expression<DateTime>? dryingForecastEndingDate,
+    Expression<DateTime>? dryingForecast,
+    Expression<DateTime>? birthForecast,
+    Expression<int>? milkWaitTimeDurationInDays,
     Expression<String>? observation,
-    Expression<int>? successfulReproduction,
+    Expression<int>? reproduction,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (date != null) 'date': date,
-      if (dryingForecastStartingDate != null)
-        'drying_forecast_starting_date': dryingForecastStartingDate,
-      if (dryingForecastEndingDate != null)
-        'drying_forecast_ending_date': dryingForecastEndingDate,
+      if (dryingForecast != null) 'drying_forecast': dryingForecast,
+      if (birthForecast != null) 'birth_forecast': birthForecast,
+      if (milkWaitTimeDurationInDays != null)
+        'milk_wait_time_duration_in_days': milkWaitTimeDurationInDays,
       if (observation != null) 'observation': observation,
-      if (successfulReproduction != null)
-        'successful_reproduction': successfulReproduction,
+      if (reproduction != null) 'reproduction': reproduction,
     });
   }
 
   PregnanciesCompanion copyWith(
       {Value<int>? id,
       Value<DateTime>? date,
-      Value<DateTime>? dryingForecastStartingDate,
-      Value<DateTime>? dryingForecastEndingDate,
+      Value<DateTime>? dryingForecast,
+      Value<DateTime>? birthForecast,
+      Value<int>? milkWaitTimeDurationInDays,
       Value<String?>? observation,
-      Value<int>? successfulReproduction}) {
+      Value<int>? reproduction}) {
     return PregnanciesCompanion(
       id: id ?? this.id,
       date: date ?? this.date,
-      dryingForecastStartingDate:
-          dryingForecastStartingDate ?? this.dryingForecastStartingDate,
-      dryingForecastEndingDate:
-          dryingForecastEndingDate ?? this.dryingForecastEndingDate,
+      dryingForecast: dryingForecast ?? this.dryingForecast,
+      birthForecast: birthForecast ?? this.birthForecast,
+      milkWaitTimeDurationInDays:
+          milkWaitTimeDurationInDays ?? this.milkWaitTimeDurationInDays,
       observation: observation ?? this.observation,
-      successfulReproduction:
-          successfulReproduction ?? this.successfulReproduction,
+      reproduction: reproduction ?? this.reproduction,
     );
   }
 
@@ -3547,20 +3172,21 @@ class PregnanciesCompanion extends UpdateCompanion<Pregnancy> {
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
     }
-    if (dryingForecastStartingDate.present) {
-      map['drying_forecast_starting_date'] =
-          Variable<DateTime>(dryingForecastStartingDate.value);
+    if (dryingForecast.present) {
+      map['drying_forecast'] = Variable<DateTime>(dryingForecast.value);
     }
-    if (dryingForecastEndingDate.present) {
-      map['drying_forecast_ending_date'] =
-          Variable<DateTime>(dryingForecastEndingDate.value);
+    if (birthForecast.present) {
+      map['birth_forecast'] = Variable<DateTime>(birthForecast.value);
+    }
+    if (milkWaitTimeDurationInDays.present) {
+      map['milk_wait_time_duration_in_days'] =
+          Variable<int>(milkWaitTimeDurationInDays.value);
     }
     if (observation.present) {
       map['observation'] = Variable<String>(observation.value);
     }
-    if (successfulReproduction.present) {
-      map['successful_reproduction'] =
-          Variable<int>(successfulReproduction.value);
+    if (reproduction.present) {
+      map['reproduction'] = Variable<int>(reproduction.value);
     }
     return map;
   }
@@ -3570,10 +3196,11 @@ class PregnanciesCompanion extends UpdateCompanion<Pregnancy> {
     return (StringBuffer('PregnanciesCompanion(')
           ..write('id: $id, ')
           ..write('date: $date, ')
-          ..write('dryingForecastStartingDate: $dryingForecastStartingDate, ')
-          ..write('dryingForecastEndingDate: $dryingForecastEndingDate, ')
+          ..write('dryingForecast: $dryingForecast, ')
+          ..write('birthForecast: $birthForecast, ')
+          ..write('milkWaitTimeDurationInDays: $milkWaitTimeDurationInDays, ')
           ..write('observation: $observation, ')
-          ..write('successfulReproduction: $successfulReproduction')
+          ..write('reproduction: $reproduction')
           ..write(')'))
         .toString();
   }
@@ -3592,8 +3219,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SemensTable semens = $SemensTable(this);
   late final $ReproductionsTable reproductions = $ReproductionsTable(this);
   late final $DiscardsTable discards = $DiscardsTable(this);
-  late final $SuccessfulReproductionsTable successfulReproductions =
-      $SuccessfulReproductionsTable(this);
   late final $PregnanciesTable pregnancies = $PregnanciesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -3609,7 +3234,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         semens,
         reproductions,
         discards,
-        successfulReproductions,
         pregnancies
       ];
 }
@@ -5860,21 +5484,17 @@ final class $$ReproductionsTableReferences
         manager.$state.copyWith(prefetchedData: [item]));
   }
 
-  static MultiTypedResultKey<$SuccessfulReproductionsTable,
-      List<SuccessfulReproduction>> _successfulReproductionsRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.successfulReproductions,
-          aliasName: $_aliasNameGenerator(
-              db.reproductions.id, db.successfulReproductions.reproduction));
+  static MultiTypedResultKey<$PregnanciesTable, List<Pregnancy>>
+      _pregnanciesRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.pregnancies,
+              aliasName: $_aliasNameGenerator(
+                  db.reproductions.id, db.pregnancies.reproduction));
 
-  $$SuccessfulReproductionsTableProcessedTableManager
-      get successfulReproductionsRefs {
-    final manager = $$SuccessfulReproductionsTableTableManager(
-            $_db, $_db.successfulReproductions)
+  $$PregnanciesTableProcessedTableManager get pregnanciesRefs {
+    final manager = $$PregnanciesTableTableManager($_db, $_db.pregnancies)
         .filter((f) => f.reproduction.id($_item.id));
 
-    final cache =
-        $_typedResult.readTableOrNull(_successfulReproductionsRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_pregnanciesRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -5966,26 +5586,24 @@ class $$ReproductionsTableFilterComposer
     return composer;
   }
 
-  Expression<bool> successfulReproductionsRefs(
-      Expression<bool> Function($$SuccessfulReproductionsTableFilterComposer f)
-          f) {
-    final $$SuccessfulReproductionsTableFilterComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $db.successfulReproductions,
-            getReferencedColumn: (t) => t.reproduction,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$SuccessfulReproductionsTableFilterComposer(
-                  $db: $db,
-                  $table: $db.successfulReproductions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
+  Expression<bool> pregnanciesRefs(
+      Expression<bool> Function($$PregnanciesTableFilterComposer f) f) {
+    final $$PregnanciesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.pregnancies,
+        getReferencedColumn: (t) => t.reproduction,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PregnanciesTableFilterComposer(
+              $db: $db,
+              $table: $db.pregnancies,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return f(composer);
   }
 }
@@ -6154,26 +5772,24 @@ class $$ReproductionsTableAnnotationComposer
     return composer;
   }
 
-  Expression<T> successfulReproductionsRefs<T extends Object>(
-      Expression<T> Function($$SuccessfulReproductionsTableAnnotationComposer a)
-          f) {
-    final $$SuccessfulReproductionsTableAnnotationComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $db.successfulReproductions,
-            getReferencedColumn: (t) => t.reproduction,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$SuccessfulReproductionsTableAnnotationComposer(
-                  $db: $db,
-                  $table: $db.successfulReproductions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
+  Expression<T> pregnanciesRefs<T extends Object>(
+      Expression<T> Function($$PregnanciesTableAnnotationComposer a) f) {
+    final $$PregnanciesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.pregnancies,
+        getReferencedColumn: (t) => t.reproduction,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PregnanciesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.pregnancies,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return f(composer);
   }
 }
@@ -6190,7 +5806,7 @@ class $$ReproductionsTableTableManager extends RootTableManager<
     (Reproduction, $$ReproductionsTableReferences),
     Reproduction,
     PrefetchHooks Function(
-        {bool cow, bool bull, bool semen, bool successfulReproductionsRefs})> {
+        {bool cow, bool bull, bool semen, bool pregnanciesRefs})> {
   $$ReproductionsTableTableManager(_$AppDatabase db, $ReproductionsTable table)
       : super(TableManagerState(
           db: db,
@@ -6247,12 +5863,10 @@ class $$ReproductionsTableTableManager extends RootTableManager<
               {cow = false,
               bull = false,
               semen = false,
-              successfulReproductionsRefs = false}) {
+              pregnanciesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [
-                if (successfulReproductionsRefs) db.successfulReproductions
-              ],
+              explicitlyWatchedTables: [if (pregnanciesRefs) db.pregnancies],
               addJoins: <
                   T extends TableManagerState<
                       dynamic,
@@ -6302,14 +5916,14 @@ class $$ReproductionsTableTableManager extends RootTableManager<
               },
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (successfulReproductionsRefs)
+                  if (pregnanciesRefs)
                     await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable: $$ReproductionsTableReferences
-                            ._successfulReproductionsRefsTable(db),
+                            ._pregnanciesRefsTable(db),
                         managerFromTypedResult: (p0) =>
                             $$ReproductionsTableReferences(db, table, p0)
-                                .successfulReproductionsRefs,
+                                .pregnanciesRefs,
                         referencedItemsForCurrentItem:
                             (item, referencedItems) => referencedItems
                                 .where((e) => e.reproduction == item.id),
@@ -6333,7 +5947,7 @@ typedef $$ReproductionsTableProcessedTableManager = ProcessedTableManager<
     (Reproduction, $$ReproductionsTableReferences),
     Reproduction,
     PrefetchHooks Function(
-        {bool cow, bool bull, bool semen, bool successfulReproductionsRefs})>;
+        {bool cow, bool bull, bool semen, bool pregnanciesRefs})>;
 typedef $$DiscardsTableCreateCompanionBuilder = DiscardsCompanion Function({
   Value<int> id,
   required DiscardReason reason,
@@ -6583,33 +6197,34 @@ typedef $$DiscardsTableProcessedTableManager = ProcessedTableManager<
     (Discard, $$DiscardsTableReferences),
     Discard,
     PrefetchHooks Function({bool bovine})>;
-typedef $$SuccessfulReproductionsTableCreateCompanionBuilder
-    = SuccessfulReproductionsCompanion Function({
+typedef $$PregnanciesTableCreateCompanionBuilder = PregnanciesCompanion
+    Function({
   Value<int> id,
-  Value<String?> observation,
-  required DateTime birthForecastStartingDate,
-  required DateTime birthForecastEndingDate,
+  required DateTime date,
+  required DateTime dryingForecast,
+  required DateTime birthForecast,
   required int milkWaitTimeDurationInDays,
+  Value<String?> observation,
   required int reproduction,
 });
-typedef $$SuccessfulReproductionsTableUpdateCompanionBuilder
-    = SuccessfulReproductionsCompanion Function({
+typedef $$PregnanciesTableUpdateCompanionBuilder = PregnanciesCompanion
+    Function({
   Value<int> id,
-  Value<String?> observation,
-  Value<DateTime> birthForecastStartingDate,
-  Value<DateTime> birthForecastEndingDate,
+  Value<DateTime> date,
+  Value<DateTime> dryingForecast,
+  Value<DateTime> birthForecast,
   Value<int> milkWaitTimeDurationInDays,
+  Value<String?> observation,
   Value<int> reproduction,
 });
 
-final class $$SuccessfulReproductionsTableReferences extends BaseReferences<
-    _$AppDatabase, $SuccessfulReproductionsTable, SuccessfulReproduction> {
-  $$SuccessfulReproductionsTableReferences(
-      super.$_db, super.$_table, super.$_typedResult);
+final class $$PregnanciesTableReferences
+    extends BaseReferences<_$AppDatabase, $PregnanciesTable, Pregnancy> {
+  $$PregnanciesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $ReproductionsTable _reproductionTable(_$AppDatabase db) =>
       db.reproductions.createAlias($_aliasNameGenerator(
-          db.successfulReproductions.reproduction, db.reproductions.id));
+          db.pregnancies.reproduction, db.reproductions.id));
 
   $$ReproductionsTableProcessedTableManager? get reproduction {
     if ($_item.reproduction == null) return null;
@@ -6620,26 +6235,11 @@ final class $$SuccessfulReproductionsTableReferences extends BaseReferences<
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
   }
-
-  static MultiTypedResultKey<$PregnanciesTable, List<Pregnancy>>
-      _pregnanciesRefsTable(_$AppDatabase db) =>
-          MultiTypedResultKey.fromTable(db.pregnancies,
-              aliasName: $_aliasNameGenerator(db.successfulReproductions.id,
-                  db.pregnancies.successfulReproduction));
-
-  $$PregnanciesTableProcessedTableManager get pregnanciesRefs {
-    final manager = $$PregnanciesTableTableManager($_db, $_db.pregnancies)
-        .filter((f) => f.successfulReproduction.id($_item.id));
-
-    final cache = $_typedResult.readTableOrNull(_pregnanciesRefsTable($_db));
-    return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
-  }
 }
 
-class $$SuccessfulReproductionsTableFilterComposer
-    extends Composer<_$AppDatabase, $SuccessfulReproductionsTable> {
-  $$SuccessfulReproductionsTableFilterComposer({
+class $$PregnanciesTableFilterComposer
+    extends Composer<_$AppDatabase, $PregnanciesTable> {
+  $$PregnanciesTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6649,20 +6249,22 @@ class $$SuccessfulReproductionsTableFilterComposer
   ColumnFilters<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get date => $composableBuilder(
+      column: $table.date, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get birthForecastStartingDate => $composableBuilder(
-      column: $table.birthForecastStartingDate,
+  ColumnFilters<DateTime> get dryingForecast => $composableBuilder(
+      column: $table.dryingForecast,
       builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get birthForecastEndingDate => $composableBuilder(
-      column: $table.birthForecastEndingDate,
-      builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get birthForecast => $composableBuilder(
+      column: $table.birthForecast, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get milkWaitTimeDurationInDays => $composableBuilder(
       column: $table.milkWaitTimeDurationInDays,
       builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get observation => $composableBuilder(
+      column: $table.observation, builder: (column) => ColumnFilters(column));
 
   $$ReproductionsTableFilterComposer get reproduction {
     final $$ReproductionsTableFilterComposer composer = $composerBuilder(
@@ -6683,32 +6285,11 @@ class $$SuccessfulReproductionsTableFilterComposer
             ));
     return composer;
   }
-
-  Expression<bool> pregnanciesRefs(
-      Expression<bool> Function($$PregnanciesTableFilterComposer f) f) {
-    final $$PregnanciesTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.pregnancies,
-        getReferencedColumn: (t) => t.successfulReproduction,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$PregnanciesTableFilterComposer(
-              $db: $db,
-              $table: $db.pregnancies,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return f(composer);
-  }
 }
 
-class $$SuccessfulReproductionsTableOrderingComposer
-    extends Composer<_$AppDatabase, $SuccessfulReproductionsTable> {
-  $$SuccessfulReproductionsTableOrderingComposer({
+class $$PregnanciesTableOrderingComposer
+    extends Composer<_$AppDatabase, $PregnanciesTable> {
+  $$PregnanciesTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6718,20 +6299,23 @@ class $$SuccessfulReproductionsTableOrderingComposer
   ColumnOrderings<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+      column: $table.date, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get birthForecastStartingDate => $composableBuilder(
-      column: $table.birthForecastStartingDate,
+  ColumnOrderings<DateTime> get dryingForecast => $composableBuilder(
+      column: $table.dryingForecast,
       builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get birthForecastEndingDate => $composableBuilder(
-      column: $table.birthForecastEndingDate,
+  ColumnOrderings<DateTime> get birthForecast => $composableBuilder(
+      column: $table.birthForecast,
       builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get milkWaitTimeDurationInDays => $composableBuilder(
       column: $table.milkWaitTimeDurationInDays,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get observation => $composableBuilder(
+      column: $table.observation, builder: (column) => ColumnOrderings(column));
 
   $$ReproductionsTableOrderingComposer get reproduction {
     final $$ReproductionsTableOrderingComposer composer = $composerBuilder(
@@ -6754,9 +6338,9 @@ class $$SuccessfulReproductionsTableOrderingComposer
   }
 }
 
-class $$SuccessfulReproductionsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $SuccessfulReproductionsTable> {
-  $$SuccessfulReproductionsTableAnnotationComposer({
+class $$PregnanciesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PregnanciesTable> {
+  $$PregnanciesTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -6766,17 +6350,20 @@ class $$SuccessfulReproductionsTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => column);
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get birthForecastStartingDate => $composableBuilder(
-      column: $table.birthForecastStartingDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get dryingForecast => $composableBuilder(
+      column: $table.dryingForecast, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get birthForecastEndingDate => $composableBuilder(
-      column: $table.birthForecastEndingDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get birthForecast => $composableBuilder(
+      column: $table.birthForecast, builder: (column) => column);
 
   GeneratedColumn<int> get milkWaitTimeDurationInDays => $composableBuilder(
       column: $table.milkWaitTimeDurationInDays, builder: (column) => column);
+
+  GeneratedColumn<String> get observation => $composableBuilder(
+      column: $table.observation, builder: (column) => column);
 
   $$ReproductionsTableAnnotationComposer get reproduction {
     final $$ReproductionsTableAnnotationComposer composer = $composerBuilder(
@@ -6797,98 +6384,76 @@ class $$SuccessfulReproductionsTableAnnotationComposer
             ));
     return composer;
   }
-
-  Expression<T> pregnanciesRefs<T extends Object>(
-      Expression<T> Function($$PregnanciesTableAnnotationComposer a) f) {
-    final $$PregnanciesTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.pregnancies,
-        getReferencedColumn: (t) => t.successfulReproduction,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$PregnanciesTableAnnotationComposer(
-              $db: $db,
-              $table: $db.pregnancies,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
-    return f(composer);
-  }
 }
 
-class $$SuccessfulReproductionsTableTableManager extends RootTableManager<
+class $$PregnanciesTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $SuccessfulReproductionsTable,
-    SuccessfulReproduction,
-    $$SuccessfulReproductionsTableFilterComposer,
-    $$SuccessfulReproductionsTableOrderingComposer,
-    $$SuccessfulReproductionsTableAnnotationComposer,
-    $$SuccessfulReproductionsTableCreateCompanionBuilder,
-    $$SuccessfulReproductionsTableUpdateCompanionBuilder,
-    (SuccessfulReproduction, $$SuccessfulReproductionsTableReferences),
-    SuccessfulReproduction,
-    PrefetchHooks Function({bool reproduction, bool pregnanciesRefs})> {
-  $$SuccessfulReproductionsTableTableManager(
-      _$AppDatabase db, $SuccessfulReproductionsTable table)
+    $PregnanciesTable,
+    Pregnancy,
+    $$PregnanciesTableFilterComposer,
+    $$PregnanciesTableOrderingComposer,
+    $$PregnanciesTableAnnotationComposer,
+    $$PregnanciesTableCreateCompanionBuilder,
+    $$PregnanciesTableUpdateCompanionBuilder,
+    (Pregnancy, $$PregnanciesTableReferences),
+    Pregnancy,
+    PrefetchHooks Function({bool reproduction})> {
+  $$PregnanciesTableTableManager(_$AppDatabase db, $PregnanciesTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$SuccessfulReproductionsTableFilterComposer(
-                  $db: db, $table: table),
+              $$PregnanciesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$SuccessfulReproductionsTableOrderingComposer(
-                  $db: db, $table: table),
+              $$PregnanciesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$SuccessfulReproductionsTableAnnotationComposer(
-                  $db: db, $table: table),
+              $$PregnanciesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<String?> observation = const Value.absent(),
-            Value<DateTime> birthForecastStartingDate = const Value.absent(),
-            Value<DateTime> birthForecastEndingDate = const Value.absent(),
+            Value<DateTime> date = const Value.absent(),
+            Value<DateTime> dryingForecast = const Value.absent(),
+            Value<DateTime> birthForecast = const Value.absent(),
             Value<int> milkWaitTimeDurationInDays = const Value.absent(),
+            Value<String?> observation = const Value.absent(),
             Value<int> reproduction = const Value.absent(),
           }) =>
-              SuccessfulReproductionsCompanion(
+              PregnanciesCompanion(
             id: id,
-            observation: observation,
-            birthForecastStartingDate: birthForecastStartingDate,
-            birthForecastEndingDate: birthForecastEndingDate,
+            date: date,
+            dryingForecast: dryingForecast,
+            birthForecast: birthForecast,
             milkWaitTimeDurationInDays: milkWaitTimeDurationInDays,
+            observation: observation,
             reproduction: reproduction,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<String?> observation = const Value.absent(),
-            required DateTime birthForecastStartingDate,
-            required DateTime birthForecastEndingDate,
+            required DateTime date,
+            required DateTime dryingForecast,
+            required DateTime birthForecast,
             required int milkWaitTimeDurationInDays,
+            Value<String?> observation = const Value.absent(),
             required int reproduction,
           }) =>
-              SuccessfulReproductionsCompanion.insert(
+              PregnanciesCompanion.insert(
             id: id,
-            observation: observation,
-            birthForecastStartingDate: birthForecastStartingDate,
-            birthForecastEndingDate: birthForecastEndingDate,
+            date: date,
+            dryingForecast: dryingForecast,
+            birthForecast: birthForecast,
             milkWaitTimeDurationInDays: milkWaitTimeDurationInDays,
+            observation: observation,
             reproduction: reproduction,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (
                     e.readTable(table),
-                    $$SuccessfulReproductionsTableReferences(db, table, e)
+                    $$PregnanciesTableReferences(db, table, e)
                   ))
               .toList(),
-          prefetchHooksCallback: (
-              {reproduction = false, pregnanciesRefs = false}) {
+          prefetchHooksCallback: ({reproduction = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (pregnanciesRefs) db.pregnancies],
+              explicitlyWatchedTables: [],
               addJoins: <
                   T extends TableManagerState<
                       dynamic,
@@ -6906,326 +6471,10 @@ class $$SuccessfulReproductionsTableTableManager extends RootTableManager<
                   state = state.withJoin(
                     currentTable: table,
                     currentColumn: table.reproduction,
-                    referencedTable: $$SuccessfulReproductionsTableReferences
-                        ._reproductionTable(db),
-                    referencedColumn: $$SuccessfulReproductionsTableReferences
-                        ._reproductionTable(db)
-                        .id,
-                  ) as T;
-                }
-
-                return state;
-              },
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (pregnanciesRefs)
-                    await $_getPrefetchedData(
-                        currentTable: table,
-                        referencedTable:
-                            $$SuccessfulReproductionsTableReferences
-                                ._pregnanciesRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$SuccessfulReproductionsTableReferences(
-                                    db, table, p0)
-                                .pregnanciesRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) => referencedItems.where(
-                                (e) => e.successfulReproduction == item.id),
-                        typedResults: items)
-                ];
-              },
-            );
-          },
-        ));
-}
-
-typedef $$SuccessfulReproductionsTableProcessedTableManager
-    = ProcessedTableManager<
-        _$AppDatabase,
-        $SuccessfulReproductionsTable,
-        SuccessfulReproduction,
-        $$SuccessfulReproductionsTableFilterComposer,
-        $$SuccessfulReproductionsTableOrderingComposer,
-        $$SuccessfulReproductionsTableAnnotationComposer,
-        $$SuccessfulReproductionsTableCreateCompanionBuilder,
-        $$SuccessfulReproductionsTableUpdateCompanionBuilder,
-        (SuccessfulReproduction, $$SuccessfulReproductionsTableReferences),
-        SuccessfulReproduction,
-        PrefetchHooks Function({bool reproduction, bool pregnanciesRefs})>;
-typedef $$PregnanciesTableCreateCompanionBuilder = PregnanciesCompanion
-    Function({
-  Value<int> id,
-  required DateTime date,
-  required DateTime dryingForecastStartingDate,
-  required DateTime dryingForecastEndingDate,
-  Value<String?> observation,
-  required int successfulReproduction,
-});
-typedef $$PregnanciesTableUpdateCompanionBuilder = PregnanciesCompanion
-    Function({
-  Value<int> id,
-  Value<DateTime> date,
-  Value<DateTime> dryingForecastStartingDate,
-  Value<DateTime> dryingForecastEndingDate,
-  Value<String?> observation,
-  Value<int> successfulReproduction,
-});
-
-final class $$PregnanciesTableReferences
-    extends BaseReferences<_$AppDatabase, $PregnanciesTable, Pregnancy> {
-  $$PregnanciesTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static $SuccessfulReproductionsTable _successfulReproductionTable(
-          _$AppDatabase db) =>
-      db.successfulReproductions.createAlias($_aliasNameGenerator(
-          db.pregnancies.successfulReproduction,
-          db.successfulReproductions.id));
-
-  $$SuccessfulReproductionsTableProcessedTableManager?
-      get successfulReproduction {
-    if ($_item.successfulReproduction == null) return null;
-    final manager = $$SuccessfulReproductionsTableTableManager(
-            $_db, $_db.successfulReproductions)
-        .filter((f) => f.id($_item.successfulReproduction!));
-    final item =
-        $_typedResult.readTableOrNull(_successfulReproductionTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: [item]));
-  }
-}
-
-class $$PregnanciesTableFilterComposer
-    extends Composer<_$AppDatabase, $PregnanciesTable> {
-  $$PregnanciesTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get date => $composableBuilder(
-      column: $table.date, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get dryingForecastStartingDate => $composableBuilder(
-      column: $table.dryingForecastStartingDate,
-      builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get dryingForecastEndingDate => $composableBuilder(
-      column: $table.dryingForecastEndingDate,
-      builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => ColumnFilters(column));
-
-  $$SuccessfulReproductionsTableFilterComposer get successfulReproduction {
-    final $$SuccessfulReproductionsTableFilterComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.successfulReproduction,
-            referencedTable: $db.successfulReproductions,
-            getReferencedColumn: (t) => t.id,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$SuccessfulReproductionsTableFilterComposer(
-                  $db: $db,
-                  $table: $db.successfulReproductions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
-    return composer;
-  }
-}
-
-class $$PregnanciesTableOrderingComposer
-    extends Composer<_$AppDatabase, $PregnanciesTable> {
-  $$PregnanciesTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get date => $composableBuilder(
-      column: $table.date, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get dryingForecastStartingDate =>
-      $composableBuilder(
-          column: $table.dryingForecastStartingDate,
-          builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get dryingForecastEndingDate => $composableBuilder(
-      column: $table.dryingForecastEndingDate,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => ColumnOrderings(column));
-
-  $$SuccessfulReproductionsTableOrderingComposer get successfulReproduction {
-    final $$SuccessfulReproductionsTableOrderingComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.successfulReproduction,
-            referencedTable: $db.successfulReproductions,
-            getReferencedColumn: (t) => t.id,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$SuccessfulReproductionsTableOrderingComposer(
-                  $db: $db,
-                  $table: $db.successfulReproductions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
-    return composer;
-  }
-}
-
-class $$PregnanciesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $PregnanciesTable> {
-  $$PregnanciesTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get date =>
-      $composableBuilder(column: $table.date, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get dryingForecastStartingDate =>
-      $composableBuilder(
-          column: $table.dryingForecastStartingDate,
-          builder: (column) => column);
-
-  GeneratedColumn<DateTime> get dryingForecastEndingDate => $composableBuilder(
-      column: $table.dryingForecastEndingDate, builder: (column) => column);
-
-  GeneratedColumn<String> get observation => $composableBuilder(
-      column: $table.observation, builder: (column) => column);
-
-  $$SuccessfulReproductionsTableAnnotationComposer get successfulReproduction {
-    final $$SuccessfulReproductionsTableAnnotationComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.successfulReproduction,
-            referencedTable: $db.successfulReproductions,
-            getReferencedColumn: (t) => t.id,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$SuccessfulReproductionsTableAnnotationComposer(
-                  $db: $db,
-                  $table: $db.successfulReproductions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
-    return composer;
-  }
-}
-
-class $$PregnanciesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $PregnanciesTable,
-    Pregnancy,
-    $$PregnanciesTableFilterComposer,
-    $$PregnanciesTableOrderingComposer,
-    $$PregnanciesTableAnnotationComposer,
-    $$PregnanciesTableCreateCompanionBuilder,
-    $$PregnanciesTableUpdateCompanionBuilder,
-    (Pregnancy, $$PregnanciesTableReferences),
-    Pregnancy,
-    PrefetchHooks Function({bool successfulReproduction})> {
-  $$PregnanciesTableTableManager(_$AppDatabase db, $PregnanciesTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$PregnanciesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$PregnanciesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$PregnanciesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<DateTime> date = const Value.absent(),
-            Value<DateTime> dryingForecastStartingDate = const Value.absent(),
-            Value<DateTime> dryingForecastEndingDate = const Value.absent(),
-            Value<String?> observation = const Value.absent(),
-            Value<int> successfulReproduction = const Value.absent(),
-          }) =>
-              PregnanciesCompanion(
-            id: id,
-            date: date,
-            dryingForecastStartingDate: dryingForecastStartingDate,
-            dryingForecastEndingDate: dryingForecastEndingDate,
-            observation: observation,
-            successfulReproduction: successfulReproduction,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required DateTime date,
-            required DateTime dryingForecastStartingDate,
-            required DateTime dryingForecastEndingDate,
-            Value<String?> observation = const Value.absent(),
-            required int successfulReproduction,
-          }) =>
-              PregnanciesCompanion.insert(
-            id: id,
-            date: date,
-            dryingForecastStartingDate: dryingForecastStartingDate,
-            dryingForecastEndingDate: dryingForecastEndingDate,
-            observation: observation,
-            successfulReproduction: successfulReproduction,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (
-                    e.readTable(table),
-                    $$PregnanciesTableReferences(db, table, e)
-                  ))
-              .toList(),
-          prefetchHooksCallback: ({successfulReproduction = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [],
-              addJoins: <
-                  T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic>>(state) {
-                if (successfulReproduction) {
-                  state = state.withJoin(
-                    currentTable: table,
-                    currentColumn: table.successfulReproduction,
-                    referencedTable: $$PregnanciesTableReferences
-                        ._successfulReproductionTable(db),
-                    referencedColumn: $$PregnanciesTableReferences
-                        ._successfulReproductionTable(db)
-                        .id,
+                    referencedTable:
+                        $$PregnanciesTableReferences._reproductionTable(db),
+                    referencedColumn:
+                        $$PregnanciesTableReferences._reproductionTable(db).id,
                   ) as T;
                 }
 
@@ -7250,7 +6499,7 @@ typedef $$PregnanciesTableProcessedTableManager = ProcessedTableManager<
     $$PregnanciesTableUpdateCompanionBuilder,
     (Pregnancy, $$PregnanciesTableReferences),
     Pregnancy,
-    PrefetchHooks Function({bool successfulReproduction})>;
+    PrefetchHooks Function({bool reproduction})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -7273,9 +6522,6 @@ class $AppDatabaseManager {
       $$ReproductionsTableTableManager(_db, _db.reproductions);
   $$DiscardsTableTableManager get discards =>
       $$DiscardsTableTableManager(_db, _db.discards);
-  $$SuccessfulReproductionsTableTableManager get successfulReproductions =>
-      $$SuccessfulReproductionsTableTableManager(
-          _db, _db.successfulReproductions);
   $$PregnanciesTableTableManager get pregnancies =>
       $$PregnanciesTableTableManager(_db, _db.pregnancies);
 }

@@ -102,15 +102,76 @@ class ReproductionPersistence {
                     .get();
   }
 
-  static Future<void> confirmPregnancy(int reproductionId, SuccessfulReproduction s, Pregnancy p) async {
-    final companion = SuccessfulReproductionsCompanion.insert(
-      reproduction: s.reproduction,
-      birthForecastStartingDate: s.birthForecastStartingDate,
-      birthForecastEndingDate: s.birthForecastEndingDate,
-      milkWaitTimeDurationInDays: s.milkWaitTimeDurationInDays,
-      observation: Value(s.observation),
+  static Future<void> confirmPregnancy(int reproductionId, Pregnancy p) async {
+    final companion = PregnanciesCompanion.insert(
+      date: p.date,
+      dryingForecast: p.dryingForecast,
+      birthForecast: p.birthForecast,
+      milkWaitTimeDurationInDays: p.milkWaitTimeDurationInDays,
+      observation: Value(p.observation),
+      reproduction: reproductionId,
     );
 
-    await database.into(database.successfulReproductions).insert(companion);
+    await database.into(database.pregnancies).insert(companion);
+
+    final reproduction = await (database.select(database.reproductions)..where((r) => r.id.equals(reproductionId))).getSingle();
+
+    final reproductionCompanion = ReproductionsCompanion.insert(
+      id: Value(reproduction.id),
+      kind: reproduction.kind,
+      diagnostic: const Value(ReproductionDiagonostic.positive),
+      date: reproduction.date,
+      cow: reproduction.cow,
+      bull: Value(reproduction.bull),
+      semen: Value(reproduction.semen)
+    );
+
+    await database.update(database.reproductions).replace(reproductionCompanion);
+  }
+
+  static Future<void> registryFailedReproduction(int reproductionId) async {
+    final reproduction = await (database.select(database.reproductions)..where((r) => r.id.equals(reproductionId))).getSingle();
+
+    if (reproduction.diagnostic == ReproductionDiagonostic.positive) {
+      await (database.delete(database.pregnancies)..where((p) => p.reproduction.equals(reproductionId))).go();
+    }
+
+    final reproductionCompanion = ReproductionsCompanion.insert(
+      id: Value(reproduction.id),
+      kind: reproduction.kind,
+      diagnostic: const Value(ReproductionDiagonostic.negative),
+      date: reproduction.date,
+      cow: reproduction.cow,
+      bull: Value(reproduction.bull),
+      semen: Value(reproduction.semen)
+    );
+
+    await database.update(database.reproductions).replace(reproductionCompanion);
+  }
+
+  static Future<void> cancelDiagnostic(int reproductionId) async {
+    final reproduction = await (database.select(database.reproductions)..where((r) => r.id.equals(reproductionId))).getSingle();
+
+    if (reproduction.diagnostic == ReproductionDiagonostic.positive) {
+      await (database.delete(database.pregnancies)..where((p) => p.reproduction.equals(reproductionId))).go();
+    }
+
+    final reproductionCompanion = ReproductionsCompanion.insert(
+      id: Value(reproduction.id),
+      kind: reproduction.kind,
+      diagnostic: const Value(ReproductionDiagonostic.waiting),
+      date: reproduction.date,
+      cow: reproduction.cow,
+      bull: Value(reproduction.bull),
+      semen: Value(reproduction.semen)
+    );
+
+    await database.update(database.reproductions).replace(reproductionCompanion);
+  }
+
+  static Future<Reproduction> getReproductionById(int reproductionId) async {
+    return (database.select(database.reproductions)
+            ..where((r) => r.id.equals(reproductionId)))
+            .getSingle();
   }
 }
