@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:drift/drift.dart';
 
@@ -44,5 +45,11 @@ class ProductionPersistence {
             ..where((production) => production.cow.equals(bovineId))
             ..limit(pageSz, offset: page * pageSz))
             .get();
+  }
+
+  static Future<List<Map<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
+    final query = await (database.select(database.productions)
+                  ..where((production) => production.cow.equals(bovineId)))
+                  .get();
   }
 }

@@ -13,4 +13,8 @@ class ProductionController {
   static Future<List<Production>> getMilkProduction(int bovineId, int pageSize, int page) async {
     return ProductionPersistence.getMilkProduction(bovineId, pageSize, page);
   }
+
+  static Future<List<Map<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
+    return ProductionPersistence.getAverageProductionInLast30d(bovineId);
+  }
 }
