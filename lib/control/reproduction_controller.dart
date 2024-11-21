@@ -26,7 +26,19 @@ class ReproductionController {
     return ReproductionPersistence.getCoveragesFromCow(bovineId, pageSz, page);
   }
 
-  static Future<void> confirmPregnancy(int reproductionId, SuccessfulReproduction s, Pregnancy p) {
-    return ReproductionPersistence.confirmPregnancy(reproductionId, s, p);
+  static Future<void> confirmPregnancy(int reproductionId, Pregnancy p) {
+    return ReproductionPersistence.confirmPregnancy(reproductionId, p);
+  }
+
+  static Future<void> registryFailedReproduction(int reproductionId) {
+    return ReproductionPersistence.registryFailedReproduction(reproductionId);
+  }
+
+  static Future<void> cancelDiagnostic(int reproductionId) {
+    return ReproductionPersistence.cancelDiagnostic(reproductionId);
+  }
+
+  static Future<Reproduction> getReproductionById(int reproductionId) {
+    return ReproductionPersistence.getReproductionById(reproductionId);
   }
 }

@@ -9,16 +9,19 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:integrazoo/base.dart';
 
+import 'package:integrazoo/view/forms/bovine/bovine_discard_form.dart';
+
 import 'package:integrazoo/view/components/treatment/treatment_list_tile.dart';
 import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/reproduction/coverage_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
+import 'package:integrazoo/view/components/button.dart';
 
+import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/production_controller.dart';
 import 'package:integrazoo/control/reproduction_controller.dart';
 import 'package:integrazoo/control/treatment_controller.dart';
 
-import 'package:integrazoo/view/components/button.dart';
 
 import 'package:integrazoo/database/database.dart';
 
@@ -48,16 +51,48 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
     columnBody.add(renderTreatments());
     columnBody.add(renderReproductions());
     columnBody.add(renderProduction());
-    columnBody.add(Container(
-      padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-      child: Button(
-        color: Colors.red,
-        text: "Descartar",
-        onPressed: () {}
-      )
-    ));
+    columnBody.add(renderDiscard());
 
     return IntegrazooBaseApp(body: ListView(children: columnBody));
+  }
+
+  Widget renderDiscard() {
+    return FutureBuilder(
+      future: BovineController.wasDiscarded(widget.bovine.id),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+
+        if (snapshot.data!) {
+          return Container(
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: Button(
+              color: Colors.red,
+              text: "Cancelar Descarte",
+              onPressed: () {
+                BovineController.cancelDiscard(widget.bovine.id);
+                setState(() => ());
+              }
+            )
+          );
+        } {
+          return Container(
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: Button(
+              color: Colors.red,
+              text: "Descartar",
+              onPressed: () {
+                Navigator.of(context)
+                         .push(MaterialPageRoute(builder: (context) => BovineDiscardForm(bovine: widget.bovine)))
+                         .then((value) => (setState(() => ())));
+              }
+            )
+          );
+        }
+      }
+    );
+
   }
 
   Widget renderProduction() {

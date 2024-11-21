@@ -202,28 +202,23 @@ class Discards extends Table {
   IntColumn get reason => intEnum<DiscardReason>()();
   TextColumn get observation => text().nullable()();
 
-  IntColumn get bovine => integer().references(Bovines, #id)();
-}
-
-class SuccessfulReproductions extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get observation => text().nullable()();
-  DateTimeColumn get birthForecastStartingDate => dateTime()();
-  DateTimeColumn get birthForecastEndingDate => dateTime()();
-  IntColumn get milkWaitTimeDurationInDays => integer().check(milkWaitTimeDurationInDays.isBiggerThan(const Constant(0)))();
-
-  IntColumn get reproduction => integer().references(Reproductions, #id)();
+  IntColumn get bovine => integer().unique().references(Bovines, #id)();
 }
 
 @DataClassName('Pregnancy')
 class Pregnancies extends Table {
   IntColumn get id => integer().autoIncrement()();
+
   DateTimeColumn get date => dateTime()();
-  DateTimeColumn get dryingForecastStartingDate => dateTime()();
-  DateTimeColumn get dryingForecastEndingDate => dateTime()();
+
+  DateTimeColumn get dryingForecast => dateTime()();
+  DateTimeColumn get birthForecast => dateTime()();
+
+  IntColumn get milkWaitTimeDurationInDays => integer().check(milkWaitTimeDurationInDays.isBiggerThan(const Constant(0)))();
+
   TextColumn get observation => text().nullable()();
 
-  IntColumn get successfulReproduction => integer().references(SuccessfulReproductions, #id)();
+  IntColumn get reproduction => integer().references(Reproductions, #id)();
 }
 
 
@@ -237,7 +232,6 @@ class Pregnancies extends Table {
   Semens,
   Reproductions,
   Discards,
-  SuccessfulReproductions,
   Pregnancies
 ])
 class AppDatabase extends _$AppDatabase {
