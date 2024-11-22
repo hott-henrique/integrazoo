@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integrazoo/app_styles.dart';
 
 import 'package:intl/intl.dart';
 
@@ -20,9 +22,14 @@ class CoverageAttemptListTile extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+      shape: const Border(bottom: BorderSide(width: 2, color: AppStyles.secondaryBlueColor)),
+      leading: SvgPicture.asset("assets/icons/sperm.svg", width: 30, colorFilter: const ColorFilter.mode( AppStyles.secondaryBlueColor, BlendMode.srcIn)),
       title: const Text("Monta"),
       subtitle: renderBull(),
-      trailing: Text(formatter.format(attempt.date)),
+      titleTextStyle: AppStyles.tileTitleTextStyle,
+      subtitleTextStyle: AppStyles.tileSubtitleTextStyle,
+      trailing: Text(formatter.format(attempt.date), style: AppStyles.tileTrailingTextStyle,),
       onTap: () {
         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(attempt: attempt)));
       }
