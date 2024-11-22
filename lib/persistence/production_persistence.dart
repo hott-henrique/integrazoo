@@ -49,8 +49,8 @@ class ProductionPersistence {
 
     final query = await (database.select(database.productions)
                   ..where((production) => production.cow.equals(bovineId) & 
-                                                                  production.date.isBiggerThanValue(thirtyDaysAgo) & 
-                                                                  production.discard.equals(false)))
+                                          production.date.isBiggerThanValue(thirtyDaysAgo) & 
+                                          production.discard.equals(false)))
                   .get();
     
     Map<DateTime, List<double>> productionsByDay = {};
