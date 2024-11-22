@@ -17,6 +17,7 @@ dependencies:
   fl_chart: ^0.67.0
   drift: ^2.21.0
   drift_flutter: ^0.2.1
+  flutter_svg: ^2.0.14
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +34,9 @@ flutter:
   assets:
     - assets/icons/bull-head.png
     - assets/icons/cow-head.png
+    - assets/icons/cow-icon.svg
+    - assets/icons/bull-icon.svg
+    - assets/icons/milk.svg
+    - assets/icons/vaccine.svg
+    - assets/icons/sperm.svg
+    - assets/icons/insemination.svg
