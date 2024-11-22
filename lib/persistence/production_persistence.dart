@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:drift/drift.dart';
 
 import 'package:integrazoo/globals.dart';
@@ -48,8 +45,26 @@ class ProductionPersistence {
   }
 
   static Future<List<Map<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
+    final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
+
     final query = await (database.select(database.productions)
-                  ..where((production) => production.cow.equals(bovineId)))
+                  ..where((production) => production.cow.equals(bovineId) & 
+                                                                  production.date.isBiggerThanValue(thirtyDaysAgo) & 
+                                                                  production.discard.equals(false)))
                   .get();
+    
+    Map<DateTime, List<double>> productionsByDay = {};
+    for (var production in query) {
+      final date = DateTime(production.date.year, production.date.month, production.date.day);
+      productionsByDay.putIfAbsent(date, () => []).add(production.volume);
+    }
+
+    List<Map<DateTime, double>> averageProduction = [];
+    productionsByDay.forEach((date, volumes) {
+      final averageVolume = volumes.reduce((a, b) => a + b) / volumes.length;
+      averageProduction.add({date: averageVolume});
+    });
+
+    return averageProduction;
   }
 }
