@@ -13,9 +13,11 @@ import 'package:integrazoo/database/database.dart';
 
 
 class PregnancyForm extends StatefulWidget {
-  final Reproduction attempt;
+  // final Reproduction attempt;
+  final int reproductionId;
 
-  const PregnancyForm({ super.key, required this.attempt });
+  // const PregnancyForm({ super.key, required this.attempt });
+  const PregnancyForm({ super.key, required this.reproductionId });
 
   @override
   State<PregnancyForm> createState() => _PregnancyFormState();
@@ -26,8 +28,11 @@ class _PregnancyFormState extends State<PregnancyForm> {
 
   Exception? exception;
 
-  DateTime birthForecast = DateTime.now();
+  DateTime diagnosticDate = DateTime.now();
+  DateTime dryingForecast = DateTime.now().add(const Duration(days:(9 * 30) - 60));
+  DateTime birthForecast = DateTime.now().add(const Duration(days:(9 * 30)));
   String observation = "";
+  int milkWaitTime = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +42,55 @@ class _PregnancyFormState extends State<PregnancyForm> {
                                         onPressed: () => setState(() => exception = null));
     }
 
-    final birthForecastField = InputDatePickerFormField(
-      initialDate: DateTime.now(),
+    return FutureBuilder(
+      future: ReproductionController.getReproductionById(widget.reproductionId),
+      builder: (context, AsyncSnapshot<Reproduction> snapshot) {
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+
+        final reproduction = snapshot.data!;
+
+        return buildComplete(reproduction);
+      }
+    );
+  }
+
+  Widget buildComplete(Reproduction r) {
+    final diagnosticDateField = InputDatePickerFormField(
+      initialDate: diagnosticDate,
       firstDate: DateTime(2000),
-      lastDate: DateTime.now().add(const Duration(days:365)),
+      lastDate: DateTime.now().add(const Duration(days:2 * 365)),
+      keyboardType: TextInputType.text,
+      fieldLabelText: "Data do Diagnóstico",
+      onDateSaved: (value) => dryingForecast = value,
+    );
+
+    final dryingForecastField = InputDatePickerFormField(
+      initialDate: dryingForecast,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(const Duration(days:2 * 365)),
+      keyboardType: TextInputType.text,
+      fieldLabelText: "Previsão de Secagem",
+      onDateSaved: (value) => dryingForecast = value,
+    );
+
+    final birthForecastField = InputDatePickerFormField(
+      initialDate: birthForecast,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(const Duration(days:2 * 365)),
       keyboardType: TextInputType.text,
       fieldLabelText: "Previsão do Parto",
       onDateSaved: (value) => birthForecast = value,
+    );
+
+    final milkWaitTimeField = TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(hintText: 'Exemplo: 5',
+                                        border: OutlineInputBorder(),
+                                        label: Text("Tempo (em dias) de Carência do Leite"),
+                                        floatingLabelBehavior: FloatingLabelBehavior.always),
+      onSaved: (value) => milkWaitTime = int.tryParse(value ?? "0") ?? 0
     );
 
     final observationField = TextFormField(
@@ -75,10 +122,16 @@ class _PregnancyFormState extends State<PregnancyForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-          getCowView(),
-          getSemenMinimalView(),
+          getCowView(r.cow),
+          getSemenMinimalView(r.semen!),
+          divider,
+          diagnosticDateField,
+          divider,
+          dryingForecastField,
           divider,
           birthForecastField,
+          divider,
+          milkWaitTimeField,
           divider,
           observationField,
           confirmBtn,
@@ -92,22 +145,36 @@ class _PregnancyFormState extends State<PregnancyForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
 
-      final reproduction = SuccessfulReproduction.fromJson({
+      final pregnancy = Pregnancy.fromJson({
         'id': 0,
-        'observation': "",
-        'birthForecastStartingDate': birthForecast,
-        'birthForecastEndingDate': birthForecast.add(const Duration(days: 10)),
-        'milkWaitTimeDurationInDays': 5,
-        'reproduction': widget.attempt.id,
+        'date': diagnosticDate,
+        'dryingForecast': dryingForecast,
+        'birthForecast': birthForecast,
+        'milkWaitTimeDurationInDays': milkWaitTime,
+        'observation': observation,
+        'reproduction': widget.reproductionId,
       });
 
-      // ReproductionController.confirmPregnancy();
+      ReproductionController.confirmPregnancy(widget.reproductionId, pregnancy).then(
+        (_) {
+          if (context.mounted) {
+            SnackBar snackBar = const SnackBar(
+              content: Text('Prenhes confirmada.'),
+              backgroundColor: Colors.green,
+              showCloseIcon: true
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.of(context).pop();
+          }
+        },
+        onError: (e) => setState(() => exception = e)
+      );
     }
   }
 
-  Widget getCowView() {
+  Widget getCowView(int bovineId) {
     return FutureBuilder(
-      future: BovineController.getBovine(widget.attempt.cow),
+      future: BovineController.getBovine(bovineId),
       builder: (context, AsyncSnapshot<Bovine> snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
@@ -138,9 +205,9 @@ class _PregnancyFormState extends State<PregnancyForm> {
     );
   }
 
-  Widget getSemenMinimalView() {
+  Widget getSemenMinimalView(String semen) {
     return FutureBuilder(
-      future: SemenController.getSemen(widget.attempt.semen!),
+      future: SemenController.getSemen(semen),
       builder: (context, AsyncSnapshot<Semen> snapshot) {
         if (!snapshot.hasData) {
           return const CircularProgressIndicator();
