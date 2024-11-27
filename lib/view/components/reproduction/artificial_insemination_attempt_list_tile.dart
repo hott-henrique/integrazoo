@@ -28,7 +28,7 @@ class ArtificialInseminationAttemptListTile extends StatelessWidget {
       title: const Text("Inseminação Artificial"),
       subtitle: renderSemen(),
       trailing: Text(formatter.format(attempt.date), style: AppStyles.tileTrailingTextStyle,),
-      titleTextStyle: AppStyles.tileTitleTextStyle.copyWith(fontSize: 18),
+      titleTextStyle: AppStyles.tileTitleTextStyle.copyWith(fontSize: 19),
       subtitleTextStyle: AppStyles.tileSubtitleTextStyle,
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(reproductionId: attempt.id)));

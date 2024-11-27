@@ -113,13 +113,13 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         if (productions.isEmpty) {
           return Container(
             padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-            child: const Card(child: AspectRatio(aspectRatio: 1.3,
+            child: const SectionCard( sectionTitle: "Produções" ,children: [AspectRatio(aspectRatio: 1.3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [  Text("Nenhuma produção registrada.", textAlign: TextAlign.center) ]
               )
-            ))
+            )])
           );
         }
 
@@ -230,7 +230,7 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
 
         return Container(
           padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-          child: SectionCard( sectionTitle:"Reproduções" ,children: reproductionsTiles)
+          child: SectionCard( sectionTitle:"Reproduções" , children: reproductionsTiles)
         );
       }
     );

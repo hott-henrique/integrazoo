@@ -17,7 +17,9 @@ class BovineListTile extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
     const ImageIcon cowHead = ImageIcon(AssetImage("assets/icons/cow-head.png"));
     const ImageIcon bullHead = ImageIcon(AssetImage("assets/icons/bull-head.png"));
-
+    const ImageIcon bullHeadDead = ImageIcon(AssetImage("assets/icons/bull-dead.png"));
+    const ImageIcon cowHeadDead = ImageIcon(AssetImage("assets/icons/cow-dead.png"));
+    
     return ListTile(
       title: Text(bovine.name),
       // subtitle: cattle.birth == null ? null : Text('Data de Nascimento: ${formatter.format(cattle.birth!.date)}'),
