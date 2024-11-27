@@ -106,4 +106,35 @@ class ProductionPersistence {
 
     return averageProduction;
   }
+
+  static Future<List<Tuple2<DateTime, double>>> getMonthlyProduction(int bovineId, DateTime startingDate, DateTime endingDate) async {
+    final query = await (database.select(database.productions)
+                  ..where((production) => production.cow.equals(bovineId) &
+                                          production.date.isBiggerThanValue(startingDate) &
+                                          production.date.isSmallerThanValue(endingDate) &
+                                          production.discard.equals(false)))
+                  .get();
+    
+    List<Tuple2<DateTime, double>> averageProduction = [];
+
+    for (var production in query) {
+      final startOfMonth = DateTime(production.date.year, production.date.month, 1);
+
+      var existentTuple = averageProduction.firstWhere(
+        (tuple) => tuple.item1.isAtSameMomentAs(startOfMonth),
+        orElse: () => Tuple2(startOfMonth, 0.0)
+      );
+
+      if (existentTuple.item2 == 0.0) {
+        averageProduction.add(Tuple2(startOfMonth, production.volume));
+      } else {
+        final index = averageProduction.indexOf(existentTuple);
+        final currentVolume = existentTuple.item2;
+        final newVolume = currentVolume + production.volume;
+        averageProduction[index] = Tuple2(startOfMonth, newVolume / (index + 1));
+      }
+    }
+
+    return averageProduction;
+  }
 }
