@@ -1,6 +1,7 @@
 import 'package:integrazoo/persistence/production_persistence.dart';
 
 import 'package:integrazoo/database/database.dart';
+import 'package:tuple_dart/tuple_dart.dart';
 
 
 class ProductionController {
@@ -14,7 +15,11 @@ class ProductionController {
     return ProductionPersistence.getMilkProduction(bovineId, pageSize, page);
   }
 
-  static Future<List<Map<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
+  static Future<List<Tuple2<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
     return ProductionPersistence.getAverageProductionInLast30d(bovineId);
+  }
+
+  static Future<List<Tuple2<DateTime, double>>> getYTDProduction(int bovineId) async {
+    return ProductionPersistence.getYTDProduction(bovineId);
   }
 }

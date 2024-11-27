@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:integrazoo/globals.dart';
 
 import 'package:integrazoo/database/database.dart';
+import 'package:tuple_dart/tuple_dart.dart';
 
 
 class ProductionPersistence {
@@ -44,7 +45,7 @@ class ProductionPersistence {
             .get();
   }
 
-  static Future<List<Map<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
+  static Future<List<Tuple2<DateTime, double>>> getAverageProductionInLast30d(int bovineId) async {
     final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
 
     final query = await (database.select(database.productions)
@@ -53,17 +54,55 @@ class ProductionPersistence {
                                           production.discard.equals(false)))
                   .get();
     
-    Map<DateTime, List<double>> productionsByDay = {};
+    List<Tuple2<DateTime, double>> averageProduction = [];
+
     for (var production in query) {
       final date = DateTime(production.date.year, production.date.month, production.date.day);
-      productionsByDay.putIfAbsent(date, () => []).add(production.volume);
+
+      var existentTuple = averageProduction.firstWhere(
+        (tuple) => tuple.item1.isAtSameMomentAs(date),
+        orElse: () => Tuple2(date, 0.0)
+      );
+
+      if (existentTuple.item2 == 0.0) {
+        averageProduction.add(Tuple2(date, production.volume));
+      } else {
+        final index = averageProduction.indexOf(existentTuple);
+        final currentVolume = existentTuple.item2;
+        final newVolume = currentVolume + production.volume;
+        averageProduction[index] = Tuple2(date, newVolume / (index + 1));
+      }
     }
 
-    List<Map<DateTime, double>> averageProduction = [];
-    productionsByDay.forEach((date, volumes) {
-      final averageVolume = volumes.reduce((a, b) => a + b) / volumes.length;
-      averageProduction.add({date: averageVolume});
-    });
+    return averageProduction;
+  }
+
+  static Future<List<Tuple2<DateTime, double>>> getYTDProduction(int bovineId) async {
+    final startOfYear = DateTime(DateTime.now().year, 1, 1);
+
+    final query = await (database.select(database.productions)
+                ..where((production) => production.cow.equals(bovineId) & 
+                                        production.date.isBiggerThanValue(startOfYear) & 
+                                        production.discard.equals(false)))
+                .get();
+
+    List<Tuple2<DateTime, double>> averageProduction = [];
+
+    for (var production in query) {
+      final date = DateTime(production.date.year, production.date.month, production.date.day);
+
+      var existentTuple = averageProduction.firstWhere(
+        (tuple) => tuple.item1 == date,
+        orElse: () => Tuple2(date, 0.0)
+      );
+
+      if (existentTuple.item1 == date) {
+        averageProduction.remove(existentTuple);
+        averageProduction.add(Tuple2(date, (existentTuple.item2 + production.volume) / 2));
+      } else {
+        averageProduction.add(Tuple2(date, production.volume));
+      }
+    }
 
     return averageProduction;
   }
