@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:integrazoo/app_styles.dart';
 
 import 'package:intl/intl.dart';
 
@@ -15,7 +16,11 @@ import 'package:integrazoo/view/components/treatment/treatment_list_tile.dart';
 import 'package:integrazoo/view/components/reproduction/artificial_insemination_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/reproduction/coverage_attempt_list_tile.dart';
 import 'package:integrazoo/view/components/unexpected_error_alert_dialog.dart';
+
+import 'package:integrazoo/view/components/general/section_card.dart';
+
 import 'package:integrazoo/view/components/button.dart';
+
 
 import 'package:integrazoo/control/bovine_controller.dart';
 import 'package:integrazoo/control/production_controller.dart';
@@ -151,13 +156,18 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         ));
 
         return Container(
-          padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-          child: Card(child: AspectRatio(aspectRatio: 1.3,
-            child: Column(children: [
-              Expanded(flex: 12, child: Padding(padding: const EdgeInsets.all(8), child: productionChart))
-            ])
-          ))
-        );
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: SectionCard(sectionTitle: "Produções",children: [
+              AspectRatio(
+                  aspectRatio: 1.3,
+                  child: Column(children: [
+                    Expanded(
+                        flex: 12,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: productionChart))
+                  ]))
+            ]));
       }
     );
   }
@@ -177,15 +187,16 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
           (index) => TreatmentListTile(treatment: treatments[index])
         );
 
-        treatmentsTiles.insert(0, const Text("Tratamentos"));
-
         if (treatments.isEmpty) {
           treatmentsTiles.add(const ListTile(title: Text("Nenhum tratamento registrado.", textAlign: TextAlign.center), dense: true));
         }
 
         return Container(
-          padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-          child: Card(child: Column(children: treatmentsTiles))
+          padding: const EdgeInsets.all(10),
+          child: SectionCard(
+                sectionTitle: "Tratamentos",
+                children: treatmentsTiles
+              )
         );
       }
     );
@@ -213,14 +224,13 @@ class _BovineDetailedScreen extends State<BovineDetailedScreen> {
         );
 
         if (reproductions.isEmpty) {
-          reproductionsTiles.add(const ListTile(title: Text("Nenhum tratamento registrado.", textAlign: TextAlign.center), dense: true));
+          reproductionsTiles.add(const ListTile(title: Text("Nenhuma reprodução registrada.", textAlign: TextAlign.center), dense: true));
         }
 
-        reproductionsTiles.insert(0, const Text("Reproduções"));
 
         return Container(
           padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-          child: Card(child: Column(children: reproductionsTiles))
+          child: SectionCard( sectionTitle:"Reproduções" ,children: reproductionsTiles)
         );
       }
     );

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:integrazoo/app_styles.dart';
 
 import 'package:intl/intl.dart';
 
@@ -20,9 +22,14 @@ class ArtificialInseminationAttemptListTile extends StatelessWidget {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+      shape: const Border(bottom: BorderSide(width: 2, color: AppStyles.secondaryBlueColor)),
+      leading: SvgPicture.asset("assets/icons/insemination.svg", width: 30),
       title: const Text("Inseminação Artificial"),
       subtitle: renderSemen(),
-      trailing: Text(formatter.format(attempt.date)),
+      trailing: Text(formatter.format(attempt.date), style: AppStyles.tileTrailingTextStyle,),
+      titleTextStyle: AppStyles.tileTitleTextStyle.copyWith(fontSize: 18),
+      subtitleTextStyle: AppStyles.tileSubtitleTextStyle,
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArtificialInseminationDetailedScreen(reproductionId: attempt.id)));
       }

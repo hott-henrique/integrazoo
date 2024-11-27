@@ -9,7 +9,7 @@ import 'package:integrazoo/view/screens/about.dart';
 import 'package:integrazoo/view/screens/analysis.dart';
 import 'package:integrazoo/view/screens/health_calendar.dart';
 import 'package:integrazoo/view/screens/herd.dart';
-
+import 'package:integrazoo/app_styles.dart';
 
 class IntegrazooBaseApp extends StatefulWidget {
   final Widget body;
@@ -30,9 +30,10 @@ class _IntegrazooBaseAppState extends State<IntegrazooBaseApp> {
     });
 
     return Scaffold(
+      backgroundColor: AppStyles.backgroundColor,
       appBar: AppBar(
         title: Text('INTEGRAZOO', style: Theme.of(context).textTheme.titleLarge),
-        backgroundColor: Colors.green,
+        backgroundColor: AppStyles.primaryColor,
         centerTitle: true,
         leading: leadingBuilder,
       ),
