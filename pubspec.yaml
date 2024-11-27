@@ -40,3 +40,5 @@ flutter:
     - assets/icons/vaccine.svg
     - assets/icons/sperm.svg
     - assets/icons/insemination.svg
+    - assets/icons/bull-dead.png
+    - assets/icons/cow-dead.png
