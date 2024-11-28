@@ -26,4 +26,8 @@ class ProductionController {
   static Future<List<Tuple2<DateTime, double>>> getMonthlyProduction(int bovineId, DateTime startingDate, DateTime endingDate) async {
     return ProductionPersistence.getMonthlyProduction(bovineId, startingDate, endingDate);
   }
+
+  static Future<List<Tuple2<DateTime, double>>> getAnnualProduction(int bovineId, DateTime startingDate, DateTime endingDate) async {
+    return ProductionPersistence.getAnnualProduction(bovineId, startingDate, endingDate);
+  }
 }

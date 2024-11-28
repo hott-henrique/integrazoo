@@ -137,4 +137,33 @@ class ProductionPersistence {
 
     return averageProduction;
   }
+
+  static Future<List<Tuple2<DateTime, double>>> getAnnualProduction(int bovineId, DateTime startingDate, DateTime endingDate) async {
+    final query = await (database.select(database.productions)
+                  ..where((production) => production.cow.equals(bovineId) &
+                                          production.date.isBiggerThanValue(startingDate) &
+                                          production.date.isSmallerThanValue(endingDate) &
+                                          production.discard.equals(false)))
+                  .get();
+    
+    List<Tuple2<DateTime, double>> averageProduction = [];
+
+    for (var production in query) {
+      final year = DateTime(production.date.year);
+    
+      var existentTuple = averageProduction.firstWhere(
+        (tuple) => tuple.item1.year == year.year,
+        orElse: () => Tuple2(year, 0.0),
+      );
+
+      if (existentTuple.item1.year == year.year) {
+        averageProduction.remove(existentTuple);
+        averageProduction.add(Tuple2(year, existentTuple.item2 + production.volume));
+      } else {
+        averageProduction.add(Tuple2(year, production.volume));
+      }
+    }
+
+    return averageProduction;
+  }
 }
