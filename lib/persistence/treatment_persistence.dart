@@ -29,16 +29,15 @@ class TreatmentPersistence {
 
   static Future<List<Bovine>> animalsInTreatment(int pageSz, int page) async {
     final query = await (database.select(database.treatments)
-                    ..where((treatment) => treatment.endingDate.isNull() | treatment.endingDate.isBiggerThanValue(DateTime.now()))
-                    ..limit(pageSz, offset: page * pageSz)).get();
+                    .join([innerJoin(database.bovines, database.bovines.id.equalsExp(database.treatments.bovine))])
+                    ..where(database.treatments.endingDate.isNull() | database.treatments.endingDate.isBiggerThanValue(DateTime.now()))
+                    ..limit(pageSz, offset: page * pageSz))
+                    .get();
 
     List<Bovine> bovinesInTreatment = [];
 
     for (var treatment in query) {
-      final bovineQuery = database.select(database.bovines)
-                          ..where((bovine) => bovine.id.equals(treatment.bovine));
-
-      final bovine = await bovineQuery.getSingle();
+      final bovine = treatment.readTable(database.bovines);
 
       bovinesInTreatment.add(Bovine(
         id: bovine.id,
