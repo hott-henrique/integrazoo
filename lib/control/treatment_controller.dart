@@ -13,4 +13,8 @@ class TreatmentController {
   static Future<List<Treatment>> getTreatments(int bovineId, int pageSz, int page) {
     return TreatmentPersistence.getTreatments(bovineId, pageSz, page);
   }
+
+  static Future<List<Bovine>> animalsInTreatment(int pageSz, int page) {
+    return TreatmentPersistence.animalsInTreatment(pageSz, page);
+  }
 }
